@@ -1,0 +1,33 @@
+{
+  "iteration": "iteration-1",
+  "candidates": [
+    {
+      "id": "original",
+      "label": "Original (baseline)",
+      "path": "iterations/iteration-1/candidates/original/student.agent.md",
+      "description": "iterations/iteration-1/candidates/original/description.md",
+      "status": "baseline",
+      "selected": false
+    },
+    {
+      "id": "student",
+      "label": "Optimized student candidate",
+      "path": "iterations/iteration-1/candidates/student/student.agent.md",
+      "description": "iterations/iteration-1/candidates/student/description.md",
+      "status": "winner",
+      "selected": true
+    },
+    {
+      "id": "adversary",
+      "label": "Adversary exploit candidate",
+      "path": "iterations/iteration-1/candidates/adversary/candidate.md",
+      "description": "iterations/iteration-1/candidates/adversary/description.md",
+      "findings": "iterations/iteration-1/candidates/adversary/findings.md",
+      "status": "rejected",
+      "selected": false
+    }
+  ],
+  "winner": "student",
+  "judge_mode": "llm_judge",
+  "decision_summary": "decision.md"
+}
