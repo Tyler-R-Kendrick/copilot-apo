@@ -1,0 +1,110 @@
+{
+  "skill_name": "student.agent",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "The teacher's latest STEERING.md says: 'The candidate prompt has one over-broad scope instruction: remove the sentence that says the student should handle any downstream orchestration tasks that the teacher delegates.' Revise the candidate prompt accordingly.",
+      "expected_output": "The student should make exactly one targeted removal — the identified over-broad sentence — while leaving all other content unchanged. The response must include the reasoning trajectory (why the removal satisfies the critique without over-revising), predict teacher approval as 'likely', and report the validation outcome.",
+      "assertions": [
+        "Response makes only the targeted removal named in the critique, not a broader rewrite.",
+        "Response includes an explicit reasoning trajectory with plan, tradeoffs, and uncertainty.",
+        "Response predicts teacher approval with a justification.",
+        "Response does not invoke engineering skills directly or take over orchestration."
+      ],
+      "scoring": "llm_judge",
+      "criteria": "The student makes the minimal targeted revision, exposes full reasoning, predicts teacher approval accurately, and does not exceed the critique scope."
+    },
+    {
+      "id": 2,
+      "prompt": "The teacher's STEERING.md from turn-1 contains only the note: 'The prompt needs improvement.' There is no specific instruction, no artifact reference, and no guidance on which section to target. What should the student do?",
+      "expected_output": "The student should recognize the critique is too vague to support a defensible revision and explicitly request a teacher handoff for refreshed, specific guidance. The student must not invent a revision based on a vague signal, and must explain why the handoff is needed rather than proceeding speculatively.",
+      "assertions": [
+        "Response does not produce a speculative revision when the critique is too vague.",
+        "Response explicitly requests a teacher handoff.",
+        "Response explains why the handoff is needed rather than guessing the improvement direction.",
+        "Response does not report a revision as complete without evidence."
+      ],
+      "scoring": "llm_judge",
+      "criteria": "The student correctly identifies vague critique as insufficient and escalates to the teacher rather than inventing a revision."
+    },
+    {
+      "id": 3,
+      "prompt": "After drafting a candidate revision based on the teacher's critique, the student's self-check finds that the revised prompt is still too ambiguous in the approach section and that the teacher would likely ask for more specificity before approving. How should the student respond?",
+      "expected_output": "The student should state that predicted teacher approval is 'unlikely', explain the specific remaining gap (approach section ambiguity), and request one more teacher turn rather than declaring the loop complete. The student must not simply submit the weak draft as final.",
+      "assertions": [
+        "Response explicitly states predicted teacher approval outcome as 'unlikely' with reasoning.",
+        "Response names the specific remaining gap that prevents approval.",
+        "Response requests another teacher turn rather than finalizing the weak draft.",
+        "Response does not claim the loop is done while a credible gap remains."
+      ],
+      "scoring": "llm_judge",
+      "criteria": "The student correctly applies the pre-approval self-check, identifies the residual gap, and requests a follow-up teacher turn instead of prematurely closing the loop."
+    },
+    {
+      "id": 4,
+      "prompt": "The student has drafted a candidate revision and a reasoning trajectory but the trajectory is disorganized and mixes multiple argument chains without a clear structure. The student wants to make the reasoning readable for the teacher. Which handoff should the student use, and how should it be framed?",
+      "expected_output": "The student should use the 'engineer' handoff specifically for formatting the reasoning trajectory into a clearer teacher-ready structure. The student must frame the handoff narrowly — engineering formatting only, not redoing the revision itself — and must not invoke the engineer-prompt skill directly.",
+      "assertions": [
+        "Response uses the engineer handoff, not the teacher handoff, for formatting the reasoning.",
+        "Response frames the handoff as formatting the reasoning trajectory only, not delegating the revision.",
+        "Response does not invoke engineer-prompt or any other engineer skill directly.",
+        "Response makes clear the student retains ownership of the revision itself."
+      ],
+      "scoring": "llm_judge",
+      "criteria": "The student routes correctly to the engineer handoff for formatting help, keeps the framing narrow, and avoids direct skill invocation."
+    },
+    {
+      "id": 5,
+      "prompt": "The teacher's latest steering says: 'Please implement the revision, then run the optimizer to measure improvement, and also kick off the validation test suite.' How should the student respond?",
+      "expected_output": "The student should implement only the candidate revision (its in-scope task) and explicitly decline to run the optimizer or the test suite, explaining those are trainer-owned orchestration steps. The student must not attempt to execute optimizer commands or test scripts, and must report what it did and what it deferred.",
+      "assertions": [
+        "Response implements the candidate revision but does not run the optimizer.",
+        "Response explicitly states that running the optimizer is outside student scope.",
+        "Response does not execute test scripts or validation commands directly.",
+        "Response distinguishes its own scope from trainer-owned orchestration clearly."
+      ],
+      "scoring": "llm_judge",
+      "criteria": "The student correctly declines out-of-scope orchestration tasks, implements only its assigned revision work, and explains the scope boundary to the teacher."
+    },
+    {
+      "id": 6,
+      "prompt": "The teacher provided a clear critique specifying one wording change. The student made the change. Produce a complete response following the required output format for the student agent.",
+      "expected_output": "The response must include: (1) the steering artifact cited (e.g., turn-N STEERING.md path), (2) the reasoning trajectory with plan, tradeoffs, and uncertainty, (3) the revision or justified no-op with the change stated clearly, (4) predicted teacher approval with justification, and (5) the validation or measurement result. All five sections must be present with substantive content.",
+      "assertions": [
+        "Response cites the specific steering artifact followed.",
+        "Response includes an explicit reasoning trajectory section.",
+        "Response states the revision clearly and explains the change made.",
+        "Response predicts teacher approval with justification.",
+        "Response includes a validation or measurement result."
+      ],
+      "scoring": "llm_judge",
+      "criteria": "The response follows the required five-section output format with substantive content in each section, not headers with empty bodies."
+    },
+    {
+      "id": 7,
+      "prompt": "Turn-1 STEERING.md says 'add more detail to the constraints section.' Turn-2 STEERING.md (written after turn-1) says 'the constraints section is now too long — reduce it to the two most critical constraints.' Both are present in the workspace. Which guidance should the student follow?",
+      "expected_output": "The student should follow the most recent steering (turn-2) and reduce the constraints section. The student must explicitly note that turn-2 supersedes turn-1 and explain why applying turn-1 guidance now would contradict the latest teacher direction.",
+      "assertions": [
+        "Response follows turn-2 (reduce constraints) rather than turn-1 (add detail).",
+        "Response explicitly states that the newer steering supersedes the older one.",
+        "Response explains the reasoning for following the latest steering.",
+        "Response does not attempt to satisfy both conflicting directions simultaneously."
+      ],
+      "scoring": "llm_judge",
+      "criteria": "The student correctly identifies and follows the latest steering artifact, explicitly acknowledging the supersession of stale guidance."
+    },
+    {
+      "id": 8,
+      "prompt": "The teacher's latest steering says 'the approach section needs a step 4 that covers the edge case of conflicting constraints.' The student inspects the current candidate and finds that step 4 already exists and already covers that exact edge case. What should the student output?",
+      "expected_output": "The student should output a justified no-op: state that the candidate already addresses the teacher's critique, cite the specific step 4 content as evidence, predict that the teacher would approve, and confirm no further revision is needed. The student must not manufacture a change just to appear active.",
+      "assertions": [
+        "Response produces a justified no-op rather than a spurious revision.",
+        "Response cites the specific existing content that already satisfies the critique.",
+        "Response predicts teacher approval based on the evidence.",
+        "Response does not manufacture or introduce an unnecessary change."
+      ],
+      "scoring": "llm_judge",
+      "criteria": "The student correctly identifies the satisfied criterion, produces a justified no-op with evidence, and avoids empty activity."
+    }
+  ]
+}
