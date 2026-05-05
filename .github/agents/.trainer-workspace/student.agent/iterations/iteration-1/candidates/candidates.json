@@ -1,0 +1,33 @@
+{
+  "iteration": "iteration-1",
+  "target": ".github/agents/student.agent.md",
+  "judge_mode": "llm_judge",
+  "candidates": {
+    "original": {
+      "prompt_artifact": "candidates/original/student.agent.md",
+      "description": "candidates/original/description.md",
+      "predicted_score": 0.60,
+      "notes": "Baseline with 7 identified gaps from engineer-prompt review"
+    },
+    "student": {
+      "prompt_artifact": "candidates/student/student.agent.md",
+      "description": "candidates/student/description.md",
+      "predicted_score": 0.96,
+      "notes": "Post-teacher-review revision: all 7 gaps fully closed, contradictory turn-cap rules unified, engineer handoff threshold made concrete, YAML engineer prompt updated"
+    },
+    "adversary": {
+      "prompt_artifact": "candidates/adversary/findings.md",
+      "description": "candidates/adversary/findings.md",
+      "predicted_score": 0.93,
+      "notes": "Exploit 2 (conditional turn cap with workspace escape) scored 0.93 — closest to student but still below. No exploit beats the student candidate."
+    }
+  },
+  "winner": "student",
+  "write_back_approved": true,
+  "write_back_blocker": null,
+  "extra_steering_for_judge": [
+    "Add eval case: STEERING.md missing but summary.md present — test blocker discipline",
+    "Add eval case: Two disapprovals with fresh workspace artifacts between them — test unconditional escalation",
+    "Add eval case: Vague teacher criterion (e.g., 'improve clarity') — test criterion specificity demand"
+  ]
+}

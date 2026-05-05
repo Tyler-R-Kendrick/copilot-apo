@@ -1,0 +1,93 @@
+{
+  "skill_name": "student.agent",
+  "evals": [
+    {
+      "prompt": "You are the student agent. The teacher's STEERING.md says: 'The prompt is missing an evidence reading order. The agent jumps to revision without reading the current candidate or workspace context.' The current candidate is pasted below. What is your first step before drafting any revision?\n\nCandidate: [long prompt text omitted for brevity]",
+      "expected_output": "The student should read the teacher's STEERING.md first, then the per-agent steering summary, then the teacher critique, then the current candidate, then other workspace evidence—in that order—before planning any revision. It should not jump directly to editing.",
+      "assertions": [
+        "Response names STEERING.md as the first artifact to read",
+        "Response describes an evidence reading order before drafting the revision",
+        "Response does not immediately propose a candidate change without stating what was read"
+      ],
+      "scoring": "llm_judge",
+      "criteria": "The student should enforce the correct evidence reading order: STEERING.md for the current turn first, then steering summary, then teacher critique, then current candidate."
+    },
+    {
+      "prompt": "The teacher critique says: 'The output format is missing a before/after diff section.' The student agent's current candidate has five sections. What is the correct scope for the revision?",
+      "expected_output": "The student should add exactly one diff section to the Output Format, addressing precisely the named failure mode. It should not restructure the other five sections, rename existing headings, or rewrite constraints that were not mentioned in the critique.",
+      "assertions": [
+        "Response limits the revision to the single named failure mode (missing diff section)",
+        "Response does not propose unrelated changes to sections not mentioned in the critique",
+        "Response identifies the revision as 'smallest defensible'"
+      ],
+      "scoring": "llm_judge",
+      "criteria": "The revision must be scoped to exactly one named failure mode from the teacher critique. No unrelated changes should be proposed."
+    },
+    {
+      "prompt": "You are revising a prompt to add a hard turn cap. Walk through your reasoning before showing the revised section.",
+      "expected_output": "The student exposes a clear reasoning trajectory: it identifies why the cap is needed (current contract has no stopping rule), considers the tradeoff between 2 vs 3 turns, selects the threshold, and explains the uncertainty or edge cases. It does not just output the revised text without the plan.",
+      "assertions": [
+        "Response includes an explicit reasoning plan before the revised text",
+        "Response names the tradeoff or uncertainty it considered",
+        "The revised text follows the stated plan"
+      ],
+      "scoring": "llm_judge",
+      "criteria": "The response must expose a reasoning trajectory (plan, tradeoffs, uncertainty) before presenting the revised candidate. Answer-only output fails this criterion."
+    },
+    {
+      "prompt": "The student has revised the candidate to add a blocker-reporting step when STEERING.md is missing. Does the teacher approve? Predict the outcome before submitting.",
+      "expected_output": "The student names the specific teacher criterion the revision satisfies (e.g., 'The teacher asked for a missing-STEERING.md blocker in turn 1') and predicts approval only because that specific criterion is directly addressed by the revision. It does not predict approval on vague grounds.",
+      "assertions": [
+        "Response names the specific steering criterion being satisfied",
+        "Approval prediction is grounded in a named, observable change",
+        "Response does not predict approval on vague or general grounds"
+      ],
+      "scoring": "llm_judge",
+      "criteria": "The teacher-approval prediction must name which criterion from the STEERING.md is satisfied and map that criterion directly to an observable change in the candidate."
+    },
+    {
+      "prompt": "The student has revised the prompt twice. Each time, the teacher has responded with 'Not yet—the revision is still too broad.' The student has not requested a new teacher turn. What should the student do next?",
+      "expected_output": "The student should hand off to the teacher unconditionally rather than attempting a third self-directed revision. Two disapproved revisions without a new teacher turn triggers the hard turn cap and requires escalation.",
+      "assertions": [
+        "Response escalates to the teacher unconditionally rather than attempting another self-directed revision",
+        "Response references the turn cap or escalation rule",
+        "Response does not attempt a third revision before consulting the teacher"
+      ],
+      "scoring": "llm_judge",
+      "criteria": "The student must escalate to the teacher after two consecutive disapproved revisions without a new teacher turn. Continuing with a third self-directed revision violates the loop exit rule."
+    },
+    {
+      "prompt": "The student's revision plan is five paragraphs long. The actual candidate change is a single sentence. The student wants to present this to the teacher. Should it use the engineer handoff?",
+      "expected_output": "Yes. When the reasoning trajectory or solution plan is substantially longer than the revision itself, the student should invoke the engineer handoff to format the explanation into a clearer, teacher-ready structure. The engineer reformats without taking over execution.",
+      "assertions": [
+        "Response recommends using the engineer handoff",
+        "Response explains that the purpose is to format the reasoning, not to delegate execution",
+        "Response does not conflate engineer handoff with engineer skill invocation"
+      ],
+      "scoring": "llm_judge",
+      "criteria": "The student should invoke the engineer handoff when its reasoning trajectory is substantially longer than the revision, regardless of whether the content is Trace-oriented."
+    },
+    {
+      "prompt": "The teacher's latest critique says 'Fix the validation step' but the student cannot determine which validation step is meant—the constraint says 'run pytest' but the approach says 'run the relevant validation step.' The two are contradictory. What should the student do?",
+      "expected_output": "The student should report a justified no-op. The critique is contradictory—it does not clearly identify which validation step to fix, and the student cannot choose between the constraint wording and the approach wording without additional guidance. The no-op report must cite the specific steering artifact and the contradiction.",
+      "assertions": [
+        "Response reports a no-op rather than guessing which interpretation to use",
+        "Response identifies the contradiction between constraint and approach sections",
+        "Response cites a specific steering artifact as evidence for the no-op"
+      ],
+      "scoring": "llm_judge",
+      "criteria": "The student should report a justified no-op when critique is contradictory and cite the contradiction explicitly rather than guessing."
+    },
+    {
+      "prompt": "The student agent is about to begin work but cannot find STEERING.md for the current teacher turn. The teacher summary.md is also missing. What should the student do?",
+      "expected_output": "The student should report a blocker and hand off to the teacher to refresh the guidance. It should not proceed with a revision based on cached or assumed critique. The blocker report must name the missing artifact (STEERING.md and summary.md) and explain why the loop cannot advance.",
+      "assertions": [
+        "Response reports a blocker rather than proceeding",
+        "Response names both missing artifacts (STEERING.md and summary.md)",
+        "Response hands off to the teacher rather than guessing"
+      ],
+      "scoring": "llm_judge",
+      "criteria": "Missing STEERING.md is a blocker. The student must report it and hand off to the teacher rather than proceeding with a guess."
+    }
+  ]
+}
