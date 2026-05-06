@@ -1,0 +1,41 @@
+{
+  "research_goal": "Identify patterns for effective teacher-guided candidate revision agents in prompt optimization workflows.",
+  "sources": [
+    {
+      "type": "internal",
+      "path": ".github/agents/teacher.agent.md",
+      "relevance": "Defines what teacher critique looks like and what the student should respond to"
+    },
+    {
+      "type": "internal",
+      "path": ".github/agents/trainer.agent.md",
+      "relevance": "Defines the orchestration loop that calls the student"
+    },
+    {
+      "type": "internal",
+      "path": "skills/trainer-train/references/collaboration-contract.md",
+      "relevance": "Defines teacher/student/adversary collaboration contract"
+    },
+    {
+      "type": "internal",
+      "path": ".github/agents/.trainer-workspace/adversary.agent/iterations/iteration-1/optimize/optimized-prompt.md",
+      "relevance": "Reference example of an optimized agent prompt using manual_followup path"
+    }
+  ],
+  "key_findings": [
+    "Teacher critique varies from vague ('improve clarity') to specific ('add a stopping criterion at step 5'). The student agent must distinguish between actionable specific critique and vague critique that warrants a teacher handoff.",
+    "The 'smallest defensible change' principle needs a concrete operational filter: does the change address exactly one critique point without modifying unrelated contract text?",
+    "Convergence is blocked when the student makes multiple passes without a fresh teacher turn; the current prompt says 'at most one extra self-check' but does not define what counts as self-check vs. a new revision cycle.",
+    "The teacher-approval prediction step is the most important convergence gate. Current phrasing is underspecified: 'predict whether the teacher would approve' without a checklist or failure modes.",
+    "The engineer handoff is underutilized because the trigger condition is vague. Making it concrete (e.g., 'when the revision involves prompt engineering patterns like few-shot, chain-of-thought, or structured output') would improve usage.",
+    "The output format requires trajectory, plan, tradeoffs, and uncertainty — this is good but the constraint is stated once and not reinforced in the approach steps."
+  ],
+  "schema_notes": {
+    "train_format": "Each row: {input: teacher_critique_and_candidate, reference: ideal_student_response, criteria: [list_of_checks], scoring: llm_judge}",
+    "judge_mode": "llm_judge",
+    "row_count_target": 6,
+    "val_row_count_target": 2
+  },
+  "stop_recommendation": null,
+  "optimization_hypothesis": "The student agent will produce better output if: (1) the stale-critique gate is step 1, (2) the smallest-change filter is explicit, (3) the teacher-approval prediction uses a checklist, and (4) the engineer handoff trigger is concrete."
+}

@@ -1,0 +1,29 @@
+{
+  "candidates": {
+    "original": {
+      "prompt": "iterations/iteration-1/candidates/original/candidate.md",
+      "description": "iterations/iteration-1/candidates/original/description.md",
+      "predicted_judge_response": null,
+      "reflection": null,
+      "selection_notes": "Baseline: original student.agent.md with no modifications"
+    },
+    "student": {
+      "prompt": "iterations/iteration-1/candidates/student/candidate.md",
+      "description": "iterations/iteration-1/candidates/student/description.md",
+      "predicted_judge_response": null,
+      "reflection": null,
+      "selection_notes": "Recommended: 5 targeted improvements, all minimal, no interface changes"
+    },
+    "adversary": {
+      "prompt": "iterations/iteration-1/candidates/adversary/candidate.md",
+      "description": "iterations/iteration-1/candidates/adversary/description.md",
+      "predicted_judge_response": "iterations/iteration-1/candidates/adversary/predicted-judge-response.md",
+      "reflection": "iterations/iteration-1/candidates/adversary/reflection.md",
+      "selection_notes": "Exploit: replaces hard stopping criterion with unbounded loop; not stronger than student candidate"
+    }
+  },
+  "recommended_candidate": "student",
+  "judge_mode": "llm_judge",
+  "adversary_exploit_credible": false,
+  "adversary_exploit_surface": "Replaces 'smallest defensible change' with 'most comprehensive revision' and removes the hard stopping criterion"
+}
