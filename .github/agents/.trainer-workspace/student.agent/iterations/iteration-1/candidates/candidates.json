@@ -1,0 +1,29 @@
+{
+  "iteration": "iteration-1",
+  "candidates": [
+    {
+      "name": "original",
+      "path": "candidates/original/candidate.md",
+      "description": "candidates/original/description.md",
+      "type": "baseline"
+    },
+    {
+      "name": "student",
+      "path": "candidates/student/candidate.md",
+      "description": "candidates/student/description.md",
+      "predicted_judge_response": "candidates/student/predicted-judge-response.md",
+      "reflection": "candidates/student/reflection.md",
+      "type": "optimized"
+    },
+    {
+      "name": "adversary",
+      "path": "candidates/adversary/candidate.md",
+      "description": "candidates/adversary/description.md",
+      "predicted_judge_response": "candidates/adversary/predicted-judge-response.md",
+      "reflection": "candidates/adversary/reflection.md",
+      "type": "adversarial"
+    }
+  ],
+  "preferred": "student",
+  "rationale": "The student candidate addresses all six structural weaknesses identified in the engineer-prompt review with minimal scope. The adversary candidate demonstrates that decorative structure without operational specificity is detectable on careful review."
+}
