@@ -1,0 +1,1 @@
+The original `student.agent.md` baseline before any optimization. Used as the reference point for measuring improvements from the trainer loop. Contains the five failure modes identified in `engineer-prompt/review.md`: vague description trigger, no exit criteria, unanchored "defensible" scope, vague engineer handoff boundary, no output length guidance.

@@ -1,0 +1,19 @@
+{
+  "ok": true,
+  "mode": "manual_followup",
+  "message": "External model unavailable; completed deterministic preparation and generated an agent-side inference handoff.",
+  "blocker_reason": "VERL algorithm requires torch (not installed); APO algorithm is not a FastAlgorithm in this environment (Trainer.dev() rejected).",
+  "prompt_file": ".github/agents/student.agent.md",
+  "train_file": ".github/agents/.trainer-workspace/student.agent/iterations/iteration-1/synthesize/datasets/train.jsonl",
+  "val_file": ".github/agents/.trainer-workspace/student.agent/iterations/iteration-1/synthesize/datasets/val.jsonl",
+  "judge_mode": "llm_judge",
+  "epochs_requested": 3,
+  "model_prompt": "You are a prompt optimizer. The target is .github/agents/student.agent.md, a teacher-guided candidate revision specialist in trainer-led optimization loops. Based on the engineer-prompt review and dataset analysis, produce the smallest defensible set of changes that improve triggering accuracy, exit-criterion clarity, revision scope measurability, engineer handoff bounding, and output length guidance. Do not change the frontmatter tool list, handoff structure (names, agents, labels), or the fundamental role definition. Return the complete revised file content.",
+  "supporting_artifacts": {
+    "engineer_prompt_review": ".github/agents/.trainer-workspace/student.agent/engineer-prompt/review.md",
+    "research_brief": ".github/agents/.trainer-workspace/student.agent/iterations/iteration-1/research/research-brief.md",
+    "train_dataset": ".github/agents/.trainer-workspace/student.agent/iterations/iteration-1/synthesize/datasets/train.jsonl",
+    "val_dataset": ".github/agents/.trainer-workspace/student.agent/iterations/iteration-1/synthesize/datasets/val.jsonl",
+    "evals": ".github/agents/.trainer-workspace/student.agent/iterations/iteration-1/synthesize/evals/evals.json"
+  }
+}

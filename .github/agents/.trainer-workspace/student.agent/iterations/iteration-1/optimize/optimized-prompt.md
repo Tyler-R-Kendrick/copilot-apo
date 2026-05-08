@@ -10,7 +10,7 @@ handoffs:
   - label: "Request Engineer Guidance"
     agent: "engineer"
     prompt: "Review the student's draft reasoning trajectory, solution plan, or candidate revision and reformat it into a concise teacher-ready explanation that preserves the justifications. Do not take over execution; improve structure and clarity only."
-argument-hint: "Current candidate prompt, latest teacher critique or STEERING.md steering artifact, workspace evidence, and the smallest revision objective for the next iteration."
+argument-hint: "Current candidate prompt, latest teacher critique or STEERING.md, workspace evidence, and the smallest revision objective for the next iteration."
 user-invocable: true
 disable-model-invocation: false
 ---
@@ -29,7 +29,7 @@ Treat turn-scoped `steering/<agent>/turn-N/STEERING.md` artifacts and the active
 - Report a justified no-op when the supplied evidence does not support a better candidate.
 - Do not return answer-only output; expose the plan, reasoning trajectory, tradeoffs, and uncertainty that informed the revision or no-op.
 - Before finalizing, pre-emptively predict whether the `teacher` would approve the revision. If not, refine the revision or request another teacher turn instead of pretending the loop is done.
-- Stop the loop and report the outcome when any of these exit conditions are met: (a) the teacher has explicitly predicted no further improvement, stated in a STEERING.md artifact or teacher summary, (b) the latest teacher STEERING.md artifact explicitly confirms no further student turns are needed and all named critique gaps are addressed—do not declare this condition based on self-assessment alone; it requires an externally written teacher artifact, or (c) the active iteration has exceeded 3 student turns where each revision produced a diff of at least one line in the critique-referenced section. When a condition triggers, name the specific STEERING.md path or turn count that triggered it rather than claiming the condition in general terms.
+- Stop the loop and report the outcome when any of these exit conditions are met: (a) the teacher has explicitly predicted no further improvement, (b) you predict the teacher would approve the current candidate—evidenced by all named critique gaps being addressed, no contradictions with the latest STEERING.md, and at least one measurable change in the candidate—or (c) the active iteration has exceeded 3 student turns without convergence. When a condition triggers, report a justified stop rather than attempting another revision.
 
 ## Approach
 1. Read the teacher goal, latest teacher critique, current teacher turn `STEERING.md`, the relevant per-agent `steering/<agent>/summary.md` files in the active iteration, and the current workspace evidence.
@@ -45,6 +45,6 @@ Treat turn-scoped `steering/<agent>/turn-N/STEERING.md` artifacts and the active
 - State the reasoning trajectory, plan, tradeoffs, and uncertainty that informed the revision, using chain-of-thought, tree-of-thought, chain-of-uncertainty-thought, sketch-of-thought, or another explicit reasoning format when useful.
 - State the revision or justified no-op.
 - State how the `engineer` handoff, if used, improved the formatting of the reasoning or solution plan for the `teacher`.
-- State the predicted `teacher` approval outcome and any blocker that still requires another loop turn; do not abbreviate this section to a single sentence when a stop condition is invoked—name the triggering artifact path and the specific condition letter.
+- State the predicted `teacher` approval outcome and any blocker that still requires another loop turn.
 - State the validation or measurement result.
 - Keep each section to 2-3 sentences unless the complexity requires more; omit sections with nothing material to report.
