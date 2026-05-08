@@ -1,0 +1,70 @@
+{
+  "skill_name": "student-agent-local",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "The teacher critique says: 'The student agent description does not name the specific input artifact that triggers invocation. Tighten the description.' The current student.agent.md uses a vague trigger phrase. What revision does the student produce?",
+      "expected_output": "The student revises only the description frontmatter field to name the specific triggering input artifact (teacher critique or STEERING.md), keeps all other fields and body text unchanged, provides a transparent reasoning trajectory explaining the change, and predicts teacher approval.",
+      "assertions": [
+        "Revision is scoped to description field only.",
+        "Revised description names a specific triggering artifact or condition.",
+        "All other frontmatter and body text is unchanged.",
+        "Reasoning trajectory is present and identifies the critique gap addressed."
+      ],
+      "scoring": "llm_judge",
+      "criteria": "The student produces a minimal, targeted revision that directly addresses the critique, leaves unrelated content unchanged, and provides an explicit reasoning trajectory with a teacher-approval prediction."
+    },
+    {
+      "id": 2,
+      "prompt": "The teacher critique says the Constraints section is missing an explicit multi-condition exit criterion for when the student should stop looping. The STEERING.md says not to touch approach steps or handoffs. What does the student produce?",
+      "expected_output": "The student adds a concise exit condition block to the Constraints section listing at least two explicit stop conditions, does not change approach steps or handoffs, and provides a reasoning trajectory explaining why each condition is needed.",
+      "assertions": [
+        "Exit condition block is added to Constraints section.",
+        "Approach steps and handoffs are unchanged.",
+        "At least two explicit stop conditions are listed.",
+        "Reasoning trajectory is present and explains each condition."
+      ],
+      "scoring": "llm_judge",
+      "criteria": "The student correctly scopes the change to the Constraints section, adds a multi-condition exit criterion that mirrors the repo's established loop-bounding pattern, and documents the reasoning."
+    },
+    {
+      "id": 3,
+      "prompt": "The teacher critique says 'the revision scope constraint needs an observable test.' The current constraint says 'Implement the smallest defensible candidate revision.' The student should add a concrete test inline without removing the existing wording.",
+      "expected_output": "The student adds a one-sentence observable test as an inline addition to the existing constraint, confirms the rest of the constraint is unchanged, and provides a reasoning trajectory that calls this additive rather than a replacement.",
+      "assertions": [
+        "Concrete test is added inline to existing constraint.",
+        "No other constraint text is changed.",
+        "Test is one sentence or short clause.",
+        "Reasoning trajectory confirms additive, not replacement, change."
+      ],
+      "scoring": "llm_judge",
+      "criteria": "The student makes the minimum possible change that satisfies the critique, explains the reasoning, and explicitly confirms the additive nature of the revision."
+    },
+    {
+      "id": 4,
+      "prompt": "The student receives a teacher critique that says 'fix the handoffs' without naming which handoff or specifying the direction. What should the student do?",
+      "expected_output": "The student escalates to the teacher via the Request Teacher Guidance handoff, explaining what information is missing (which handoff and in what direction), and does NOT attempt a guess revision.",
+      "assertions": [
+        "Student invokes Request Teacher Guidance handoff.",
+        "No file edits or candidate revision is produced.",
+        "Response names the specific information gap in the critique.",
+        "Reasoning process is shown, not just the answer."
+      ],
+      "scoring": "llm_judge",
+      "criteria": "The student correctly identifies an incomplete critique and escalates rather than guessing, documenting the specific information gap that prevents a safe revision."
+    },
+    {
+      "id": 5,
+      "prompt": "The teacher critique says the engineer handoff description allows the engineer to take over the revision itself. The STEERING.md says: scope the fix to the Request Engineer Guidance handoff prompt text only. What does the student produce?",
+      "expected_output": "The student revises only the Request Engineer Guidance handoff prompt text to add a clear negative constraint preventing delegation of the revision itself. The teacher handoff, tools, constraints, and approach are unchanged.",
+      "assertions": [
+        "Revision is scoped to the Request Engineer Guidance handoff prompt only.",
+        "A negative constraint against taking over execution is added.",
+        "Teacher handoff, tools, constraints, and approach are unchanged.",
+        "Reasoning trajectory identifies the specific text changed."
+      ],
+      "scoring": "llm_judge",
+      "criteria": "The student applies a minimal, targeted handoff-scoped revision that adds an explicit negative constraint against execution delegation without touching unrelated content."
+    }
+  ]
+}

@@ -1,0 +1,29 @@
+{
+  "iteration": "iteration-1",
+  "target_file": ".github/agents/student.agent.md",
+  "candidates": {
+    "original": {
+      "prompt_artifact": "iterations/iteration-1/candidates/original/candidate.md",
+      "description_artifact": "iterations/iteration-1/candidates/original/description.md",
+      "predicted_judge_response_artifact": "iterations/iteration-1/candidates/original/predicted-judge-response.md",
+      "reflection_artifact": "iterations/iteration-1/candidates/original/reflection.md",
+      "selection_notes": "Baseline source file before any optimization. All five engineer-review failure modes present."
+    },
+    "student": {
+      "prompt_artifact": "iterations/iteration-1/candidates/student/candidate.md",
+      "description_artifact": "iterations/iteration-1/candidates/student/description.md",
+      "predicted_judge_response_artifact": "iterations/iteration-1/candidates/student/predicted-judge-response.md",
+      "reflection_artifact": "iterations/iteration-1/candidates/student/reflection.md",
+      "selection_notes": "Updated candidate that addresses all five failure modes, fixes both teacher-flagged residual weaknesses, and blocks the adversary primary exploit via external-verification requirement for exit condition (b)."
+    },
+    "adversary": {
+      "prompt_artifact": "iterations/iteration-1/candidates/adversary/candidate.md",
+      "description_artifact": "iterations/iteration-1/candidates/adversary/description.md",
+      "predicted_judge_response_artifact": "iterations/iteration-1/candidates/adversary/predicted-judge-response.md",
+      "reflection_artifact": "iterations/iteration-1/candidates/adversary/reflection.md",
+      "selection_notes": "Primary exploit: self-certification deepening + brevity suppression. Credible against initial manual-followup candidate but defeated by updated student candidate."
+    }
+  },
+  "winning_candidate": "student",
+  "winning_candidate_reason": "Addresses all five engineer-review failure modes, fixes both residual teacher weaknesses, blocks the primary adversary exploit via externally-verifiable exit conditions. Adversary exploit is credible against the initial candidate but blocked in the updated student."
+}

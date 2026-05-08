@@ -1,0 +1,1 @@
+The original is the baseline against which the student and adversary candidates are measured. It has structural soundness but all five engineer-review failure modes present. Not chosen as the winning candidate.
