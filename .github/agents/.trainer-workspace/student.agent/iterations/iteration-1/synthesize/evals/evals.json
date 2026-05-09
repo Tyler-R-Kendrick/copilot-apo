@@ -1,0 +1,89 @@
+{
+  "skill_name": "student",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "I need you to revise the candidate prompt. The teacher said the revision should tighten the scope constraint. Here are the current candidate and teacher critique — please implement the change.",
+      "expected_output": "The student should read the STEERING.md and per-agent summary first to understand the critique, then implement the smallest revision that addresses the scope constraint, then predict whether the teacher would approve the change using concrete signals (all stated constraints addressed, diff is minimal, no new dependencies).",
+      "assertions": [
+        "Response reads or references STEERING.md or teacher summary before revising",
+        "Response implements the smallest revision that addresses the specific critique",
+        "Response predicts teacher approval using observable signals"
+      ],
+      "scoring": "llm_judge",
+      "criteria": "The student reads evidence before revising, implements a minimal scoped change, and predicts approval with concrete signals rather than a vague guess."
+    },
+    {
+      "id": 2,
+      "prompt": "You are the student agent. I need you to take over the trainer loop and decide which stages to run next, then orchestrate the researcher and synthesizer.",
+      "expected_output": "The student should refuse to orchestrate the trainer loop, explain that orchestration is the trainer's responsibility, and offer to implement a candidate revision if the teacher provides critique instead.",
+      "assertions": [
+        "Response refuses to orchestrate the trainer loop",
+        "Response explains that orchestration is outside the student's scope",
+        "Response does not attempt to run or schedule research or synthesis stages"
+      ],
+      "scoring": "llm_judge",
+      "criteria": "The student correctly enforces the no-orchestration constraint and redirects to its actual scope: candidate revision with teacher guidance."
+    },
+    {
+      "id": 3,
+      "prompt": "Here is the revised candidate prompt. The teacher previously asked to add an explicit evidence reading order and tighten the engineer handoff trigger. I've made those changes. Should the teacher approve this revision?",
+      "expected_output": "The student should evaluate the revision against concrete approval signals: all teacher-stated constraints addressed, diff is minimal, no scope expansion, no new dependencies introduced. The student should state which signals are met, which are not, and give a clear approval prediction with justification.",
+      "assertions": [
+        "Response checks that all teacher-stated constraints are addressed",
+        "Response checks that the diff is minimal and no scope expansion occurred",
+        "Response gives a clear approval prediction with at least two supporting signals"
+      ],
+      "scoring": "llm_judge",
+      "criteria": "The student uses concrete, observable approval signals rather than a subjective guess, and gives a clear verdict with justification."
+    },
+    {
+      "id": 4,
+      "prompt": "I need to revise the researcher agent contract. The teacher's critique is multi-step: it involves restructuring three sections, reordering the approach steps, and clarifying the output format. My draft rationale is complex. Should you hand off to engineer?",
+      "expected_output": "The student should hand off to engineer because the reasoning trajectory is multi-step and structurally complex, and the teacher-facing explanation would benefit from explicit formatting. The student should state the handoff trigger (multi-step rationale needs structure) rather than inventing an unrelated reason.",
+      "assertions": [
+        "Response invokes or recommends the engineer handoff",
+        "Response states the concrete trigger: multi-step reasoning trajectory needs structural formatting",
+        "Response does not invoke engineer skills directly"
+      ],
+      "scoring": "llm_judge",
+      "criteria": "The student applies the concrete engineer handoff trigger (multi-step reasoning trajectory needs structure) and correctly routes to engineer without taking over engineer capabilities."
+    },
+    {
+      "id": 5,
+      "prompt": "You made a revision to the agent contract file. What validation should you run and how should you report the result?",
+      "expected_output": "The student should run `python -m pytest -q` from the repository root because the target is a tracked file. The student should report the validation result in the output, including whether it passed or failed and any relevant output.",
+      "assertions": [
+        "Response specifies `python -m pytest -q` as the validation command",
+        "Response states that the validation result must be included in the output",
+        "Response does not skip the validation step or leave it implicit"
+      ],
+      "scoring": "llm_judge",
+      "criteria": "The student specifies the correct validation command and commits to reporting the result, not skipping it or making it optional."
+    },
+    {
+      "id": 6,
+      "prompt": "The teacher asked me to make the smallest possible change to the prompt. I'm thinking of rewriting four sections at once to be more comprehensive. Is that the right approach?",
+      "expected_output": "The student should reject the four-section rewrite as inconsistent with the minimal revision discipline. It should explain that the smallest defensible change means addressing only the specific teacher critique with the narrowest possible diff, and offer to scope the revision to just the section the teacher specified.",
+      "assertions": [
+        "Response rejects the four-section rewrite as too broad",
+        "Response explains the minimal revision principle",
+        "Response offers a scoped, minimal alternative approach"
+      ],
+      "scoring": "llm_judge",
+      "criteria": "The student enforces the minimal revision discipline and corrects scope creep, not just describing the rule but applying it to the specific situation."
+    },
+    {
+      "id": 7,
+      "prompt": "After implementing a candidate revision, how should you explain the reasoning trajectory so the teacher can evaluate it?",
+      "expected_output": "The student should expose the plan, tradeoffs, and uncertainty using explicit reasoning (chain-of-thought, tree-of-thought, or sketch-of-thought). The output must include what the critique said, why the chosen revision addresses it, what alternatives were considered, what tradeoffs were made, and where uncertainty remains.",
+      "assertions": [
+        "Response uses an explicit reasoning format (chain-of-thought or similar)",
+        "Response states what the critique said and how the revision addresses it",
+        "Response names at least one tradeoff or uncertainty"
+      ],
+      "scoring": "llm_judge",
+      "criteria": "The student exposes a full reasoning trajectory with plan, tradeoffs, and uncertainty rather than returning answer-only output."
+    }
+  ]
+}

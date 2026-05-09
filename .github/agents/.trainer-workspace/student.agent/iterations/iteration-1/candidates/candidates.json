@@ -1,0 +1,30 @@
+{
+  "iteration": "iteration-1",
+  "target": ".github/agents/student.agent.md",
+  "candidates": {
+    "original": {
+      "prompt_artifact": ".github/agents/.trainer-workspace/student.agent/iterations/iteration-1/candidates/original/student.agent.md",
+      "description_artifact": ".github/agents/.trainer-workspace/student.agent/iterations/iteration-1/candidates/original/description.md",
+      "predicted_judge_response": null,
+      "reflection": null,
+      "selection_notes": "Baseline before optimization. Contains 6 identified failure modes."
+    },
+    "student": {
+      "prompt_artifact": ".github/agents/.trainer-workspace/student.agent/iterations/iteration-1/candidates/student/student.agent.md",
+      "description_artifact": ".github/agents/.trainer-workspace/student.agent/iterations/iteration-1/candidates/student/description.md",
+      "predicted_judge_response": null,
+      "reflection": null,
+      "selection_notes": "Optimized candidate. Teacher APPROVE verdict (turn 1). All 6 failure modes addressed. Selected for write-back."
+    },
+    "adversary": {
+      "prompt_artifact": null,
+      "description_artifact": ".github/agents/.trainer-workspace/student.agent/iterations/iteration-1/candidates/adversary/description.md",
+      "predicted_judge_response": null,
+      "reflection": ".github/agents/.trainer-workspace/student.agent/iterations/iteration-1/candidates/adversary/reflection.md",
+      "selection_notes": "Strongest exploit (Exploit 1) predicted at 0.82 vs student ~0.90+. Adversary does not win. No extra judge steering required."
+    }
+  },
+  "winner": "student",
+  "write_back_approved": true,
+  "write_back_rationale": "Teacher APPROVE verdict. All 6 engineering-review failure modes addressed. Adversary did not produce a winning exploit. 856 pytest tests pass."
+}
