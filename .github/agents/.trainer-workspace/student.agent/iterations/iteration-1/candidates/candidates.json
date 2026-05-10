@@ -1,0 +1,22 @@
+{
+  "original": {
+    "candidate": "candidates/original/candidate.md",
+    "description": "candidates/original/description.md",
+    "predicted_judge_score": 0.4,
+    "notes": "Baseline with 7 identified gaps. Not selected."
+  },
+  "student": {
+    "candidate": "candidates/student/candidate.md",
+    "description": "candidates/student/description.md",
+    "predicted_judge_score": 0.88,
+    "notes": "Optimized candidate addressing all 7 gaps with adversary guards. Selected."
+  },
+  "adversary": {
+    "candidate": "candidates/adversary/candidate.md",
+    "description": "candidates/adversary/candidate.md",
+    "predicted_judge_score": 0.3,
+    "notes": "Exploit demonstration only; both exploits closed by guard fixes in student candidate."
+  },
+  "selected": "student",
+  "selection_reason": "Student candidate addresses all 7 identified gaps with minimal, surgical changes. Adversary review found two medium-severity exploits; both were closed by guard additions. Teacher predicted approval. Original candidate has 7 known gaps."
+}

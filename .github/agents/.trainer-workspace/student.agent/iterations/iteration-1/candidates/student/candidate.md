@@ -47,4 +47,3 @@ Treat turn-scoped `steering/<agent>/turn-N/STEERING.md` artifacts and the active
 - State how the `engineer` handoff, if used, improved the formatting of the reasoning or solution plan for the `teacher`.
 - State the predicted `teacher` approval outcome and any blocker that still requires another loop turn.
 - State the validation or measurement result.
-
