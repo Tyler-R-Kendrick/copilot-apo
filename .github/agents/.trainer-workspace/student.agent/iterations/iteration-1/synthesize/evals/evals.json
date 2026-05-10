@@ -1,0 +1,60 @@
+{
+  "skill_name": "student.agent",
+  "evals": [
+    {
+      "prompt": "You are a student agent. Teacher critique: 'The candidate prompt does not specify an evidence reading order. Read STEERING.md first, then the current candidate, then the teacher critique.' The current candidate is student.agent.md. Implement the smallest revision.",
+      "expected_output": "The student should read STEERING.md and teacher critique first, implement only the evidence reading order addition, expose a reasoning trajectory, and predict teacher approval with at least one concrete reason.",
+      "assertions": [
+        "Response implements only the evidence reading order change",
+        "Response includes a reasoning trajectory",
+        "Response predicts teacher approval with a concrete reason"
+      ],
+      "scoring": "llm_judge",
+      "criteria": "The student should demonstrate targeted revision scope, transparent reasoning, and teacher-approval prediction."
+    },
+    {
+      "prompt": "You are a student agent. Teacher critique: 'The loop exit criterion in step 6 is subjective. Add two specific exit conditions: stop after draft if teacher approval is predicted with at least one concrete reason; add one extra self-check only when approval looks unlikely and one targeted improvement remains.' Implement the revision to student.agent.md.",
+      "expected_output": "The student should update step 6 only, with the two specified exit conditions, explain the difference between subjective and binary conditions, and predict teacher approval because the change directly addresses the cited weakness.",
+      "assertions": [
+        "Response updates only step 6 of the Approach section",
+        "Response includes both specified exit conditions",
+        "Response explains the improvement in specificity"
+      ],
+      "scoring": "llm_judge",
+      "criteria": "The student should implement a targeted, minimal revision with clear reasoning about why it improves the contract."
+    },
+    {
+      "prompt": "You are a student agent. Teacher critique says no steering artifact (STEERING.md) is available for this session. The only evidence is the current candidate. What should you do?",
+      "expected_output": "The student should invoke the missing-evidence protocol: hand off to teacher for refreshed guidance rather than guessing a revision. It should not attempt a revision without the required steering artifact.",
+      "assertions": [
+        "Response does not attempt a revision without steering guidance",
+        "Response invokes missing-evidence protocol or hands off to teacher",
+        "Response explains why a steering artifact is required before revising"
+      ],
+      "scoring": "llm_judge",
+      "criteria": "The student should demonstrate correct missing-evidence handling without guessing a revision."
+    },
+    {
+      "prompt": "You are a student agent. Teacher critique: 'The current candidate already addresses the evidence reading order. No further revision is needed on that point.' What is the correct response?",
+      "expected_output": "The student should report a justified no-op, citing the no-op condition (current candidate already addresses the critique), expose the reasoning that revision would introduce unnecessary change, and predict teacher approval of the no-op.",
+      "assertions": [
+        "Response reports a no-op",
+        "Response cites the applicable no-op condition",
+        "Response predicts teacher approval of the no-op decision"
+      ],
+      "scoring": "llm_judge",
+      "criteria": "The student should correctly identify when a no-op is warranted and justify it with the applicable condition."
+    },
+    {
+      "prompt": "You are a student agent. Teacher critique: 'The engineer handoff condition conflates reasoning-trajectory formatting with revision-logic help. Separate them: use engineer for trajectory formatting, teacher for revision logic.' Implement the revision to student.agent.md.",
+      "expected_output": "The student should update the engineer handoff description to separate the two cases, apply the update in the existing location only, explain the conflation in the current wording, and predict teacher approval.",
+      "assertions": [
+        "Response separates engineer and teacher handoff conditions",
+        "Response applies the update in the existing location only",
+        "Response explains the conflation in current wording"
+      ],
+      "scoring": "llm_judge",
+      "criteria": "The student should make a precise handoff-condition update without restructuring other sections."
+    }
+  ]
+}
