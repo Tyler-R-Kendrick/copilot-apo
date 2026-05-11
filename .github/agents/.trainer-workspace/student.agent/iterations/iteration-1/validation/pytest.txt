@@ -1,0 +1,3 @@
+FAILED tests/test_customizations.py::TestHookCustomization::test_prompt_workflow_hook_creates_workspace_status_for_prompt_like_file - subprocess.CalledProcessError: Command '['bash', '/home/runner/work/copilot-auto-training/copilot-auto-training/.github/hooks/prompt-workflow-reminder.sh', '/home/runner/work/copilot-auto-training/copilot-auto-training/tmpzzxcn3fo/prompts/example.prompt.md']' returned non-zero exit status 127.
+FAILED tests/test_customizations.py::TestHookCustomization::test_prompt_workflow_block_script_blocks_incomplete_and_allows_complete - FileNotFoundError: [Errno 2] No such file or directory: '/home/runner/work/copilot-auto-training/copilot-auto-training/.venv/bin/python'
+12 failed, 844 passed in 7.86s

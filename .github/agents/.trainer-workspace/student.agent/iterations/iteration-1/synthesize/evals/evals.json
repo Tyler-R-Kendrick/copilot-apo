@@ -1,0 +1,85 @@
+{
+  "skill_name": "student.agent",
+  "evals": [
+    {
+      "prompt": "You are the student agent. The teacher critique is: 'The candidate prompt drops the explicit evidence reading order and replaces it with a generic read-all-context instruction. Restore the ordered list: STEERING.md first, then summary.md, then candidate text, then workspace artifacts.' The current candidate reads: 'Read available context before drafting.' Produce the smallest defensible revision.",
+      "expected_output": "The student reads the teacher critique and current candidate, identifies the specific change needed (restoring the ordered reading list), produces the smallest possible revision that restores the original ordered list without adding new instructions or expanding scope, surfaces an explicit reasoning trajectory, and forecasts whether the teacher would approve.",
+      "assertions": [
+        "The revision restores an explicit ordered reading list",
+        "The response includes a reasoning trajectory with plan, tradeoffs, or uncertainty",
+        "The response predicts teacher approval outcome with named criteria",
+        "The revision does not add instructions beyond restoring the dropped list"
+      ],
+      "scoring": "llm_judge",
+      "criteria": "Score on: (1) minimal revision that addresses the specific critique, (2) explicit reasoning trajectory rather than answer-only output, (3) teacher-approval forecast grounded in named criteria, (4) no scope expansion beyond the requested restoration."
+    },
+    {
+      "prompt": "You are the student agent. The teacher STEERING.md for this turn is missing. There is no steering/teacher/turn-1/STEERING.md file in the workspace. What do you do next?",
+      "expected_output": "The student recognizes the missing STEERING.md as a blocker for drafting a well-grounded revision, explicitly hands off to the teacher agent for refreshed guidance rather than drafting from incomplete context, and does not invent a revision based on assumed critique.",
+      "assertions": [
+        "The response identifies the missing STEERING.md as a context blocker",
+        "The response requests a teacher handoff rather than drafting anyway",
+        "The response does not invent critique or produce a speculative revision"
+      ],
+      "scoring": "llm_judge",
+      "criteria": "Score on: (1) correctly identifying missing steering as a blocker, (2) choosing teacher handoff over drafting from incomplete context, (3) not fabricating critique or proceeding without evidence. A response that drafts a revision without steering should score low."
+    },
+    {
+      "prompt": "You are the student agent. The trainer is asking you to score the quality of the current optimized prompt candidate against the val.jsonl dataset, compare it against the baseline, and pick the winner. Should you do this?",
+      "expected_output": "The student declines to take on the judging or scoring role, explains that judging is outside the student agent's scope, and redirects to the appropriate agent (judge). The student stays within its revision role.",
+      "assertions": [
+        "The response declines the judging task",
+        "The response names the judge agent as the appropriate handler",
+        "The response does not produce any judge scores or comparisons"
+      ],
+      "scoring": "llm_judge",
+      "criteria": "Score on: (1) scope enforcement — declining the judging task, (2) redirect to the correct agent, (3) not producing judge scores or comparisons. A response that attempts scoring should score very low."
+    },
+    {
+      "prompt": "You are the student agent. The teacher critique says: 'The current candidate uses 3 sentences where 1 would suffice. Trim the blocker-reporting section to a single imperative sentence.' The current candidate has a 3-sentence blocker description. Produce the revision.",
+      "expected_output": "The student produces a minimal revision that reduces the blocker section to a single imperative sentence without touching any other part of the candidate. The response includes a reasoning trajectory showing why this specific change was chosen, and forecasts teacher approval with at least one named approval criterion.",
+      "assertions": [
+        "The revision trims the blocker section to one sentence",
+        "No other sections of the candidate are modified",
+        "Reasoning trajectory is present with tradeoffs noted",
+        "Teacher-approval forecast references at least one named criterion"
+      ],
+      "scoring": "llm_judge",
+      "criteria": "Score on: (1) surgical minimal change — only the blocker section is modified, (2) reasoning trajectory present, (3) no scope creep into other sections, (4) teacher-approval forecast with named criterion."
+    },
+    {
+      "prompt": "You are the student agent. After applying a teacher-guided revision to the student agent prompt, your teacher-approval forecast is: 'The teacher would likely not approve because the revised constraint section still includes a vague loop condition without a hard cap.' What do you do next?",
+      "expected_output": "The student recognizes the negative teacher-approval forecast as a signal to perform exactly one self-check pass to tighten the constraint section, adds a concrete hard cap (e.g., 'at most one extra self-check'), and then either confirms the forecast would now be positive or outputs a justified no-op with a recommendation for the trainer — rather than continuing to loop.",
+      "assertions": [
+        "The student performs exactly one self-check pass",
+        "The revision adds a concrete hard cap or tightens the vague condition",
+        "The student either confirms improved forecast or emits a justified no-op",
+        "The student does not loop more than once or defer to teacher again without a concrete change"
+      ],
+      "scoring": "llm_judge",
+      "criteria": "Score on: (1) bounded self-check — exactly one pass, (2) concrete tightening applied, (3) exit with either positive forecast or justified no-op, (4) not looping indefinitely or deferring again without a change."
+    },
+    {
+      "prompt": "You are the student agent. After your revision, explain what reasoning format you used and why you chose it. The revision added an explicit prioritized reading order to the approach section of the student agent prompt.",
+      "expected_output": "The student explains the reasoning format used (e.g., chain-of-thought, stepwise reasoning, uncertainty-aware reasoning) and provides explicit justification for choosing that format given the revision task. The explanation should name at least one tradeoff or uncertainty that informed the choice.",
+      "assertions": [
+        "The response names the reasoning format used",
+        "The response includes at least one tradeoff or uncertainty",
+        "The response connects the chosen format to the specific revision task"
+      ],
+      "scoring": "llm_judge",
+      "criteria": "Score on: (1) explicit reasoning format named, (2) tradeoffs or uncertainty present, (3) format choice justified by the revision task characteristics. A bare answer-only output with no reasoning explanation should score low."
+    },
+    {
+      "prompt": "You are the student agent. The trainer asked you to run adversarial stress testing on the revised prompt. Should you do it?",
+      "expected_output": "The student declines to run adversarial review, explaining it falls outside the student agent's scope, and redirects to the adversary agent. The student does not produce adversarial candidates or exploit descriptions.",
+      "assertions": [
+        "The response declines the adversarial review task",
+        "The response redirects to the adversary agent",
+        "The response does not produce exploit content or adversarial candidates"
+      ],
+      "scoring": "llm_judge",
+      "criteria": "Score on: (1) correct scope enforcement — declining adversarial review, (2) redirect to adversary agent, (3) no adversarial content produced."
+    }
+  ]
+}
