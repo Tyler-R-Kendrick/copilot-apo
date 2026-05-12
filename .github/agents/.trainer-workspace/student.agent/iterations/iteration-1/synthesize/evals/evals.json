@@ -1,0 +1,73 @@
+{
+  "skill_name": "student",
+  "evals": [
+    {
+      "prompt": "The teacher's STEERING.md says: 'The constraint section is missing a rule that prohibits the agent from modifying the agent frontmatter. Add exactly one bullet: Do not edit frontmatter fields.' The current candidate has a Constraints section with four bullets. Revise the candidate to address this critique.",
+      "expected_output": "The student should read the active STEERING.md critique, add exactly one new bullet to the Constraints section ('Do not edit frontmatter fields'), leave all other content unchanged, expose the reasoning trajectory that justified this minimal addition, and predict whether the teacher would approve the revision.",
+      "assertions": [
+        "Response reads or references the STEERING.md critique before revising",
+        "Revision adds exactly one bullet and does not change other constraints",
+        "Response includes a reasoning trajectory with plan, tradeoffs, and uncertainty",
+        "Response predicts whether the teacher would approve the revision"
+      ],
+      "scoring": "llm_judge",
+      "criteria": "The response must read the steering artifact, implement the smallest targeted revision (one bullet added), expose the reasoning trajectory with plan and tradeoffs, and state a teacher-approval prediction."
+    },
+    {
+      "prompt": "You are the student agent. The latest teacher turn STEERING.md says: 'The Approach section steps are out of order. Step 3 (draft revision) should come after Step 4 (clarify target).' The current candidate lists steps 1-7 in the Approach section. Implement the required reordering.",
+      "expected_output": "The student should identify the two steps named in the critique, swap only those steps, leave all other steps and all other sections intact, expose the reasoning (why this ordering change was minimal and addresses the teacher's critique), and predict teacher approval.",
+      "assertions": [
+        "Only the two named steps are reordered; no other steps or sections are changed",
+        "Response explains the reasoning behind the reordering",
+        "Response includes a teacher-approval prediction"
+      ],
+      "scoring": "llm_judge",
+      "criteria": "Revision must be scoped to swapping exactly the two named steps; reasoning trajectory must explain why this is the minimal change; approval prediction must be present."
+    },
+    {
+      "prompt": "The teacher's STEERING.md critique says: 'The output format section does not mention the validation result. Add a line stating the agent must report the pytest result.' But the current candidate's output format section already includes 'State the validation or measurement result.' What should the student do?",
+      "expected_output": "The student should report a justified no-op: the current candidate already satisfies the critique. The response must expose the reasoning trajectory showing that the cited section already covers the requirement, predict that the teacher would approve a no-op, and suggest that a clarifying teacher turn may be warranted to confirm.",
+      "assertions": [
+        "Response reports a no-op with justification rather than making a spurious change",
+        "Response references the existing output format content that already addresses the critique",
+        "Response predicts teacher approval of the no-op decision",
+        "Response does not silently omit the no-op conclusion"
+      ],
+      "scoring": "llm_judge",
+      "criteria": "The student must recognize the existing coverage, report a justified no-op, expose the reasoning trajectory, and predict teacher approval rather than making a spurious change."
+    },
+    {
+      "prompt": "The teacher critique says: 'The agent contract needs improvement.' No specific section, constraint, or behavior is named. The current candidate is the full student.agent.md. What should you do?",
+      "expected_output": "The student should identify that the revision target is unclear (the critique does not name a specific section, constraint, or behavior), and hand off to the teacher for refreshed guidance rather than guessing. The response should explain why the target is unclear and what specific information is needed from the teacher.",
+      "assertions": [
+        "Response identifies the critique as too vague to produce a targeted revision",
+        "Response hands off to teacher or requests clarified guidance rather than guessing",
+        "Response does not make a speculative change to the candidate"
+      ],
+      "scoring": "llm_judge",
+      "criteria": "The student must recognize the ambiguous critique, refuse to guess, and request a clarified teacher turn instead of making a speculative edit."
+    },
+    {
+      "prompt": "You are the student agent. After revising the candidate per teacher steering, you predict the teacher would approve the revision. You have already done one self-check and the draft looks well-supported. What is the correct next step according to your loop-exit rule?",
+      "expected_output": "The student should finalize the revision and return it without requesting another teacher turn. The loop-exit rule specifies that when predicted approval is 'yes' and one self-check has already been done, the correct step is to finalize and output the result. The response should state the loop-exit conclusion explicitly.",
+      "assertions": [
+        "Response finalizes the revision rather than requesting another teacher turn",
+        "Response explains the loop-exit reasoning (predicted approval + self-check complete)",
+        "Response does not loop indefinitely or add unnecessary turns"
+      ],
+      "scoring": "llm_judge",
+      "criteria": "The student must apply the loop-exit rule correctly: finalize when predicted approval is yes and one self-check is already complete."
+    },
+    {
+      "prompt": "After implementing a revision to the student.agent.md Constraints section, what validation step should you run, and what should you include in your output?",
+      "expected_output": "The student should run `python -m pytest -q` from the repository root and include the pass/fail count and any new failures in the output. The response must name the specific validation command and state the result.",
+      "assertions": [
+        "Response names 'python -m pytest -q' or equivalent as the validation command",
+        "Response states it will include the pass/fail count in the output",
+        "Response does not omit validation or claim validation is optional"
+      ],
+      "scoring": "llm_judge",
+      "criteria": "The student must name the correct validation command (python -m pytest -q) and commit to reporting the result including pass/fail count and any new failures."
+    }
+  ]
+}
