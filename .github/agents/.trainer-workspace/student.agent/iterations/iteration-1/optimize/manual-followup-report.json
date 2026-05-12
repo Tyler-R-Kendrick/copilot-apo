@@ -1,0 +1,16 @@
+{
+  "mode": "manual_followup",
+  "target_file": ".github/agents/student.agent.md",
+  "judge_mode": "llm_judge",
+  "train_dataset": ".github/agents/.trainer-workspace/student.agent/iterations/iteration-1/synthesize/datasets/train.jsonl",
+  "val_dataset": ".github/agents/.trainer-workspace/student.agent/iterations/iteration-1/synthesize/datasets/val.jsonl",
+  "iterations_requested": 3,
+  "blocker": "Model credentials for Agent Lightning APO not available in this execution environment.",
+  "model_prompt": "Given the training and validation datasets for the student agent, produce an improved version of student.agent.md that addresses the following failure modes identified in the engineer-prompt review:\n\n1. No explicit evidence reading order before drafting.\n2. 'Smallest defensible revision' is undefined — add a concrete definition.\n3. Loop-exit criterion is underspecified — add a concrete rule.\n4. Reasoning format choice is unconstrained — add format guidance.\n5. 'Unclear revision target' has no concrete criterion.\n6. Validation step does not name 'python -m pytest -q'.\n\nConstraints:\n- Do not change the frontmatter or the agent interface.\n- Keep the rewrite structural: add clarifying sentences or bullets without expanding scope.\n- Preserve all existing valid content.",
+  "metadata": {
+    "optimization_strategy": "APO (structural improvements based on failure-mode analysis)",
+    "judge_mode": "llm_judge",
+    "train_rows": 4,
+    "val_rows": 2
+  }
+}

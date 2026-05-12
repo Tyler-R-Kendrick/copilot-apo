@@ -1,0 +1,15 @@
+{
+  "target_file": ".github/agents/student.agent.md",
+  "task_description": "Evaluate student agent correctness: absorbing teacher critique, reading STEERING.md artifacts, implementing smallest defensible revision, exposing reasoning trajectory, predicting teacher approval, escalating correctly.",
+  "scoring_rule": "llm_judge with reference and criteria",
+  "approved_sources": [],
+  "synthesis_strategy": "grounded_synthetic",
+  "synthesis_basis": "agent contract + trainer-loop convention files + engineer-prompt review failure modes",
+  "rejected_sources": [
+    {"name": "APO/OPRO papers", "reason": "No teacher-student revision model"},
+    {"name": "Code review benchmarks", "reason": "Different domain and revision criteria"},
+    {"name": "Teacher-student distillation datasets", "reason": "Knowledge distillation, not steering-artifact-based revision"},
+    {"name": "General QA datasets", "reason": "No critique absorption or revision minimality model"}
+  ],
+  "gap_assessment": "No public source cleared the bar; proceeding with verifier-backed synthetic rows derived from agent contract"
+}
