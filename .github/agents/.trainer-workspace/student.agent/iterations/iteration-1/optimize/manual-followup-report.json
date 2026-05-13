@@ -1,0 +1,13 @@
+{
+  "mode": "manual_followup",
+  "timestamp": "2026-05-13T21:12:41Z",
+  "target_file": ".github/agents/student.agent.md",
+  "judge_mode": "llm_judge",
+  "train_dataset": ".github/agents/.trainer-workspace/student.agent/iterations/iteration-1/synthesize/datasets/train.jsonl",
+  "val_dataset": ".github/agents/.trainer-workspace/student.agent/iterations/iteration-1/synthesize/datasets/val.jsonl",
+  "eval_manifest": ".github/agents/.trainer-workspace/student.agent/iterations/iteration-1/synthesize/evals/evals.json",
+  "blocker": "No model credentials available in this environment (.env not configured). Running in manual_followup mode. The @trainer agent answers the model_prompt directly.",
+  "iterations_requested": 3,
+  "model_prompt": "You are a prompt optimizer. Given the source prompt at .github/agents/student.agent.md and the optimization review at .github/agents/.trainer-workspace/student.agent/engineer-prompt/review.md, produce an improved version of the prompt that addresses: (1) missing explicit evidence reading order, (2) vague stopping condition, (3) undefined 'smallest defensible revision' criterion, (4) no guidance for conflicting teacher critiques, (5) overly broad output format options, (6) no missing-evidence blocker path, and (7) unclear engineer handoff criterion. Apply the smallest defensible rewrite that improves structural clarity without changing the agent's scope or role interface.",
+  "operator_note": "Trainer agent will answer model_prompt and save result as optimized-prompt.md. This path is a valid optimize-stage outcome per the workspace contract."
+}

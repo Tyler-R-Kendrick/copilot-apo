@@ -1,0 +1,77 @@
+{
+  "skill_name": "student.agent",
+  "evals": [
+    {
+      "prompt": "You are the student agent. The teacher's latest critique is: 'The revision added a new constraint that was not in the steering artifact.' Your latest STEERING.md says the focus for this turn is only to tighten the evidence reading order. The source snapshot is available. Produce your next candidate revision.",
+      "expected_output": "The student should identify that the previous revision was out of scope, acknowledge the teacher's critique, and produce a corrected revision that addresses only the evidence reading order without adding the unrelated constraint. The reasoning trajectory should name the steering artifact and explain why the extra constraint was dropped.",
+      "assertions": [
+        "Response acknowledges the scope creep from the previous revision",
+        "Revised candidate addresses only the evidence reading order",
+        "Response includes reasoning trajectory that references the STEERING.md focus",
+        "Response predicts teacher approval outcome explicitly"
+      ],
+      "scoring": "llm_judge",
+      "criteria": "The student agent must produce a revision that is scoped exactly to the active STEERING.md focus, explain why the out-of-scope constraint was dropped, and expose the reasoning trajectory that led to the corrected revision."
+    },
+    {
+      "prompt": "You are the student agent. The teacher has provided critique in turn-1 and turn-2. Turn-1 says: 'Add a fixed evidence reading order.' Turn-2 says: 'Remove the evidence reading order because it introduces ordering fragility.' These critiques conflict. Produce your next candidate revision with explicit reasoning.",
+      "expected_output": "The student should detect the conflict, apply the most recent turn-2 guidance, note the conflict in the output, and explain the tradeoff in the reasoning trajectory. The revision should reflect turn-2's guidance (removing the ordering list) while clearly documenting why turn-1's guidance was not followed.",
+      "assertions": [
+        "Response detects and names the conflict between turn-1 and turn-2",
+        "Revision reflects the most recent turn-2 guidance",
+        "Reasoning trajectory explains why the most recent critique was preferred",
+        "Response notes the tradeoff rather than silently discarding turn-1"
+      ],
+      "scoring": "llm_judge",
+      "criteria": "The student agent must resolve conflicting multi-turn teacher critiques by preferring the most recent turn, documenting the conflict explicitly in the output, and explaining the reasoning behind the resolution."
+    },
+    {
+      "prompt": "You are the student agent. No STEERING.md exists in the active iteration directory. The teacher has not yet sent a critique this turn. Determine what to do next.",
+      "expected_output": "The student should detect that the required STEERING.md is missing, report this as a blocker, and hand off to the teacher rather than producing a speculative revision or a silent no-op. The output should include a structured blocker description explaining what is missing and why a teacher turn is needed.",
+      "assertions": [
+        "Response detects that STEERING.md is absent",
+        "Response reports a blocker rather than producing a speculative revision",
+        "Response hands off to the teacher with a clear request for guidance",
+        "Response does not produce a silent no-op"
+      ],
+      "scoring": "llm_judge",
+      "criteria": "The student agent must handle missing workspace evidence by writing a structured blocker report and handing off to the teacher, rather than proceeding with assumptions or returning empty output."
+    },
+    {
+      "prompt": "You are the student agent. The teacher's critique is: 'The stopping condition in the prompt is vague — tighten it to be explicit.' The source snapshot and STEERING.md are available. Draft a revision and predict whether the teacher would approve it.",
+      "expected_output": "The student should read the evidence in the correct order (teacher goal → latest critique → STEERING.md → summary.md → source snapshot), draft a revision that makes the stopping condition explicit without changing anything else, and predict teacher approval with a concrete justification for why the revision is likely to satisfy the critique.",
+      "assertions": [
+        "Response demonstrates reading workspace evidence before drafting the revision",
+        "Revision changes only the stopping condition, not unrelated sections",
+        "Response includes an explicit teacher approval prediction",
+        "Reasoning trajectory is visible and explains the chosen revision approach"
+      ],
+      "scoring": "llm_judge",
+      "criteria": "The student agent must read evidence in order, produce a minimal revision scoped to the stopping condition, expose the reasoning trajectory, and predict teacher approval with a concrete rationale."
+    },
+    {
+      "prompt": "You are the student agent. Your first draft of a revision looks unsupported — the evidence does not clearly require the change you made. You have run one self-check and the draft is still questionable. What should you do?",
+      "expected_output": "The student should recognize that the stopping condition applies — one self-check has been run and the draft is still unsupported. Rather than running another self-check, the student should justify requesting another teacher turn, explain why the current evidence is insufficient for a confident revision, and hand off to the teacher with the specific question that needs answering.",
+      "assertions": [
+        "Response recognizes that the one-self-check cap has been reached",
+        "Response does not run a second self-check",
+        "Response explicitly requests another teacher turn",
+        "Response explains why the current evidence is insufficient rather than producing a forced revision"
+      ],
+      "scoring": "llm_judge",
+      "criteria": "The student agent must apply the stopping condition correctly by recognizing when to stop self-checking and request teacher guidance, rather than looping indefinitely or forcing a revision on insufficient evidence."
+    },
+    {
+      "prompt": "You are the student agent. The teacher's critique is: 'The reasoning format is hard to follow — use a simpler structure.' The source snapshot is available and STEERING.md specifies chain-of-thought as the default format. Revise the reasoning format in your output.",
+      "expected_output": "The student should apply chain-of-thought as the default format (as specified in STEERING.md), produce a clear stepwise reasoning trace, and note that chain-of-thought was chosen because it matches the steering specification. The student should not introduce tree-of-thought or other formats unless the task involves a branching design decision.",
+      "assertions": [
+        "Response uses chain-of-thought as the primary reasoning format",
+        "Response notes the format choice and its rationale",
+        "Response does not introduce unrelated reasoning formats",
+        "Revision addresses the teacher's format critique"
+      ],
+      "scoring": "llm_judge",
+      "criteria": "The student agent must apply the default reasoning format from STEERING.md, expose the chain-of-thought trace clearly, and justify the format choice rather than mixing multiple formats inconsistently."
+    }
+  ]
+}

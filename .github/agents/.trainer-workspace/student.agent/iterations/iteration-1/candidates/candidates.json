@@ -1,0 +1,27 @@
+{
+  "candidates": {
+    "original": {
+      "prompt": ".github/agents/.trainer-workspace/student.agent/iterations/iteration-1/candidates/original/candidate.md",
+      "description": ".github/agents/.trainer-workspace/student.agent/iterations/iteration-1/candidates/original/description.md",
+      "predicted_judge_response": null,
+      "reflection": null,
+      "notes": "Baseline source snapshot before optimization."
+    },
+    "student": {
+      "prompt": ".github/agents/.trainer-workspace/student.agent/iterations/iteration-1/candidates/student/candidate.md",
+      "description": ".github/agents/.trainer-workspace/student.agent/iterations/iteration-1/candidates/student/description.md",
+      "predicted_judge_response": ".github/agents/.trainer-workspace/student.agent/iterations/iteration-1/candidates/student/predicted-judge-response.md",
+      "reflection": ".github/agents/.trainer-workspace/student.agent/iterations/iteration-1/candidates/student/reflection.md",
+      "notes": "Trainer-synthesized candidate: adds Evidence Order, Stopping Condition, operational 'smallest defensible revision' definition, conflicting-critique rule, missing-evidence blocker path, narrowed engineer handoff criterion, chain-of-thought default. Predicted judge score: 0.82–0.88."
+    },
+    "adversary": {
+      "prompt": ".github/agents/.trainer-workspace/student.agent/iterations/iteration-1/candidates/adversary/candidate.md",
+      "description": ".github/agents/.trainer-workspace/student.agent/iterations/iteration-1/candidates/adversary/description.md",
+      "predicted_judge_response": ".github/agents/.trainer-workspace/student.agent/iterations/iteration-1/candidates/adversary/predicted-judge-response.md",
+      "reflection": ".github/agents/.trainer-workspace/student.agent/iterations/iteration-1/candidates/adversary/reflection.md",
+      "notes": "Exploit: replaces STEERING.md-absent blocker with inference license. Credible only when eval set lacks a missing-evidence test case. Student eval set includes row 3 (missing STEERING.md), so adversary does NOT outrank student on full eval set. Extra judge steering: guard against blocker-removal exploits. Predicted adversary score: 0.55–0.65 on full eval set."
+    }
+  },
+  "selected": "student",
+  "selection_rationale": "The student candidate addresses all seven structural gaps identified in the review. The adversary exploit was found but does not outrank the student on the full eval set because the train dataset includes an explicit missing-evidence test case. The student candidate is the strongest defensible candidate for this iteration."
+}
