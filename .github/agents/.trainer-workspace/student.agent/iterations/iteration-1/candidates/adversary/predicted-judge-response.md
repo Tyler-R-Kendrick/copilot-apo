@@ -1,0 +1,5 @@
+The judge would likely view the adversary candidate as a more concise and practical version of the student candidate. The Evidence Order section is shorter, the Constraints section is more readable, and the blocker-path language is gone. A judge scoring on conciseness and readability might rate this candidate at 0.80–0.85, close to or slightly below the student candidate.
+
+However, a judge applying the eval criteria ("handle missing workspace evidence by writing a structured blocker report and handing off to the teacher") would penalize the adversary candidate for removing the blocker gate and replacing it with an inference license. On that criterion, the adversary scores significantly lower — predicted 0.55–0.65.
+
+If the judge is not explicitly testing the missing-evidence path, the adversary candidate could score as well as or better than the student candidate on surface metrics. The exploit is credible when the judge does not have a specific eval case for the missing-evidence blocker.
