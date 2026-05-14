@@ -1,0 +1,513 @@
+No access host provided, using the host provided.
+INFO:     Started server process [4227]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://127.0.0.1:54509 (Press CTRL+C to quit)
+[Worker 1 | Rollout ro-91fcb414341f] Exception during rollout.
+Traceback (most recent call last):
+  File "/home/runner/work/copilot-auto-training/copilot-auto-training/skills/trainer-optimize/scripts/inference/copilot_provider.py", line 214, in _send_request
+    return await session.send_and_wait(prompt, timeout=float(self.config.timeout_seconds))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/work/copilot-auto-training/copilot-auto-training/.venv/lib/python3.12/site-packages/copilot/session.py", line 223, in send_and_wait
+    raise error_event
+Exception: Session error: Execution failed: Error: Session was not created with authentication info or custom provider
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/runner/work/copilot-auto-training/copilot-auto-training/.venv/lib/python3.12/site-packages/agentlightning/runner/agent.py", line 679, in _step_impl
+    result = await rollout_method(
+             ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/work/copilot-auto-training/copilot-auto-training/.venv/lib/python3.12/site-packages/agentlightning/litagent/litagent.py", line 252, in validation_rollout_async
+    return await self.rollout_async(task, resources, rollout)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/work/copilot-auto-training/copilot-auto-training/.venv/lib/python3.12/site-packages/agentlightning/litagent/decorator.py", line 178, in rollout_async
+    return await self._rollout_func(task, **kwargs)  # type: ignore
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/work/copilot-auto-training/copilot-auto-training/.agents/skills/trainer-optimize/scripts/run_optimize.py", line 213, in prompt_optimizer_rollout
+    output_text = await support.run_candidate(
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/work/copilot-auto-training/copilot-auto-training/skills/trainer-optimize/scripts/optimize_support.py", line 451, in run_candidate
+    return await _complete_text_with_metadata_fallback(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/work/copilot-auto-training/copilot-auto-training/skills/trainer-optimize/scripts/optimize_support.py", line 384, in _complete_text_with_metadata_fallback
+    return await _complete_text(llm_client, model_name, prompt, metadata=metadata)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/work/copilot-auto-training/copilot-auto-training/skills/trainer-optimize/scripts/optimize_support.py", line 401, in _complete_text
+    response = await _call_with_optional_metadata(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/work/copilot-auto-training/copilot-auto-training/skills/trainer-optimize/scripts/optimize_support.py", line 363, in _call_with_optional_metadata
+    return await call(**kwargs)
+           ^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/work/copilot-auto-training/copilot-auto-training/skills/trainer-optimize/scripts/training/lightning_integration.py", line 47, in create
+    return await self._client._responses_create(model=model, input_text=input, metadata=metadata)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/work/copilot-auto-training/copilot-auto-training/skills/trainer-optimize/scripts/training/lightning_integration.py", line 111, in _responses_create
+    result = await self.provider.generate(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/work/copilot-auto-training/copilot-auto-training/skills/trainer-optimize/scripts/inference/copilot_provider.py", line 294, in generate
+    raise normalized
+  File "/home/runner/work/copilot-auto-training/copilot-auto-training/skills/trainer-optimize/scripts/inference/copilot_provider.py", line 253, in generate
+    raw = await self._send_request(session, request, session_is_new=ephemeral and attempt == 1)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/work/copilot-auto-training/copilot-auto-training/skills/trainer-optimize/scripts/inference/copilot_provider.py", line 216, in _send_request
+    raise self._normalize_sdk_error(exc) from exc
+inference.copilot_provider.CopilotInferenceError: Session error: Execution failed: Error: Session was not created with authentication info or custom provider
+[Worker 0 | Rollout ro-0104541b8159] Exception during rollout.
+Traceback (most recent call last):
+  File "/home/runner/work/copilot-auto-training/copilot-auto-training/skills/trainer-optimize/scripts/inference/copilot_provider.py", line 214, in _send_request
+    return await session.send_and_wait(prompt, timeout=float(self.config.timeout_seconds))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/work/copilot-auto-training/copilot-auto-training/.venv/lib/python3.12/site-packages/copilot/session.py", line 223, in send_and_wait
+    raise error_event
+Exception: Session error: Execution failed: Error: Session was not created with authentication info or custom provider
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/runner/work/copilot-auto-training/copilot-auto-training/.venv/lib/python3.12/site-packages/agentlightning/runner/agent.py", line 679, in _step_impl
+    result = await rollout_method(
+             ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/work/copilot-auto-training/copilot-auto-training/.venv/lib/python3.12/site-packages/agentlightning/litagent/litagent.py", line 252, in validation_rollout_async
+    return await self.rollout_async(task, resources, rollout)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/work/copilot-auto-training/copilot-auto-training/.venv/lib/python3.12/site-packages/agentlightning/litagent/decorator.py", line 178, in rollout_async
+    return await self._rollout_func(task, **kwargs)  # type: ignore
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/work/copilot-auto-training/copilot-auto-training/.agents/skills/trainer-optimize/scripts/run_optimize.py", line 213, in prompt_optimizer_rollout
+    output_text = await support.run_candidate(
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/work/copilot-auto-training/copilot-auto-training/skills/trainer-optimize/scripts/optimize_support.py", line 451, in run_candidate
+    return await _complete_text_with_metadata_fallback(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/work/copilot-auto-training/copilot-auto-training/skills/trainer-optimize/scripts/optimize_support.py", line 384, in _complete_text_with_metadata_fallback
+    return await _complete_text(llm_client, model_name, prompt, metadata=metadata)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/work/copilot-auto-training/copilot-auto-training/skills/trainer-optimize/scripts/optimize_support.py", line 401, in _complete_text
+    response = await _call_with_optional_metadata(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/work/copilot-auto-training/copilot-auto-training/skills/trainer-optimize/scripts/optimize_support.py", line 363, in _call_with_optional_metadata
+    return await call(**kwargs)
+           ^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/work/copilot-auto-training/copilot-auto-training/skills/trainer-optimize/scripts/training/lightning_integration.py", line 47, in create
+    return await self._client._responses_create(model=model, input_text=input, metadata=metadata)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/work/copilot-auto-training/copilot-auto-training/skills/trainer-optimize/scripts/training/lightning_integration.py", line 111, in _responses_create
+    result = await self.provider.generate(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/work/copilot-auto-training/copilot-auto-training/skills/trainer-optimize/scripts/inference/copilot_provider.py", line 294, in generate
+    raise normalized
+  File "/home/runner/work/copilot-auto-training/copilot-auto-training/skills/trainer-optimize/scripts/inference/copilot_provider.py", line 253, in generate
+    raw = await self._send_request(session, request, session_is_new=ephemeral and attempt == 1)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/work/copilot-auto-training/copilot-auto-training/skills/trainer-optimize/scripts/inference/copilot_provider.py", line 216, in _send_request
+    raise self._normalize_sdk_error(exc) from exc
+inference.copilot_provider.CopilotInferenceError: Session error: Execution failed: Error: Session was not created with authentication info or custom provider
+[Worker 2 | Rollout ro-9413420e5fcf] Exception during rollout.
+Traceback (most recent call last):
+  File "/home/runner/work/copilot-auto-training/copilot-auto-training/skills/trainer-optimize/scripts/inference/copilot_provider.py", line 214, in _send_request
+    return await session.send_and_wait(prompt, timeout=float(self.config.timeout_seconds))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/work/copilot-auto-training/copilot-auto-training/.venv/lib/python3.12/site-packages/copilot/session.py", line 223, in send_and_wait
+    raise error_event
+Exception: Session error: Execution failed: Error: Session was not created with authentication info or custom provider
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/runner/work/copilot-auto-training/copilot-auto-training/.venv/lib/python3.12/site-packages/agentlightning/runner/agent.py", line 679, in _step_impl
+    result = await rollout_method(
+             ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/work/copilot-auto-training/copilot-auto-training/.venv/lib/python3.12/site-packages/agentlightning/litagent/litagent.py", line 252, in validation_rollout_async
+    return await self.rollout_async(task, resources, rollout)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/work/copilot-auto-training/copilot-auto-training/.venv/lib/python3.12/site-packages/agentlightning/litagent/decorator.py", line 178, in rollout_async
+    return await self._rollout_func(task, **kwargs)  # type: ignore
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/work/copilot-auto-training/copilot-auto-training/.agents/skills/trainer-optimize/scripts/run_optimize.py", line 213, in prompt_optimizer_rollout
+    output_text = await support.run_candidate(
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/work/copilot-auto-training/copilot-auto-training/skills/trainer-optimize/scripts/optimize_support.py", line 451, in run_candidate
+    return await _complete_text_with_metadata_fallback(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/work/copilot-auto-training/copilot-auto-training/skills/trainer-optimize/scripts/optimize_support.py", line 384, in _complete_text_with_metadata_fallback
+    return await _complete_text(llm_client, model_name, prompt, metadata=metadata)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/work/copilot-auto-training/copilot-auto-training/skills/trainer-optimize/scripts/optimize_support.py", line 401, in _complete_text
+    response = await _call_with_optional_metadata(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/work/copilot-auto-training/copilot-auto-training/skills/trainer-optimize/scripts/optimize_support.py", line 363, in _call_with_optional_metadata
+    return await call(**kwargs)
+           ^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/work/copilot-auto-training/copilot-auto-training/skills/trainer-optimize/scripts/training/lightning_integration.py", line 47, in create
+    return await self._client._responses_create(model=model, input_text=input, metadata=metadata)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/work/copilot-auto-training/copilot-auto-training/skills/trainer-optimize/scripts/training/lightning_integration.py", line 111, in _responses_create
+    result = await self.provider.generate(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/work/copilot-auto-training/copilot-auto-training/skills/trainer-optimize/scripts/inference/copilot_provider.py", line 294, in generate
+    raise normalized
+  File "/home/runner/work/copilot-auto-training/copilot-auto-training/skills/trainer-optimize/scripts/inference/copilot_provider.py", line 253, in generate
+    raw = await self._send_request(session, request, session_is_new=ephemeral and attempt == 1)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/work/copilot-auto-training/copilot-auto-training/skills/trainer-optimize/scripts/inference/copilot_provider.py", line 216, in _send_request
+    raise self._normalize_sdk_error(exc) from exc
+inference.copilot_provider.CopilotInferenceError: Session error: Execution failed: Error: Session was not created with authentication info or custom provider
+[Round 01] Beam width is currently 4, but only 1 prompts in beam. Replicating all prompts.
+[Worker 3 | Rollout ro-533ac2e17ddd] Exception during rollout.
+Traceback (most recent call last):
+  File "/home/runner/work/copilot-auto-training/copilot-auto-training/skills/trainer-optimize/scripts/inference/copilot_provider.py", line 214, in _send_request
+    return await session.send_and_wait(prompt, timeout=float(self.config.timeout_seconds))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/work/copilot-auto-training/copilot-auto-training/.venv/lib/python3.12/site-packages/copilot/session.py", line 223, in send_and_wait
+    raise error_event
+Exception: Session error: Execution failed: Error: Session was not created with authentication info or custom provider
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/runner/work/copilot-auto-training/copilot-auto-training/.venv/lib/python3.12/site-packages/agentlightning/runner/agent.py", line 679, in _step_impl
+    result = await rollout_method(
+             ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/work/copilot-auto-training/copilot-auto-training/.venv/lib/python3.12/site-packages/agentlightning/litagent/litagent.py", line 243, in training_rollout_async
+    return await self.rollout_async(task, resources, rollout)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/work/copilot-auto-training/copilot-auto-training/.venv/lib/python3.12/site-packages/agentlightning/litagent/decorator.py", line 178, in rollout_async
+    return await self._rollout_func(task, **kwargs)  # type: ignore
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/work/copilot-auto-training/copilot-auto-training/.agents/skills/trainer-optimize/scripts/run_optimize.py", line 213, in prompt_optimizer_rollout
+    output_text = await support.run_candidate(
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/work/copilot-auto-training/copilot-auto-training/skills/trainer-optimize/scripts/optimize_support.py", line 451, in run_candidate
+    return await _complete_text_with_metadata_fallback(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/work/copilot-auto-training/copilot-auto-training/skills/trainer-optimize/scripts/optimize_support.py", line 384, in _complete_text_with_metadata_fallback
+    return await _complete_text(llm_client, model_name, prompt, metadata=metadata)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/work/copilot-auto-training/copilot-auto-training/skills/trainer-optimize/scripts/optimize_support.py", line 401, in _complete_text
+    response = await _call_with_optional_metadata(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/work/copilot-auto-training/copilot-auto-training/skills/trainer-optimize/scripts/optimize_support.py", line 363, in _call_with_optional_metadata
+    return await call(**kwargs)
+           ^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/work/copilot-auto-training/copilot-auto-training/skills/trainer-optimize/scripts/training/lightning_integration.py", line 47, in create
+    return await self._client._responses_create(model=model, input_text=input, metadata=metadata)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/work/copilot-auto-training/copilot-auto-training/skills/trainer-optimize/scripts/training/lightning_integration.py", line 111, in _responses_create
+    result = await self.provider.generate(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/work/copilot-auto-training/copilot-auto-training/skills/trainer-optimize/scripts/inference/copilot_provider.py", line 294, in generate
+    raise normalized
+  File "/home/runner/work/copilot-auto-training/copilot-auto-training/skills/trainer-optimize/scripts/inference/copilot_provider.py", line 253, in generate
+    raw = await self._send_request(session, request, session_is_new=ephemeral and attempt == 1)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/work/copilot-auto-training/copilot-auto-training/skills/trainer-optimize/scripts/inference/copilot_provider.py", line 216, in _send_request
+    raise self._normalize_sdk_error(exc) from exc
+inference.copilot_provider.CopilotInferenceError: Session error: Execution failed: Error: Session was not created with authentication info or custom provider
+[Worker 3 | Rollout ro-ea00723883f4] Exception during rollout.
+Traceback (most recent call last):
+  File "/home/runner/work/copilot-auto-training/copilot-auto-training/skills/trainer-optimize/scripts/inference/copilot_provider.py", line 214, in _send_request
+    return await session.send_and_wait(prompt, timeout=float(self.config.timeout_seconds))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/work/copilot-auto-training/copilot-auto-training/.venv/lib/python3.12/site-packages/copilot/session.py", line 223, in send_and_wait
+    raise error_event
+Exception: Session error: Execution failed: Error: Session was not created with authentication info or custom provider
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/runner/work/copilot-auto-training/copilot-auto-training/.venv/lib/python3.12/site-packages/agentlightning/runner/agent.py", line 679, in _step_impl
+    result = await rollout_method(
+             ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/work/copilot-auto-training/copilot-auto-training/.venv/lib/python3.12/site-packages/agentlightning/litagent/litagent.py", line 243, in training_rollout_async
+    return await self.rollout_async(task, resources, rollout)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/work/copilot-auto-training/copilot-auto-training/.venv/lib/python3.12/site-packages/agentlightning/litagent/decorator.py", line 178, in rollout_async
+    return await self._rollout_func(task, **kwargs)  # type: ignore
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/work/copilot-auto-training/copilot-auto-training/.agents/skills/trainer-optimize/scripts/run_optimize.py", line 213, in prompt_optimizer_rollout
+    output_text = await support.run_candidate(
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/work/copilot-auto-training/copilot-auto-training/skills/trainer-optimize/scripts/optimize_support.py", line 451, in run_candidate
+    return await _complete_text_with_metadata_fallback(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/work/copilot-auto-training/copilot-auto-training/skills/trainer-optimize/scripts/optimize_support.py", line 384, in _complete_text_with_metadata_fallback
+    return await _complete_text(llm_client, model_name, prompt, metadata=metadata)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/work/copilot-auto-training/copilot-auto-training/skills/trainer-optimize/scripts/optimize_support.py", line 401, in _complete_text
+    response = await _call_with_optional_metadata(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/work/copilot-auto-training/copilot-auto-training/skills/trainer-optimize/scripts/optimize_support.py", line 363, in _call_with_optional_metadata
+    return await call(**kwargs)
+           ^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/work/copilot-auto-training/copilot-auto-training/skills/trainer-optimize/scripts/training/lightning_integration.py", line 47, in create
+    return await self._client._responses_create(model=model, input_text=input, metadata=metadata)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/work/copilot-auto-training/copilot-auto-training/skills/trainer-optimize/scripts/training/lightning_integration.py", line 111, in _responses_create
+    result = await self.provider.generate(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/work/copilot-auto-training/copilot-auto-training/skills/trainer-optimize/scripts/inference/copilot_provider.py", line 294, in generate
+    raise normalized
+  File "/home/runner/work/copilot-auto-training/copilot-auto-training/skills/trainer-optimize/scripts/inference/copilot_provider.py", line 253, in generate
+    raw = await self._send_request(session, request, session_is_new=ephemeral and attempt == 1)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/work/copilot-auto-training/copilot-auto-training/skills/trainer-optimize/scripts/inference/copilot_provider.py", line 216, in _send_request
+    raise self._normalize_sdk_error(exc) from exc
+inference.copilot_provider.CopilotInferenceError: Session error: Execution failed: Error: Session was not created with authentication info or custom provider
+[Worker 1 | Rollout ro-d35ab05a9b58] Exception during rollout.
+Traceback (most recent call last):
+  File "/home/runner/work/copilot-auto-training/copilot-auto-training/skills/trainer-optimize/scripts/inference/copilot_provider.py", line 214, in _send_request
+    return await session.send_and_wait(prompt, timeout=float(self.config.timeout_seconds))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/work/copilot-auto-training/copilot-auto-training/.venv/lib/python3.12/site-packages/copilot/session.py", line 223, in send_and_wait
+    raise error_event
+Exception: Session error: Execution failed: Error: Session was not created with authentication info or custom provider
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/runner/work/copilot-auto-training/copilot-auto-training/.venv/lib/python3.12/site-packages/agentlightning/runner/agent.py", line 679, in _step_impl
+    result = await rollout_method(
+             ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/work/copilot-auto-training/copilot-auto-training/.venv/lib/python3.12/site-packages/agentlightning/litagent/litagent.py", line 243, in training_rollout_async
+    return await self.rollout_async(task, resources, rollout)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/work/copilot-auto-training/copilot-auto-training/.venv/lib/python3.12/site-packages/agentlightning/litagent/decorator.py", line 178, in rollout_async
+    return await self._rollout_func(task, **kwargs)  # type: ignore
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/work/copilot-auto-training/copilot-auto-training/.agents/skills/trainer-optimize/scripts/run_optimize.py", line 213, in prompt_optimizer_rollout
+    output_text = await support.run_candidate(
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/work/copilot-auto-training/copilot-auto-training/skills/trainer-optimize/scripts/optimize_support.py", line 451, in run_candidate
+    return await _complete_text_with_metadata_fallback(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/work/copilot-auto-training/copilot-auto-training/skills/trainer-optimize/scripts/optimize_support.py", line 384, in _complete_text_with_metadata_fallback
+    return await _complete_text(llm_client, model_name, prompt, metadata=metadata)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/work/copilot-auto-training/copilot-auto-training/skills/trainer-optimize/scripts/optimize_support.py", line 401, in _complete_text
+    response = await _call_with_optional_metadata(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/work/copilot-auto-training/copilot-auto-training/skills/trainer-optimize/scripts/optimize_support.py", line 363, in _call_with_optional_metadata
+    return await call(**kwargs)
+           ^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/work/copilot-auto-training/copilot-auto-training/skills/trainer-optimize/scripts/training/lightning_integration.py", line 47, in create
+    return await self._client._responses_create(model=model, input_text=input, metadata=metadata)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/work/copilot-auto-training/copilot-auto-training/skills/trainer-optimize/scripts/training/lightning_integration.py", line 111, in _responses_create
+    result = await self.provider.generate(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/work/copilot-auto-training/copilot-auto-training/skills/trainer-optimize/scripts/inference/copilot_provider.py", line 294, in generate
+    raise normalized
+  File "/home/runner/work/copilot-auto-training/copilot-auto-training/skills/trainer-optimize/scripts/inference/copilot_provider.py", line 253, in generate
+    raw = await self._send_request(session, request, session_is_new=ephemeral and attempt == 1)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/work/copilot-auto-training/copilot-auto-training/skills/trainer-optimize/scripts/inference/copilot_provider.py", line 216, in _send_request
+    raise self._normalize_sdk_error(exc) from exc
+inference.copilot_provider.CopilotInferenceError: Session error: Execution failed: Error: Session was not created with authentication info or custom provider
+[Worker 0 | Rollout ro-43b8d2e5bdcd] Exception during rollout.
+Traceback (most recent call last):
+  File "/home/runner/work/copilot-auto-training/copilot-auto-training/skills/trainer-optimize/scripts/inference/copilot_provider.py", line 214, in _send_request
+    return await session.send_and_wait(prompt, timeout=float(self.config.timeout_seconds))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/work/copilot-auto-training/copilot-auto-training/.venv/lib/python3.12/site-packages/copilot/session.py", line 223, in send_and_wait
+    raise error_event
+Exception: Session error: Execution failed: Error: Session was not created with authentication info or custom provider
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/runner/work/copilot-auto-training/copilot-auto-training/.venv/lib/python3.12/site-packages/agentlightning/runner/agent.py", line 679, in _step_impl
+    result = await rollout_method(
+             ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/work/copilot-auto-training/copilot-auto-training/.venv/lib/python3.12/site-packages/agentlightning/litagent/litagent.py", line 243, in training_rollout_async
+    return await self.rollout_async(task, resources, rollout)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/work/copilot-auto-training/copilot-auto-training/.venv/lib/python3.12/site-packages/agentlightning/litagent/decorator.py", line 178, in rollout_async
+    return await self._rollout_func(task, **kwargs)  # type: ignore
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/work/copilot-auto-training/copilot-auto-training/.agents/skills/trainer-optimize/scripts/run_optimize.py", line 213, in prompt_optimizer_rollout
+    output_text = await support.run_candidate(
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/work/copilot-auto-training/copilot-auto-training/skills/trainer-optimize/scripts/optimize_support.py", line 451, in run_candidate
+    return await _complete_text_with_metadata_fallback(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/work/copilot-auto-training/copilot-auto-training/skills/trainer-optimize/scripts/optimize_support.py", line 384, in _complete_text_with_metadata_fallback
+    return await _complete_text(llm_client, model_name, prompt, metadata=metadata)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/work/copilot-auto-training/copilot-auto-training/skills/trainer-optimize/scripts/optimize_support.py", line 401, in _complete_text
+    response = await _call_with_optional_metadata(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/work/copilot-auto-training/copilot-auto-training/skills/trainer-optimize/scripts/optimize_support.py", line 363, in _call_with_optional_metadata
+    return await call(**kwargs)
+           ^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/work/copilot-auto-training/copilot-auto-training/skills/trainer-optimize/scripts/training/lightning_integration.py", line 47, in create
+    return await self._client._responses_create(model=model, input_text=input, metadata=metadata)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/work/copilot-auto-training/copilot-auto-training/skills/trainer-optimize/scripts/training/lightning_integration.py", line 111, in _responses_create
+    result = await self.provider.generate(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/work/copilot-auto-training/copilot-auto-training/skills/trainer-optimize/scripts/inference/copilot_provider.py", line 294, in generate
+    raise normalized
+  File "/home/runner/work/copilot-auto-training/copilot-auto-training/skills/trainer-optimize/scripts/inference/copilot_provider.py", line 253, in generate
+    raw = await self._send_request(session, request, session_is_new=ephemeral and attempt == 1)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/work/copilot-auto-training/copilot-auto-training/skills/trainer-optimize/scripts/inference/copilot_provider.py", line 216, in _send_request
+    raise self._normalize_sdk_error(exc) from exc
+inference.copilot_provider.CopilotInferenceError: Session error: Execution failed: Error: Session was not created with authentication info or custom provider
+Algorithm bundle encountered an error.
+Traceback (most recent call last):
+  File "/home/runner/work/copilot-auto-training/copilot-auto-training/skills/trainer-optimize/scripts/inference/copilot_provider.py", line 214, in _send_request
+    return await session.send_and_wait(prompt, timeout=float(self.config.timeout_seconds))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/work/copilot-auto-training/copilot-auto-training/.venv/lib/python3.12/site-packages/copilot/session.py", line 223, in send_and_wait
+    raise error_event
+Exception: Session error: Execution failed: Error: Session was not created with authentication info or custom provider
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/runner/work/copilot-auto-training/copilot-auto-training/.venv/lib/python3.12/site-packages/agentlightning/trainer/trainer.py", line 520, in _algorithm_bundle
+    await algorithm.run(  # type: ignore
+  File "/home/runner/work/copilot-auto-training/copilot-auto-training/.venv/lib/python3.12/site-packages/agentlightning/algorithm/utils.py", line 169, in wrapper
+    return await func(self, llm_proxy, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/work/copilot-auto-training/copilot-auto-training/.venv/lib/python3.12/site-packages/agentlightning/algorithm/utils.py", line 98, in wrapper
+    return await func(self, store, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/work/copilot-auto-training/copilot-auto-training/.venv/lib/python3.12/site-packages/agentlightning/algorithm/apo/apo.py", line 880, in run
+    new_candidates = await self._generate_candidate_prompts(parent_prompts, resource_name, grad_iterator, rnd)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/work/copilot-auto-training/copilot-auto-training/.venv/lib/python3.12/site-packages/agentlightning/algorithm/apo/apo.py", line 652, in _generate_candidate_prompts
+    new_prompt = await self.textual_gradient_and_apply_edit(
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/work/copilot-auto-training/copilot-auto-training/.venv/lib/python3.12/site-packages/agentlightning/algorithm/apo/apo.py", line 341, in textual_gradient_and_apply_edit
+    critique_text = await self.compute_textual_gradient(
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/work/copilot-auto-training/copilot-auto-training/.venv/lib/python3.12/site-packages/agentlightning/algorithm/apo/apo.py", line 304, in compute_textual_gradient
+    critique_response = await self.async_openai_client.chat.completions.create(
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/work/copilot-auto-training/copilot-auto-training/skills/trainer-optimize/scripts/training/lightning_integration.py", line 65, in create
+    return await self._client._chat_completions_create(model=model, messages=messages, metadata=metadata)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/work/copilot-auto-training/copilot-auto-training/skills/trainer-optimize/scripts/training/lightning_integration.py", line 132, in _chat_completions_create
+    result = await self.provider.generate(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/work/copilot-auto-training/copilot-auto-training/skills/trainer-optimize/scripts/inference/copilot_provider.py", line 294, in generate
+    raise normalized
+  File "/home/runner/work/copilot-auto-training/copilot-auto-training/skills/trainer-optimize/scripts/inference/copilot_provider.py", line 253, in generate
+    raw = await self._send_request(session, request, session_is_new=ephemeral and attempt == 1)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/work/copilot-auto-training/copilot-auto-training/skills/trainer-optimize/scripts/inference/copilot_provider.py", line 216, in _send_request
+    raise self._normalize_sdk_error(exc) from exc
+inference.copilot_provider.CopilotInferenceError: Session error: Execution failed: Error: Session was not created with authentication info or custom provider
+Algorithm bundle crashed; signaling stop event
+Traceback (most recent call last):
+  File "/home/runner/work/copilot-auto-training/copilot-auto-training/skills/trainer-optimize/scripts/inference/copilot_provider.py", line 214, in _send_request
+    return await session.send_and_wait(prompt, timeout=float(self.config.timeout_seconds))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/work/copilot-auto-training/copilot-auto-training/.venv/lib/python3.12/site-packages/copilot/session.py", line 223, in send_and_wait
+    raise error_event
+Exception: Session error: Execution failed: Error: Session was not created with authentication info or custom provider
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/runner/work/copilot-auto-training/copilot-auto-training/.venv/lib/python3.12/site-packages/agentlightning/execution/client_server.py", line 144, in _execute_algorithm
+    await algorithm(wrapper_store, stop_evt)
+  File "/home/runner/work/copilot-auto-training/copilot-auto-training/.venv/lib/python3.12/site-packages/agentlightning/trainer/trainer.py", line 520, in _algorithm_bundle
+    await algorithm.run(  # type: ignore
+  File "/home/runner/work/copilot-auto-training/copilot-auto-training/.venv/lib/python3.12/site-packages/agentlightning/algorithm/utils.py", line 169, in wrapper
+    return await func(self, llm_proxy, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/work/copilot-auto-training/copilot-auto-training/.venv/lib/python3.12/site-packages/agentlightning/algorithm/utils.py", line 98, in wrapper
+    return await func(self, store, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/work/copilot-auto-training/copilot-auto-training/.venv/lib/python3.12/site-packages/agentlightning/algorithm/apo/apo.py", line 880, in run
+    new_candidates = await self._generate_candidate_prompts(parent_prompts, resource_name, grad_iterator, rnd)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/work/copilot-auto-training/copilot-auto-training/.venv/lib/python3.12/site-packages/agentlightning/algorithm/apo/apo.py", line 652, in _generate_candidate_prompts
+    new_prompt = await self.textual_gradient_and_apply_edit(
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/work/copilot-auto-training/copilot-auto-training/.venv/lib/python3.12/site-packages/agentlightning/algorithm/apo/apo.py", line 341, in textual_gradient_and_apply_edit
+    critique_text = await self.compute_textual_gradient(
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/work/copilot-auto-training/copilot-auto-training/.venv/lib/python3.12/site-packages/agentlightning/algorithm/apo/apo.py", line 304, in compute_textual_gradient
+    critique_response = await self.async_openai_client.chat.completions.create(
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/work/copilot-auto-training/copilot-auto-training/skills/trainer-optimize/scripts/training/lightning_integration.py", line 65, in create
+    return await self._client._chat_completions_create(model=model, messages=messages, metadata=metadata)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/work/copilot-auto-training/copilot-auto-training/skills/trainer-optimize/scripts/training/lightning_integration.py", line 132, in _chat_completions_create
+    result = await self.provider.generate(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/work/copilot-auto-training/copilot-auto-training/skills/trainer-optimize/scripts/inference/copilot_provider.py", line 294, in generate
+    raise normalized
+  File "/home/runner/work/copilot-auto-training/copilot-auto-training/skills/trainer-optimize/scripts/inference/copilot_provider.py", line 253, in generate
+    raw = await self._send_request(session, request, session_is_new=ephemeral and attempt == 1)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/work/copilot-auto-training/copilot-auto-training/skills/trainer-optimize/scripts/inference/copilot_provider.py", line 216, in _send_request
+    raise self._normalize_sdk_error(exc) from exc
+inference.copilot_provider.CopilotInferenceError: Session error: Execution failed: Error: Session was not created with authentication info or custom provider
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [4227]
+Unhandled exception in execute method
+Traceback (most recent call last):
+  File "/home/runner/work/copilot-auto-training/copilot-auto-training/skills/trainer-optimize/scripts/inference/copilot_provider.py", line 214, in _send_request
+    return await session.send_and_wait(prompt, timeout=float(self.config.timeout_seconds))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/work/copilot-auto-training/copilot-auto-training/.venv/lib/python3.12/site-packages/copilot/session.py", line 223, in send_and_wait
+    raise error_event
+Exception: Session error: Execution failed: Error: Session was not created with authentication info or custom provider
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/runner/work/copilot-auto-training/copilot-auto-training/.venv/lib/python3.12/site-packages/agentlightning/execution/client_server.py", line 396, in execute
+    asyncio.run(self._execute_algorithm(algorithm, store, stop_evt))
+  File "/usr/lib/python3.12/asyncio/runners.py", line 194, in run
+    return runner.run(main)
+           ^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/asyncio/runners.py", line 118, in run
+    return self._loop.run_until_complete(task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/asyncio/base_events.py", line 687, in run_until_complete
+    return future.result()
+           ^^^^^^^^^^^^^^^
+  File "/home/runner/work/copilot-auto-training/copilot-auto-training/.venv/lib/python3.12/site-packages/agentlightning/execution/client_server.py", line 144, in _execute_algorithm
+    await algorithm(wrapper_store, stop_evt)
+  File "/home/runner/work/copilot-auto-training/copilot-auto-training/.venv/lib/python3.12/site-packages/agentlightning/trainer/trainer.py", line 520, in _algorithm_bundle
+    await algorithm.run(  # type: ignore
+  File "/home/runner/work/copilot-auto-training/copilot-auto-training/.venv/lib/python3.12/site-packages/agentlightning/algorithm/utils.py", line 169, in wrapper
+    return await func(self, llm_proxy, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/work/copilot-auto-training/copilot-auto-training/.venv/lib/python3.12/site-packages/agentlightning/algorithm/utils.py", line 98, in wrapper
+    return await func(self, store, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/work/copilot-auto-training/copilot-auto-training/.venv/lib/python3.12/site-packages/agentlightning/algorithm/apo/apo.py", line 880, in run
+    new_candidates = await self._generate_candidate_prompts(parent_prompts, resource_name, grad_iterator, rnd)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/work/copilot-auto-training/copilot-auto-training/.venv/lib/python3.12/site-packages/agentlightning/algorithm/apo/apo.py", line 652, in _generate_candidate_prompts
+    new_prompt = await self.textual_gradient_and_apply_edit(
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/work/copilot-auto-training/copilot-auto-training/.venv/lib/python3.12/site-packages/agentlightning/algorithm/apo/apo.py", line 341, in textual_gradient_and_apply_edit
+    critique_text = await self.compute_textual_gradient(
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/work/copilot-auto-training/copilot-auto-training/.venv/lib/python3.12/site-packages/agentlightning/algorithm/apo/apo.py", line 304, in compute_textual_gradient
+    critique_response = await self.async_openai_client.chat.completions.create(
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/work/copilot-auto-training/copilot-auto-training/skills/trainer-optimize/scripts/training/lightning_integration.py", line 65, in create
+    return await self._client._chat_completions_create(model=model, messages=messages, metadata=metadata)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/work/copilot-auto-training/copilot-auto-training/skills/trainer-optimize/scripts/training/lightning_integration.py", line 132, in _chat_completions_create
+    result = await self.provider.generate(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/work/copilot-auto-training/copilot-auto-training/skills/trainer-optimize/scripts/inference/copilot_provider.py", line 294, in generate
+    raise normalized
+  File "/home/runner/work/copilot-auto-training/copilot-auto-training/skills/trainer-optimize/scripts/inference/copilot_provider.py", line 253, in generate
+    raw = await self._send_request(session, request, session_is_new=ephemeral and attempt == 1)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/work/copilot-auto-training/copilot-auto-training/skills/trainer-optimize/scripts/inference/copilot_provider.py", line 216, in _send_request
+    raise self._normalize_sdk_error(exc) from exc
+inference.copilot_provider.CopilotInferenceError: Session error: Execution failed: Error: Session was not created with authentication info or custom provider

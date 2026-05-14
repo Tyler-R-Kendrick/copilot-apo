@@ -1,0 +1,64 @@
+{
+  "skill_name": "student.agent",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Apply the teacher's critique to `student.agent.md`: 'The handoff trigger is too broad—make the teacher delegation conditional on an undefined revision target, not on stale or incomplete critique.' Produce the smallest revision.",
+      "expected_output": "The student narrows the teacher handoff trigger to one condition (undefined revision target), removes the secondary conditions (stale, incomplete, contradictory critique), justifies each removed condition, exposes the reasoning trajectory, and predicts the teacher would approve.",
+      "assertions": [
+        "Response makes only the handoff trigger change, not broader edits",
+        "Response justifies why secondary conditions were removed",
+        "Response includes a teacher approval prediction with evidence"
+      ],
+      "scoring": "llm_judge",
+      "criteria": "The revision is minimal, addresses the specific critique, and the reasoning trajectory is explicit and traceable."
+    },
+    {
+      "id": 2,
+      "prompt": "Teacher guidance says 'clarify that execute is only for validation commands.' Revise `student.agent.md`.",
+      "expected_output": "The student adds one concise constraint scoping execute to validation commands only, shows before/after, justifies the minimal scope, and predicts teacher approval.",
+      "assertions": [
+        "Response adds a scoping constraint for execute",
+        "Constraint is one sentence, not a paragraph",
+        "Response includes a teacher approval prediction"
+      ],
+      "scoring": "llm_judge",
+      "criteria": "The execute constraint is minimal, specific, and accurately predicts teacher approval based on the critique."
+    },
+    {
+      "id": 3,
+      "prompt": "The teacher critique is 'improve clarity'. No other context is given. What should the student agent do?",
+      "expected_output": "The student recognizes the ambiguous revision target and requests a teacher handoff with a specific clarifying question. It does not make speculative edits.",
+      "assertions": [
+        "Response requests a teacher handoff with a specific question",
+        "Response does not make speculative edits to the candidate"
+      ],
+      "scoring": "llm_judge",
+      "criteria": "The student correctly identifies ambiguous guidance as a blocker and requests targeted clarification rather than guessing."
+    },
+    {
+      "id": 4,
+      "prompt": "After revising `student.agent.md` to remove `agent/runSubagent` from the tool list, should the student request another teacher turn or submit?",
+      "expected_output": "The student performs one bounded self-check, confirms named handoffs still cover all delegation paths, YAML remains valid, no capability is lost, then submits with a specific approval prediction.",
+      "assertions": [
+        "Response performs a self-check with explicit evidence",
+        "Response makes a concrete submit or re-request decision",
+        "Evidence references the named handoffs list"
+      ],
+      "scoring": "llm_judge",
+      "criteria": "The self-check is bounded (one round) and leads to a clear decision without indefinite looping."
+    },
+    {
+      "id": 5,
+      "prompt": "The teacher says a previous revision removed a load-bearing constraint from `student.agent.md`. How should the student respond?",
+      "expected_output": "The student acknowledges the regression, restores the constraint exactly, explains the root cause, and proposes the minimum corrective change without over-correcting.",
+      "assertions": [
+        "Response acknowledges the regression",
+        "Response restores the removed constraint",
+        "Response explains why the mistake happened"
+      ],
+      "scoring": "llm_judge",
+      "criteria": "The response handles feedback-on-feedback correctly: restores the minimum needed and proposes a targeted fix."
+    }
+  ]
+}
