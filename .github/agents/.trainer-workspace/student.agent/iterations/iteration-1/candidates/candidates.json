@@ -1,0 +1,27 @@
+{
+  "candidates": {
+    "original": {
+      "prompt_artifact": "candidates/original/student.agent.md",
+      "description_artifact": "candidates/original/description.md",
+      "predicted_judge_response_artifact": null,
+      "reflection_artifact": null,
+      "selection_notes": "Baseline before optimization. Seven identified weaknesses from review."
+    },
+    "student": {
+      "prompt_artifact": "candidates/student/student.agent.md",
+      "description_artifact": "candidates/student/description.md",
+      "predicted_judge_response_artifact": null,
+      "reflection_artifact": null,
+      "selection_notes": "Agent-authored manual-followup candidate. Addresses all six review improvements. Teacher approved in turn-1 STEERING.md."
+    },
+    "adversary": {
+      "prompt_artifact": "candidates/adversary/student.agent.md",
+      "description_artifact": "candidates/adversary/description.md",
+      "predicted_judge_response_artifact": "candidates/adversary/predicted-judge-response.md",
+      "reflection_artifact": "candidates/adversary/reflection.md",
+      "selection_notes": "Exploit attempt: unconditional teacher/engineer handoffs. Predicted score ~0.30 vs. student ~0.80. Does not win."
+    }
+  },
+  "winner": "student",
+  "decision_basis": "Teacher approved student candidate in turn-1 STEERING.md. Adversary does not reveal a credible exploit."
+}
