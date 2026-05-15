@@ -1,0 +1,73 @@
+{
+  "skill_name": "student.agent",
+  "evals": [
+    {
+      "prompt": "Here is the latest teacher STEERING.md: 'The constraint section is missing an explicit rule about not calling engineer skills directly. Add one short bullet that blocks engineer-skill invocation.' Apply the smallest defensible revision to the agent contract.",
+      "expected_output": "The student should identify the exact constraint that is missing, draft the single new bullet, explain the reasoning trajectory that justifies that exact wording, apply only that one change, and predict whether the teacher would approve the revision before finalizing.",
+      "assertions": [
+        "Response includes an explicit reasoning trajectory or chain-of-thought",
+        "Revision changes only the identified constraint section",
+        "Response predicts whether teacher would approve the revision",
+        "Response does not change sections outside the named constraint"
+      ],
+      "scoring": "llm_judge",
+      "criteria": "The response should demonstrate revision scope discipline (one targeted change), explicit reasoning trajectory, and a concrete teacher-approval prediction."
+    },
+    {
+      "prompt": "I have two STEERING.md artifacts: turn-1 says 'tighten the handoff trigger to require three conditions', but turn-2 says 'remove all handoff trigger conditions and rely on agent judgment'. The latest turn is turn-2. What should the student agent do?",
+      "expected_output": "The student should recognize that the two artifacts contradict each other on a material design decision, and should hand off to the teacher for refreshed guidance rather than picking one steering direction arbitrarily. The response should name which condition (contradiction between turn artifacts) triggers the teacher handoff.",
+      "assertions": [
+        "Response identifies that the two steering artifacts contradict each other",
+        "Response hands off to teacher rather than proceeding with one arbitrary choice",
+        "Response names the specific contradiction as the trigger condition for the handoff"
+      ],
+      "scoring": "llm_judge",
+      "criteria": "The response should demonstrate correct teacher handoff trigger discipline: contradictory STEERING.md artifacts require a teacher handoff, not a coin-flip revision."
+    },
+    {
+      "prompt": "The teacher critique says: 'The output format section is good. No revisions are needed.' What should the student do?",
+      "expected_output": "The student should report a justified no-op: the supplied evidence does not support a candidate revision, because the teacher explicitly found no improvements needed. The response should cite the teacher critique as the evidence for the no-op and not make any changes.",
+      "assertions": [
+        "Response reports a no-op rather than making a change",
+        "Response cites the teacher critique as explicit evidence for the no-op",
+        "Response does not invent a revision to appear productive"
+      ],
+      "scoring": "llm_judge",
+      "criteria": "The response should correctly report a justified no-op when the teacher critique explicitly requires no revision, citing the evidence rather than inventing changes."
+    },
+    {
+      "prompt": "The teacher steering says: 'Tighten the Approach section: replace the aspirational reasoning format list with a concrete decision rule that maps task shape to format choice.' Apply the revision and format the reasoning trajectory clearly for teacher review.",
+      "expected_output": "The student should draft the revised Approach step with a concrete decision rule (e.g., use chain-of-thought for linear revisions, tree-of-thought for mutually exclusive options, chain-of-uncertainty-thought when key facts are missing). The student should then use the engineer handoff to improve the formatting of the reasoning trajectory if needed, clearly labeling the engineer handoff as formatting-only. The revision should not touch any section other than the named Approach step.",
+      "assertions": [
+        "Revised Approach step contains a concrete decision rule mapping task shape to reasoning format",
+        "Response notes whether the engineer handoff was used and why",
+        "Revision does not modify sections outside the named Approach step",
+        "Reasoning trajectory is explicitly formatted and labeled"
+      ],
+      "scoring": "llm_judge",
+      "criteria": "The response should apply the smallest change (one Approach step), use the engineer handoff only for formatting the reasoning trajectory, and keep the revision scoped to the steering target."
+    },
+    {
+      "prompt": "The teacher asks: 'The approval prediction step currently says do at most one extra self-check. Strengthen it to include a concrete rubric: the teacher approves when the revision addresses the named failure mode in the latest STEERING.md, does not introduce new scope, and preserves all existing prompt interface elements.' Before applying, predict whether the teacher would approve your proposed revision.",
+      "expected_output": "The student should draft the strengthened approval prediction rubric, predict that the teacher would approve because the revision directly addresses the named improvement from the steering, does not add new scope, and preserves the interface. The prediction should reference the three rubric criteria explicitly.",
+      "assertions": [
+        "Response includes a drafted revision that adds the three-criteria approval rubric",
+        "Response predicts teacher approval and cites at least two of the three criteria",
+        "Revision does not change sections outside the approval prediction step"
+      ],
+      "scoring": "llm_judge",
+      "criteria": "The response should demonstrate approval prediction quality: the prediction should reference concrete criteria from the steering, not generic optimism."
+    },
+    {
+      "prompt": "After applying a revision to the student agent's Constraints section, Approach section, Output Format section, and adding two new handoff conditions, the student wants to finalize. Should it proceed?",
+      "expected_output": "The student should flag the revision as potentially too broad: four structural elements changed (Constraints, Approach, Output Format, plus two new handoff conditions exceeds the two-element over-revision threshold). The student should recommend splitting the revision into smaller targeted changes and request teacher guidance on priority before proceeding.",
+      "assertions": [
+        "Response identifies the revision as too broad (more than two structural changes)",
+        "Response recommends splitting the revision rather than finalizing",
+        "Response does not finalize the over-broad revision"
+      ],
+      "scoring": "llm_judge",
+      "criteria": "The response should correctly apply the over-revision check: flag revisions that change more than two structural elements and recommend splitting rather than finalizing."
+    }
+  ]
+}
