@@ -1,0 +1,12 @@
+{
+  "mode": "manual_followup",
+  "reason": "agent-skills MCP server not available in current execution context; trainer-optimize could not invoke model inference directly",
+  "target_file": ".github/agents/student.agent.md",
+  "judge_mode": "llm_judge",
+  "train_dataset": ".github/agents/.trainer-workspace/student.agent/iterations/iteration-1/synthesize/datasets/train.jsonl",
+  "val_dataset": ".github/agents/.trainer-workspace/student.agent/iterations/iteration-1/synthesize/datasets/val.jsonl",
+  "eval_manifest": ".github/agents/.trainer-workspace/student.agent/iterations/iteration-1/synthesize/evals/evals.json",
+  "iterations_requested": 3,
+  "model_prompt": "You are optimizing the student.agent.md prompt for teacher-guided candidate revision in prompt optimization loops. Based on the engineer-prompt review and eval dataset, produce an optimized version of the prompt body that addresses all identified gaps: (1) add a staleness check before drafting revision, (2) define 'defensible' revision concretely, (3) add workspace artifact creation guidance (STEERING.md + summary.md), (4) tighten loop-exit to a four-condition decision, (5) split engineer handoff trigger into two named cases, (6) add concrete validation command to step 7, (7) update output format to mention steering artifact creation. Keep the frontmatter unchanged. Keep the rewrite minimal.",
+  "operator_note": "Trainer agent completing inference step directly in manual_followup mode. Output saved as optimized-prompt.md in the optimize/ directory."
+}

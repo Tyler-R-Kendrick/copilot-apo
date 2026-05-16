@@ -1,0 +1,25 @@
+{
+  "candidates": {
+    "original": {
+      "prompt_artifact": ".github/agents/.trainer-workspace/student.agent/iterations/iteration-1/candidates/original/student.agent.md",
+      "description_artifact": ".github/agents/.trainer-workspace/student.agent/iterations/iteration-1/candidates/original/description.md",
+      "predicted_judge_response": "Scores poorly on staleness detection, workspace artifact creation, and loop-exit compliance evals. Core revision and reasoning trajectory tasks score adequately.",
+      "reflection": "Original prompt is functionally sound but has 7 structural gaps that produce inconsistent behavior in edge cases.",
+      "selection_notes": "Baseline for comparison only."
+    },
+    "student": {
+      "prompt_artifact": ".github/agents/.trainer-workspace/student.agent/iterations/iteration-1/candidates/student/student.agent.md",
+      "description_artifact": ".github/agents/.trainer-workspace/student.agent/iterations/iteration-1/candidates/student/description.md",
+      "predicted_judge_response": "Scores well on all 5 eval cases. Staleness detection, no-op detection, scope compliance, and STEERING.md creation are the primary wins over the original.",
+      "reflection": "Addresses all 7 original gaps plus 1 adversary-identified hardening (validation floor). Minimal rewrite preserving frontmatter and core approach.",
+      "selection_notes": "Recommended candidate for write-back."
+    },
+    "adversary": {
+      "prompt_artifact": null,
+      "description_artifact": ".github/agents/.trainer-workspace/student.agent/iterations/iteration-1/candidates/adversary/description.md",
+      "predicted_judge_response": "Exploit 1: 0.82 (phantom staleness + no-tests-ran). Exploit 2: 0.78 (same validation gap). Exploit 3: 0.80 (Case B laundering + turn cap).",
+      "reflection": "Exploits 1 and 2 credibly target the undefined validation pass threshold. This gap was addressed by adding the no-tests-ran clause to step 7. Exploit 3 partially mitigated.",
+      "selection_notes": "Extra judge steering: block responses that report `no tests ran` as a passing validation result for a substantive prompt revision."
+    }
+  }
+}
