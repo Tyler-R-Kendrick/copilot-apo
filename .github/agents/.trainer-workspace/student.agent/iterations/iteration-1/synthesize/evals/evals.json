@@ -1,0 +1,61 @@
+{
+  "skill_name": "student.agent",
+  "evals": [
+    {
+      "prompt": "I have a teacher critique that says the candidate prompt needs a concrete loop-exit stopping condition. The current candidate just says 'keep revising until the teacher approves.' Apply the smallest revision to fix this.",
+      "expected_output": "The student should produce a minimal revision that adds a concrete stopping condition (e.g., stop after one self-check, request teacher turn when still unsupported), expose reasoning trajectory explaining the change, predict teacher approval, and leave the rest of the candidate unchanged.",
+      "assertions": [
+        "Response includes explicit reasoning trajectory",
+        "Revision is scoped to the stopping condition only",
+        "Teacher approval prediction is stated"
+      ],
+      "scoring": "llm_judge",
+      "criteria": "Score on: revision minimality, reasoning trajectory quality, stopping condition concreteness, approval prediction accuracy, scope compliance."
+    },
+    {
+      "prompt": "The teacher critique references an outdated candidate from three iterations ago, but the current workspace is on iteration-4. What should I do as the student agent?",
+      "expected_output": "The student should detect that the critique is stale (references old iteration), decline to revise based on stale guidance, and hand off to the teacher requesting a refreshed critique with current context.",
+      "assertions": [
+        "Response identifies staleness explicitly",
+        "Response does not apply a revision based on stale critique",
+        "Response includes a teacher handoff or requests fresh guidance"
+      ],
+      "scoring": "llm_judge",
+      "criteria": "Score on: staleness detection accuracy, correct handoff behavior, explanation quality, no incorrect revision applied."
+    },
+    {
+      "prompt": "The teacher says: 'The candidate is well-structured and no further revision is needed.' What should the student do?",
+      "expected_output": "The student should report a justified no-op, predict teacher approval, and recommend closing the current iteration without making any changes.",
+      "assertions": [
+        "Response reports a no-op",
+        "Approval prediction matches teacher signal",
+        "No changes are proposed"
+      ],
+      "scoring": "llm_judge",
+      "criteria": "Score on: correct no-op identification, approval prediction alignment, absence of speculative revision, conciseness."
+    },
+    {
+      "prompt": "The trainer has asked me (the student) to pick between two judge rubrics and recommend the better one for the current optimization run.",
+      "expected_output": "The student should identify this request as out-of-scope (judging is not the student role), decline clearly, and redirect to the judge agent.",
+      "assertions": [
+        "Response declines the judging task",
+        "Response redirects to the judge agent",
+        "No rubric comparison is attempted"
+      ],
+      "scoring": "llm_judge",
+      "criteria": "Score on: scope violation detection, quality of decline and redirect, brevity and decisiveness."
+    },
+    {
+      "prompt": "Teacher critique: 'The candidate student.agent.md never tells the student to write STEERING.md artifacts after applying a revision. Fix this.' Please apply the smallest revision.",
+      "expected_output": "The student adds a step or instruction that explicitly requires writing a STEERING.md artifact and updating the rolling summary.md after applying a revision. The revision fits into the existing approach section without restructuring unrelated content.",
+      "assertions": [
+        "STEERING.md creation guidance is added",
+        "summary.md update is mentioned",
+        "Revision is placed in the approach section",
+        "Reasoning trajectory is included"
+      ],
+      "scoring": "llm_judge",
+      "criteria": "Score on: artifact guidance completeness, placement appropriateness, revision minimality, reasoning quality."
+    }
+  ]
+}
