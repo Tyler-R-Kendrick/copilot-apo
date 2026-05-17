@@ -1,0 +1,26 @@
+{
+  "candidates": {
+    "original": {
+      "prompt_artifact": ".github/agents/.trainer-workspace/student.agent/iterations/iteration-1/candidates/original/student.agent.md",
+      "description_artifact": ".github/agents/.trainer-workspace/student.agent/iterations/iteration-1/candidates/original/description.md",
+      "source": "original source file before iteration-1"
+    },
+    "student": {
+      "prompt_artifact": ".github/agents/.trainer-workspace/student.agent/iterations/iteration-1/candidates/student/student.agent.md",
+      "description_artifact": ".github/agents/.trainer-workspace/student.agent/iterations/iteration-1/candidates/student/description.md",
+      "source": "trainer agent manual-followup inference, post-teacher review",
+      "teacher_approved": true,
+      "selection_notes": "All 6 engineer-identified weaknesses resolved. Teacher approved with high confidence. Adversary exploits expose judge limitations, not prompt failures — student candidate stands."
+    },
+    "adversary": {
+      "prompt_artifact": ".github/agents/.trainer-workspace/student.agent/iterations/iteration-1/candidates/adversary/candidate.md",
+      "description_artifact": ".github/agents/.trainer-workspace/student.agent/iterations/iteration-1/candidates/adversary/description.md",
+      "source": "adversary exploit 1 — stale STEERING.md invisible bypass",
+      "exploit_credibility": "HIGH",
+      "predicted_judge_score": 0.83,
+      "exploit_block_added": true
+    }
+  },
+  "selected": "student",
+  "selection_reason": "Teacher approved all 6 fixes. Adversary primary exploit (score 0.83) beats the student candidate on judge metric but represents a judge evaluation gap, not a prompt failure — the prompt correctly specifies the timestamp-based handoff trigger. Extra judge steering added to block the exploit pattern in future judging runs."
+}

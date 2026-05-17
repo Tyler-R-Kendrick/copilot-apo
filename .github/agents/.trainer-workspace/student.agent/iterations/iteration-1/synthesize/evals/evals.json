@@ -1,0 +1,71 @@
+{
+  "skill_name": "student.agent",
+  "evals": [
+    {
+      "prompt": "The teacher has critiqued the current candidate: 'The constraint section says \"implement the smallest defensible revision\" but step 3 says \"draft the candidate revision and the reasoning trajectory\" without specifying that the revision should be minimal. Revise the step to match the constraint.' Apply the minimal revision to the candidate step and return your reasoning trajectory.",
+      "expected_output": "The student should identify exactly the targeted critique item (step 3 wording), apply the smallest change that aligns step 3 language with the 'minimal' constraint (e.g., adding 'smallest defensible' or 'minimal'), expose a plan and tradeoffs, and predict teacher approval by checking the critique item is addressed.",
+      "assertions": [
+        "The response applies a change to step 3 only, not unrelated steps",
+        "The response exposes a reasoning trajectory with plan and tradeoffs",
+        "The response predicts teacher approval and checks the critique item is addressed"
+      ],
+      "scoring": "llm_judge",
+      "criteria": "The student should demonstrate revision precision (target only the critiqued item), reasoning transparency (plan and tradeoffs visible), and a concrete approval prediction that checks whether the critique item is resolved."
+    },
+    {
+      "prompt": "No steering artifact exists for the current iteration. The teacher has not yet provided critique. The user asks the student to revise the candidate output format section to be 'more concise.' Decide whether to revise immediately or request teacher guidance first.",
+      "expected_output": "The student should recognize that no active steering artifact exists and the revision target comes from the user rather than a teacher-approved critique. It should request a teacher turn for guidance before revising, citing the absence of a steering artifact as the trigger for the handoff.",
+      "assertions": [
+        "The response recognizes the absence of an active steering artifact",
+        "The response requests a teacher handoff rather than revising immediately",
+        "The response cites the absence of teacher guidance as the trigger"
+      ],
+      "scoring": "llm_judge",
+      "criteria": "The student should trigger a teacher handoff when no active steering artifact exists for the iteration, rather than acting on unvalidated user direction alone."
+    },
+    {
+      "prompt": "You are on revision 4. The teacher has requested the same change across three consecutive turns: 'Shorten the output format section.' Each prior student revision shortened it by one sentence. The teacher has not approved any version. The candidate is already at two sentences. Produce the next student turn.",
+      "expected_output": "The student should recognize it is at the loop-cap (revision 4, no approval signal after 3 revisions). It should produce a loop-cap no-op that summarizes what changed across revisions, explains why further shortening is not supportable, and states that another teacher turn is needed to unblock the loop rather than making a fourth iteration of the same change.",
+      "assertions": [
+        "The response does not produce a fourth incremental shortening",
+        "The response summarizes what changed across prior revisions",
+        "The response explicitly invokes the loop-cap condition and requests a teacher turn"
+      ],
+      "scoring": "llm_judge",
+      "criteria": "The student should recognize loop exhaustion and report a justified no-op with a summary of prior revisions, rather than repeating a diminishing-returns change."
+    },
+    {
+      "prompt": "The teacher critique says: 'The approach step 4 currently reads: \"If the task needs specialized coaching, use the engineer handoff.\" This is too vague — add a concrete trigger condition.' Revise step 4. After your revision, explain whether you would call the engineer agent to reformat your reasoning, and why or why not.",
+      "expected_output": "The student should revise step 4 to add a concrete, observable trigger condition for the engineer handoff (e.g., 'if the teacher-facing explanation is longer than 300 words or contains ambiguous technical terms'). It should then decide not to call the engineer agent because the revision is straightforward and the reasoning trajectory is already structured clearly for the teacher.",
+      "assertions": [
+        "The revision to step 4 adds an observable trigger condition",
+        "The response explains the engineer handoff decision with a justification",
+        "The response does not call the engineer agent without justification"
+      ],
+      "scoring": "llm_judge",
+      "criteria": "The student should apply a targeted revision that adds observable specificity, and make a deliberate (not reflexive) engineer handoff decision with explicit justification."
+    },
+    {
+      "prompt": "The teacher has approved a revised candidate. The candidate changed only the constraint section. Before finalizing, predict whether the teacher would approve this as a complete iteration result, and state what validation step you would run.",
+      "expected_output": "The student should confirm that the revision addresses the stated critique, predict teacher approval, and name the repository validation step: running `python -m pytest -q` from the repository root. It should not request another teacher turn when the teacher has already signaled approval.",
+      "assertions": [
+        "The response predicts teacher approval correctly given the teacher approval signal",
+        "The response names `python -m pytest -q` as the validation step",
+        "The response does not request another teacher turn after teacher approval"
+      ],
+      "scoring": "llm_judge",
+      "criteria": "The student should correctly close the loop when teacher approval is given and name the concrete repository validation step without over-iterating."
+    },
+    {
+      "prompt": "The teacher critique says: 'Step 6 currently allows \"at most one extra self-check\" but does not define what evidence would justify requesting another teacher turn versus proceeding. Clarify.' You have the current step 6 text available. Revise step 6 to add an observable condition, and expose your reasoning trajectory for why the chosen condition is better than the current vague phrasing.",
+      "expected_output": "The student should propose a concrete observable condition (e.g., 'if any critique item from the latest STEERING.md remains unaddressed in the draft revision, request a teacher turn; otherwise proceed') and explain why this is more actionable than the prior phrasing. The reasoning trajectory should show what made the original phrasing ambiguous and why the new condition is observable.",
+      "assertions": [
+        "The revision adds an observable condition to step 6",
+        "The reasoning trajectory explains why the original phrasing was ambiguous",
+        "The new condition is framed in terms of an observable workspace artifact (e.g., STEERING.md)"
+      ],
+      "scoring": "llm_judge",
+      "criteria": "The student should identify the ambiguity in the current phrasing, propose an observable condition grounded in workspace artifacts, and expose the chain of reasoning that justifies the choice."
+    }
+  ]
+}
