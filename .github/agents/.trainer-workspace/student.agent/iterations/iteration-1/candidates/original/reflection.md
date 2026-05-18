@@ -1,0 +1,1 @@
+The original prompt is well-scoped for the role but has three structural gaps: no explicit evidence order, no artifact staging step, and subjective loop-exit criteria. These gaps cause inconsistent behavior across runs and leave downstream agents (judge, adversary) without the companion files they need.
