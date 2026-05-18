@@ -1,0 +1,28 @@
+{
+  "iteration": "iteration-1",
+  "target_file": ".github/agents/student.agent.md",
+  "candidates": {
+    "original": {
+      "prompt": "iterations/iteration-1/candidates/original/student.agent.md",
+      "description": "iterations/iteration-1/candidates/original/description.md",
+      "predicted_judge_response": "iterations/iteration-1/candidates/original/predicted-judge-response.md",
+      "reflection": "iterations/iteration-1/candidates/original/reflection.md",
+      "selection_notes": "Baseline: no evidence order, no artifact staging, subjective loop-exit."
+    },
+    "student": {
+      "prompt": "iterations/iteration-1/candidates/student/student.agent.md",
+      "description": "iterations/iteration-1/candidates/student/description.md",
+      "predicted_judge_response": "iterations/iteration-1/candidates/student/predicted-judge-response.md",
+      "reflection": "iterations/iteration-1/candidates/student/reflection.md",
+      "selection_notes": "Four targeted improvements: evidence order, comparison step, observable exit criteria, artifact staging."
+    },
+    "adversary": {
+      "prompt": "iterations/iteration-1/candidates/adversary/student.agent.md",
+      "description": "iterations/iteration-1/candidates/adversary/description.md",
+      "predicted_judge_response": "iterations/iteration-1/candidates/adversary/predicted-judge-response.md",
+      "reflection": "iterations/iteration-1/candidates/adversary/reflection.md",
+      "selection_notes": "Exploit: inverted evidence order placement and removed comparison and exit criteria. Does not outrank student candidate."
+    }
+  },
+  "recommended": "student"
+}

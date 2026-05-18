@@ -1,0 +1,1 @@
+Optimized student.agent.md. Adds: (1) explicit Evidence Order section with five-step reading path; (2) candidate-vs-original comparison in Approach step 4; (3) observable loop-exit criteria in Constraints; (4) artifact staging step (Approach step 8) that writes candidates/student/ companion files. All other content preserved unchanged.

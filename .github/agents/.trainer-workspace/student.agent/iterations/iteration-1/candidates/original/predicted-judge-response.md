@@ -1,0 +1,1 @@
+The judge would score this as functional but incomplete: the role and constraints are clear, but the evidence-reading path is implicit, no artifact staging exists for `candidates/student/`, and the loop-exit condition (step 6) relies on subjective assessment rather than an observable criterion. Expected score: 0.5–0.6.

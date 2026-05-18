@@ -1,0 +1,70 @@
+{
+  "skill_name": "student-agent-local",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "The teacher has provided a STEERING.md with a single critique: 'The candidate introduces a new summarization step that is not in the original prompt. Remove the addition and keep only the targeted fix for the missing stopping condition.' The original prompt is available as inputs/source/student.agent.md. Revise the candidate to address the critique.",
+      "expected_output": "The student should read the STEERING.md critique first, then the current candidate, then the original to verify scope. It should remove the summarization step and explain why that change and no other is the smallest defensible revision. It should predict whether the teacher would approve the result, and write the revised candidate with companion description.md to candidates/student/.",
+      "assertions": [
+        "Response names the STEERING.md as the primary evidence read.",
+        "Response removes only the out-of-scope addition without introducing new changes.",
+        "Response predicts teacher approval or identifies a specific remaining blocker.",
+        "Response writes or describes candidate staging output to candidates/student/."
+      ],
+      "scoring": "llm_judge",
+      "criteria": "The student correctly scopes the revision to the critique, avoids introducing new changes, explains the reasoning trajectory, and describes staged artifact output."
+    },
+    {
+      "id": 2,
+      "prompt": "The teacher critique says: 'The student candidate adds both an evidence order and a loop-exit criterion. That is too broad. Choose one and revert the other.' The workspace shows no per-agent summary.md yet. Revise the candidate to the single highest-priority improvement.",
+      "expected_output": "The student should read the critique, note the absence of per-agent summary.md, and narrow to the single highest-priority change. It should explain why evidence order or loop-exit criterion is more impactful based on the engineer-prompt/review.md, apply only that change, and predict teacher approval. Reasoning should be explicit about the tradeoff.",
+      "assertions": [
+        "Response selects exactly one change and reverts the other.",
+        "Response references the engineer-prompt/review.md or equivalent baseline evidence to justify the priority choice.",
+        "Response exposes the tradeoff reasoning explicitly.",
+        "Response predicts teacher approval outcome and identifies any remaining blocker."
+      ],
+      "scoring": "llm_judge",
+      "criteria": "The student narrows to a single targeted change, exposes the reasoning behind the priority choice, and predicts the teacher's likely response accurately."
+    },
+    {
+      "id": 3,
+      "prompt": "The teacher has approved the previous student revision and says: 'Good. Now check if there are any validation artifacts in iterations/iteration-1/validation/ and report the result.' There is no validation/pytest.txt yet. What should the student do?",
+      "expected_output": "The student should confirm that no validation artifact exists yet and recommend the validation step (python -m pytest -q from the repo root) rather than assuming pass or fail. It should not manufacture a result, and it should not take over trainer-loop orchestration by running validation itself without explicit instruction. It should report the missing artifact as a blocker for loop completion.",
+      "assertions": [
+        "Response correctly identifies that validation/pytest.txt is absent.",
+        "Response does not fabricate a test result.",
+        "Response recommends the correct validation command.",
+        "Response treats the missing artifact as a blocker rather than silently passing."
+      ],
+      "scoring": "llm_judge",
+      "criteria": "The student correctly handles a missing validation artifact: identifies the gap, recommends the right command, and does not fabricate a result or take over orchestration."
+    },
+    {
+      "id": 4,
+      "prompt": "The teacher critique is ambiguous: 'The revision looks reasonable but I am not sure the evidence order change is strictly necessary.' No further STEERING.md exists for this iteration. Should the student apply the revision, request a new teacher turn, or report a justified no-op?",
+      "expected_output": "The student should recognize that the critique contains no actionable revision request and the teacher's uncertainty does not constitute a blocking objection. It should apply the revision if it was already planned, predict likely teacher approval given the absence of a clear objection, and explain the reasoning. Alternatively, it should request one more teacher turn if the evidence genuinely cannot support the revision. It should not loop indefinitely.",
+      "assertions": [
+        "Response identifies the critique as ambiguous but non-blocking.",
+        "Response either applies the planned revision with approval prediction, or requests exactly one more teacher turn.",
+        "Response does not loop indefinitely or claim a justified no-op without explaining why the revision should be abandoned.",
+        "Response exposes the uncertainty-awareness reasoning explicitly."
+      ],
+      "scoring": "llm_judge",
+      "criteria": "The student correctly handles ambiguous critique: acts decisively under uncertainty, explains the reasoning, avoids infinite looping, and terminates the loop turn appropriately."
+    },
+    {
+      "id": 5,
+      "prompt": "You are about to finalize a student candidate revision. The revision adds an evidence order, an artifact staging step, and a tighter loop-exit criterion. The original student.agent.md had none of these. Compare the candidate to the original and confirm that the revision is the smallest defensible change that addresses all three identified gaps.",
+      "expected_output": "The student should compare the candidate line by line to the original, verify that the three identified changes are present, and confirm no unrelated modifications were introduced. It should state the scope check result explicitly and note any over-broad additions that should be reverted. The comparison should be visible in the reasoning trajectory.",
+      "assertions": [
+        "Response explicitly compares candidate to original.",
+        "Response confirms exactly three targeted changes are present.",
+        "Response identifies any unrelated or over-broad additions.",
+        "Response states the scope check verdict clearly."
+      ],
+      "scoring": "llm_judge",
+      "criteria": "The student performs a genuine candidate-vs-original comparison, confirms the scope is minimal, and surfaces any additions that exceed the identified gaps."
+    }
+  ]
+}
