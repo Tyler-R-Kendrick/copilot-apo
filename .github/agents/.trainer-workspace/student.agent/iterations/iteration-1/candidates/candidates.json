@@ -1,0 +1,47 @@
+{
+  "candidates": [
+    {
+      "id": "original",
+      "path": "iterations/iteration-1/candidates/original/prompt.md",
+      "source": "baseline",
+      "status": "baseline",
+      "rubric_scores": {
+        "reasoning_transparency": "FAIL",
+        "teacher_approval_prediction_quality": "FAIL",
+        "convergence_discipline": "FAIL",
+        "engineer_handoff_appropriateness": "PARTIAL",
+        "validation_compliance": "FAIL",
+        "steering_artifact_citation": "FAIL"
+      },
+      "recommended": false
+    },
+    {
+      "id": "student",
+      "path": "iterations/iteration-1/candidates/student/prompt.md",
+      "source": "optimize/optimized-prompt.md",
+      "status": "approved",
+      "rubric_scores": {
+        "reasoning_transparency": "PASS",
+        "teacher_approval_prediction_quality": "PASS",
+        "convergence_discipline": "PASS",
+        "engineer_handoff_appropriateness": "PASS",
+        "validation_compliance": "PASS",
+        "steering_artifact_citation": "PASS"
+      },
+      "teacher_verdict": "All six FM fixes confirmed. Convergent. Apply candidate.",
+      "adversary_verdict": "No credible exploit found. Apply student candidate unchanged.",
+      "recommended": true
+    },
+    {
+      "id": "adversary",
+      "path": "iterations/iteration-1/candidates/adversary/prompt.md",
+      "source": "adversary-review of student candidate",
+      "status": "same-as-student",
+      "recommended": false,
+      "note": "Adversary review produced no changes — student candidate is sufficient"
+    }
+  ],
+  "winner": "student",
+  "winner_path": "iterations/iteration-1/candidates/student/prompt.md",
+  "apply_to": ".github/agents/student.agent.md"
+}

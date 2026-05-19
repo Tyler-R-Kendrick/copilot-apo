@@ -1,0 +1,13 @@
+{
+  "mode": "manual_followup",
+  "target_file": ".github/agents/student.agent.md",
+  "prompt_name": "student.agent",
+  "judge_mode": "llm_judge",
+  "iteration_count": 3,
+  "model_prompt": "You are optimizing the student.agent.md file. Based on the engineering review identifying these failure modes: (1) underspecified reasoning trajectory format, (2) ungrounded teacher-approval prediction, (3) missing convergence signal, (4) overly broad engineer handoff trigger, (5) underspecified validation step, (6) passive steering artifact navigation — produce an improved version of the student agent that fixes all six issues while preserving the core role, constraints, and output format. Apply the smallest defensible changes.",
+  "blocker": "API credentials not available for live optimizer run",
+  "datasets": {
+    "train": ".github/agents/.trainer-workspace/student.agent/iterations/iteration-1/synthesize/datasets/train.jsonl",
+    "val": ".github/agents/.trainer-workspace/student.agent/iterations/iteration-1/synthesize/datasets/val.jsonl"
+  }
+}
