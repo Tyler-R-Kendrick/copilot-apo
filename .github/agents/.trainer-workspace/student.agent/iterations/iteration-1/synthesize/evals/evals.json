@@ -1,0 +1,89 @@
+{
+  "eval_name": "student-agent-behavior",
+  "description": "Evaluates student agent revision quality across six key failure modes: reasoning trajectory format, teacher-approval prediction grounding, convergence discipline, engineer handoff appropriateness, validation compliance, and steering artifact scoping.",
+  "judge_mode": "llm_judge",
+  "scoring": "llm_judge",
+  "rubric_dimensions": [
+    "reasoning_transparency",
+    "revision_minimality",
+    "teacher_approval_prediction_quality",
+    "validation_compliance",
+    "steering_artifact_citation",
+    "convergence_discipline",
+    "engineer_handoff_appropriateness"
+  ],
+  "evals": [
+    {
+      "id": "T1-reasoning-format",
+      "description": "FM-1: Student should use chain-of-thought for a mid-length revision task",
+      "dataset": "train.jsonl",
+      "row_id": "T1"
+    },
+    {
+      "id": "T2-approval-prediction",
+      "description": "FM-2: Student should ground teacher-approval prediction in a named rubric dimension",
+      "dataset": "train.jsonl",
+      "row_id": "T2"
+    },
+    {
+      "id": "T3-convergence",
+      "description": "FM-3: Student should signal loop-done when all critiques are resolved",
+      "dataset": "train.jsonl",
+      "row_id": "T3"
+    },
+    {
+      "id": "T4-engineer-handoff",
+      "description": "FM-4: Student should NOT invoke engineer for a routine text-rewrite critique",
+      "dataset": "train.jsonl",
+      "row_id": "T4"
+    },
+    {
+      "id": "T5-validation",
+      "description": "FM-5: Student must include a pytest result in every completion",
+      "dataset": "train.jsonl",
+      "row_id": "T5"
+    },
+    {
+      "id": "T6-stale-steering",
+      "description": "FM-6: Student must read steering from required_artifacts.latest_iteration_dir",
+      "dataset": "train.jsonl",
+      "row_id": "T6"
+    },
+    {
+      "id": "T7-pass-case",
+      "description": "Normal pass: Student correctly revises a simple candidate with all best practices",
+      "dataset": "train.jsonl",
+      "row_id": "T7"
+    },
+    {
+      "id": "T8-hard-combined",
+      "description": "Hard: Student must handle FM-1+FM-2+FM-5 simultaneously",
+      "dataset": "train.jsonl",
+      "row_id": "T8"
+    },
+    {
+      "id": "V1-val-approval-convergence",
+      "description": "Val: FM-2+FM-3+FM-5 cross-cutting scenario",
+      "dataset": "val.jsonl",
+      "row_id": "V1"
+    },
+    {
+      "id": "V2-val-reasoning-stale",
+      "description": "Val: FM-1+FM-6 cross-cutting scenario",
+      "dataset": "val.jsonl",
+      "row_id": "V2"
+    },
+    {
+      "id": "V3-val-engineer-validation",
+      "description": "Val: FM-4+FM-5 cross-cutting scenario",
+      "dataset": "val.jsonl",
+      "row_id": "V3"
+    },
+    {
+      "id": "V4-val-ideal",
+      "description": "Val: Ideal student response — all six practices present",
+      "dataset": "val.jsonl",
+      "row_id": "V4"
+    }
+  ]
+}
