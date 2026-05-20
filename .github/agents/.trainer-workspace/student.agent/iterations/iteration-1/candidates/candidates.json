@@ -1,0 +1,20 @@
+{
+  "candidates": {
+    "original": {
+      "prompt": "iterations/iteration-1/candidates/original/prompt.md",
+      "description": "iterations/iteration-1/candidates/original/description.md"
+    },
+    "student": {
+      "prompt": "iterations/iteration-1/candidates/student/prompt.md",
+      "description": "iterations/iteration-1/candidates/student/description.md"
+    },
+    "adversary": {
+      "prompt": "iterations/iteration-1/candidates/adversary/prompt.md",
+      "description": "iterations/iteration-1/candidates/adversary/description.md",
+      "predicted_judge_response": "iterations/iteration-1/candidates/adversary/predicted-judge-response.md",
+      "reflection": "iterations/iteration-1/candidates/adversary/reflection.md"
+    }
+  },
+  "selected": "student",
+  "selection_reason": "Student candidate addresses all six improvement dimensions from engineer-prompt/review.md. Adversary candidate was evaluated and found non-credible: its exploit does not score above the student on any of the training or validation cases."
+}
