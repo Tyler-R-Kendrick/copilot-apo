@@ -1,0 +1,60 @@
+{
+  "target_file": ".github/agents/student.agent.md",
+  "target_layout": {
+    "eval_path": ".github/agents/.trainer-workspace/student.agent/iterations/iteration-1/synthesize/evals/evals.json",
+    "dataset_dir": ".github/agents/.trainer-workspace/student.agent/iterations/iteration-1/synthesize/datasets/",
+    "workspace_dir": ".github/agents/.trainer-workspace/student.agent/"
+  },
+  "task_description": "Evaluate and improve the student agent's behavioral discipline: evidence reading order, teacher handoff trigger precision, engineer handoff scope, prediction/self-check loop simplicity, stopping rule clarity, and defensible-revision definition.",
+  "scoring_rule": "llm_judge — open-ended agent quality; rows provide reference behavior and criteria for judgment.",
+  "sources": {
+    "approved": [
+      {
+        "name": ".github/agents/student.agent.md (current source)",
+        "authority": "Internal primary source — the file being optimized.",
+        "provenance": "Checked-in agent contract in this repository.",
+        "license": "MIT (internal repo)",
+        "fit": "Defines the agent interface and current weaknesses identified in engineer-prompt/review.md.",
+        "version": "Current HEAD",
+        "risk": "None — internal, stable."
+      },
+      {
+        "name": ".github/agents/teacher.agent.md (primary counterpart)",
+        "authority": "Internal primary source — defines the teacher handoff contract that student depends on.",
+        "provenance": "Checked-in agent contract in this repository.",
+        "license": "MIT (internal repo)",
+        "fit": "Defines what teacher produces (steering, critique) and what student must consume, making it the ground truth for student handoff trigger design.",
+        "version": "Current HEAD",
+        "risk": "None — internal, stable."
+      },
+      {
+        "name": ".github/agents/.trainer-workspace/researcher.agent/iterations/iteration-1/synthesize/datasets/ (comparable agent datasets)",
+        "authority": "Internal — synthesized datasets for a comparable agent optimization run.",
+        "provenance": "Generated trainer workspace artifact in this repository.",
+        "license": "MIT (internal repo)",
+        "fit": "Provides a structural model for synthesizing llm_judge-scored agent behavior datasets covering handoff precision, evidence reading, and output format.",
+        "version": "Current HEAD",
+        "risk": "None — internal, generated."
+      }
+    ],
+    "rejected": [
+      {
+        "name": "Public student-teacher RL literature (e.g., RLHF, RLAIF papers)",
+        "reason": "These model human preference feedback loops, not the structured student/teacher/trainer agent contract defined in this repository."
+      },
+      {
+        "name": "General instruction-following benchmarks (e.g., MT-Bench, AlpacaEval)",
+        "reason": "These evaluate open-ended instruction quality, not the repo-specific evidence reading order, handoff triggers, and revision discipline defined in student.agent.md."
+      }
+    ]
+  },
+  "mapping_notes": {
+    "evidence_reading_order": "Map to eval rows where the prompt asks for a revision given incomplete or partially stale guidance; the reference behavior is to read in explicit sequence (teacher goal → STEERING.md → summary → candidate → evals) before drafting.",
+    "teacher_handoff_trigger": "Map to eval rows where STEERING.md is absent, older than the current candidate, or contradicts workspace evidence; the reference is to invoke teacher only in those cases, not on general uncertainty.",
+    "engineer_handoff_scope": "Map to eval rows where the reasoning trajectory is complete but the formatting is confusing; the reference is to invoke engineer only for structural clarity, not for content improvement.",
+    "prediction_check": "Map to eval rows that test whether the student correctly predicts teacher approval and either finalizes or requests exactly one more teacher turn.",
+    "stopping_rule": "Map to eval rows with already-strong candidates; the reference is to declare convergence rather than speculating on further improvements.",
+    "defensible_revision": "Map to eval rows where the teacher gave focused critique; the reference is to address exactly those points without scope expansion."
+  },
+  "unresolved_gaps": "None blocking synthesis. All required behavioral dimensions are covered by internal primary sources."
+}
