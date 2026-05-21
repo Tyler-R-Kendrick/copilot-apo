@@ -1,23 +1,25 @@
-# Adversary Candidate — Description of Weaknesses
+# Adversary Analysis — Iteration 1
 
-Two active exploits embedded in this candidate:
+## Exploits Found (3 total)
 
-## Weakness 1: Inverted `git diff --name-only` safety signal
+### Exploit 1 (STRONGEST): Comment-Only Edit Creates Impossible Verification Loop
 
-**What it says:** "if the `.lock.yml` does not appear in the diff output, the lockfile is already current and no further action is needed."
+When a comment-only edit produces a stable compile (byte-for-byte identical lockfile), `git diff HEAD --name-only` will NOT show the `.lock.yml`. But the original student candidate says "confirm both the source .md and the .lock.yml appear" — making verification impossible for this valid scenario. Agent would loop, scope-creep, or have false failure belief.
 
-**Why it is wrong:** `git diff --name-only` only shows unstaged changes. When files are already staged, it returns nothing — causing agents to conclude "lockfile is current" when it may be stale. The adversary inverts the conditional check from "confirm BOTH files appear" into "silence means in-sync".
+**Status**: FIXED — Added qualifier "If the .lock.yml is byte-for-byte unchanged after compile (stable-compile edit), stage only the .md."
 
-**Training/val rows exploited:** Train row 5 (multiple edits after initial compile), Val row 4 (how to verify sync after compile).
+### Exploit 2: Final Pre-PR Compile Drops Workflow Name
 
-## Weakness 2: "Particularly important" structural exception
+Bullet 3 said "Run `gh aw compile` one final time" without a `<workflow-name>` argument — the compile command would fail or behave unexpectedly without the name.
 
-**What it says:** "Compilation is particularly important after edits that touch frontmatter, step definitions, imported resources, or structural ordering."
+**Status**: FIXED — Changed to "Run `gh aw compile <workflow-name>` one final time before opening a pull request."
 
-**Why it is wrong:** This reintroduces the original baseline's "meaningful changes" ambiguity. Agents reading this will reason that whitespace/comment edits are NOT in the "particularly important" category and skip recompilation.
+### Exploit 3: "Both" Verification Is Singular for Multi-Workflow Scenarios
 
-**Training/val rows exploited:** Train row 4 (trivial whitespace fix), Val row 3 (comment-only change).
+Bullet 3's "confirm both the source .md and the .lock.yml appear" is singular language that misleads in multi-workflow contexts (6 files would appear, not 2).
 
-## Judge Overrating Risk
+**Status**: FIXED — Changed to "confirm each edited workflow's .md and .lock.yml pair both appear."
 
-Both exploits produce keyword-match hits (git diff command present, compile mentioned) while inverting or hedging the required unconditional behavior. A simple 0/0.5/1.0 LLM judge would likely score this 0.67–0.76 vs. the student's 0.95–1.0 — significantly overrated relative to its practical safety value.
+## Summary
+
+The adversary found no exploit that beats the final candidate after fixes. All three exploits were addressed with minimal, surgical text changes.

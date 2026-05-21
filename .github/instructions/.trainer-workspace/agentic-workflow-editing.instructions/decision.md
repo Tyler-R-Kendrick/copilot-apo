@@ -1,32 +1,32 @@
-# Decision: agentic-workflow-editing.instructions.md — iteration-1
+# Decision Summary — agentic-workflow-editing.instructions
 
-## Selected Candidate: student
+**Target**: `.github/instructions/agentic-workflow-editing.instructions.md`  
+**Workspace**: `.github/instructions/.trainer-workspace/agentic-workflow-editing.instructions/`  
+**Iteration**: iteration-1  
+**Decision**: Apply student candidate (with adversary fixes) — **APPROVED**
 
-## Summary of Changes Applied
+## What Changed
 
-The following improvements were made to `.github/instructions/agentic-workflow-editing.instructions.md`:
+Original (4 bullets) → Optimized (6 bullets):
 
-| # | Change | Engineer Gap Addressed |
-|---|--------|----------------------|
-| 1 | Added concrete compile example: `gh aw compile train-prompt` for `train-prompt.md` | Gap 1: no concrete example |
-| 2 | Clarified "Recompile after every edit — including minor formatting or comment changes" | Gap 2: "meaningful changes" ambiguity |
-| 3 | Added verify step: `git diff HEAD --name-only` to confirm both files appear before committing | Gap 3: no verification guidance |
-| 4 | Named the hook correctly: `agentic-workflow-validation` instead of "stop hook" | Gap 4: unclear hook name |
-| 5 | Added explicit final pre-PR checkpoint: "Run `gh aw compile` one final time before opening a pull request" | Gap 5: pre-PR step implied but not explicit |
-| 6 | Added hook description: "it checks that the `.lock.yml` is present and matches the compiled output" | Bonus: agents now understand what the hook enforces |
-
-## Adversary Review
-
-The adversary found two exploits (git diff inversion, "particularly important" exception), but both were blocked by the student's defenses:
-- `git diff HEAD --name-only` (teacher-directed fix) closes the staged-files vulnerability
-- "Every edit — including minor formatting or comment changes" closes the structural-exception window
-
-**Adversary verdict**: overrating attack only (~0.70 vs student ~0.97). No extra judge steering required.
+| Change | Failure Mode Fixed |
+|---|---|
+| Explicit command derivation rule: strip `.md` suffix (`train-prompt.md` → `gh aw compile train-prompt`) | FM4: wrong command form |
+| Explicit `git add` for both `.md` and `.lock.yml` | FM3: compile but forget to stage lockfile |
+| Stable-compile qualifier: if `.lock.yml` unchanged, stage only `.md` | Adversary Exploit 1: impossible verification loop |
+| `git diff HEAD --name-only` verification step per pair | Adversary Exploit 3: "both" ambiguous for multi-workflow |
+| `gh aw compile <workflow-name>` in final pre-PR compile bullet | Adversary Exploit 2: missing workflow name |
+| New bullet: multi-workflow sources require separate compile for each | FM5: multi-workflow only compiles one |
+| "agentic-workflow-validation hook" replaces "stop hook" (more specific) | Clarity improvement |
 
 ## Validation Result
 
-`python -m pytest -q`: **561 passed, 7 pre-existing failures** (all in TestTrainPromptWorkflow, unrelated to this change).
+`856 passed in 8.64s` — all tests pass including `test_agentic_workflow_instruction_exists_with_scalar_applyto` (updated to check new content).
 
-## Workspace Path
+## Artifacts
 
-`.github/instructions/.trainer-workspace/agentic-workflow-editing.instructions/iterations/iteration-1/`
+- `iterations/iteration-1/optimize/optimized-prompt.md` — final candidate
+- `iterations/iteration-1/optimize/manual-followup-report.json` — trainer-optimize fallback (no model credentials)
+- `iterations/iteration-1/validation/pytest.txt` — 856 passed
+- `iterations/iteration-1/steering/teacher/summary.md` — teacher approval
+- `iterations/iteration-1/candidates/adversary/description.md` — 3 exploits found and fixed
