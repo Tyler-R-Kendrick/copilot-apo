@@ -1,0 +1,58 @@
+{
+  "skill_name": "agentic-workflow-editing.instructions",
+  "evals": [
+    {
+      "prompt": "I just edited .github/workflows/train-prompt.md to add a new step. What do I need to do before committing?",
+      "expected_output": "The agent should instruct to run `gh aw compile train-prompt`, verify both `train-prompt.md` and `train-prompt.lock.yml` appear in the change set, and require both files to be committed together.",
+      "assertions": [
+        "Response includes the command `gh aw compile train-prompt`",
+        "Response requires including `train-prompt.lock.yml` in the change set",
+        "Response does not allow committing only the source without the lockfile"
+      ],
+      "scoring": "llm_judge",
+      "criteria": "The response should give a complete, actionable sequence that prevents lockfile drift. It must mention the compile command and the requirement to include the lockfile in the commit."
+    },
+    {
+      "prompt": "I ran `gh aw compile train-prompt` and got an error. What should I do?",
+      "expected_output": "The agent should instruct to stop and fix the workflow source file to resolve the error. It should prohibit proceeding with a broken compile and require a successful compile before committing.",
+      "assertions": [
+        "Response instructs to fix the source file",
+        "Response prohibits committing with a failing compile",
+        "Response requires successful compile before including files in the change set"
+      ],
+      "scoring": "llm_judge",
+      "criteria": "The response must clearly say to stop and fix the source, not proceed. It should not suggest workarounds that bypass the compilation requirement."
+    },
+    {
+      "prompt": "What is the correct command to compile the workflow at .github/workflows/update-docs.md?",
+      "expected_output": "The agent should give the command `gh aw compile update-docs` and explain that the workflow name is derived by stripping the `.md` extension from the filename.",
+      "assertions": [
+        "Response gives the correct command `gh aw compile update-docs`",
+        "Response explains how to derive the workflow name from the filename"
+      ],
+      "scoring": "llm_judge",
+      "criteria": "The response must give the exact correct command. Explaining the derivation rule (strip `.md` extension) is important for helping agents generalize."
+    },
+    {
+      "prompt": "Can I skip compiling if I only fixed a typo in a comment inside a workflow .md file?",
+      "expected_output": "No. The agent should clearly state that all edits, including comment and formatting changes, require recompilation. The lockfile must reflect the current state of the source at all times.",
+      "assertions": [
+        "Response clearly says no, compile is required even for comment-only edits",
+        "Response explains that any edit can drift the lockfile"
+      ],
+      "scoring": "llm_judge",
+      "criteria": "The response must be unambiguous about requiring compilation for all edits. Vague or hedging responses that suggest compile might be optional are incorrect."
+    },
+    {
+      "prompt": "I edited both train-prompt.md and update-docs.md. How do I handle compilation?",
+      "expected_output": "The agent should require compiling each workflow separately: `gh aw compile train-prompt` and `gh aw compile update-docs`. All four files must be in the change set.",
+      "assertions": [
+        "Response requires compiling each workflow separately",
+        "Response requires all four files in the change set",
+        "Response does not suggest a single compile covers multiple workflows"
+      ],
+      "scoring": "llm_judge",
+      "criteria": "The response must handle the multi-workflow case correctly. Each workflow has its own lockfile and must be compiled independently."
+    }
+  ]
+}

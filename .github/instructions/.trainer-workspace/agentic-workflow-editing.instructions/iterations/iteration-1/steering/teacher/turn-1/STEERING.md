@@ -1,39 +1,37 @@
 # Turn 1 — Teacher Steering
 
-**Agent**: teacher  
-**Evidence**: Direct artifact analysis against the 6 train + 4 val examples; no automated judge scores (APO run hit session error, manual_followup path).
+**Decision**: Continue — two targeted additions required. Do not restructure.
 
-## Assessment
+## Evidence Used
 
-| Gap (from engineer-prompt review) | Original | Student Candidate | Verdict |
-|------------------------------------|----------|-------------------|---------|
-| 1. No concrete compile example     | ❌       | ✅ Adds `gh aw compile train-prompt` | Fully resolved |
-| 2. "Meaningful changes" ambiguity  | ❌       | ✅ "Recompile after every edit — including minor formatting or comment changes" | Fully resolved |
-| 3. No verification guidance        | ❌       | ⚠️ Adds `git diff --name-only` — technically unreliable | Partially resolved |
-| 4. "Stop hook" naming unclear      | ❌       | ✅ Correctly names `agentic-workflow-validation` | Fully resolved |
-| 5. Pre-PR compile not explicit     | ❌       | ✅ "Run `gh aw compile` one final time before opening a pull request" | Fully resolved |
+- Current instructions file (4 bullets, original)
+- Engineer-prompt/review.md (6 failure modes documented)
+- Training dataset (8 rows, llm_judge scoring)
+- Validation dataset (4 rows, llm_judge scoring)
 
-## Required Fix
+## Predicted Student Response
 
-**Bullet 3 verification command is unreliable.**  
-`git diff --name-only` only shows **unstaged** changes. If an agent has already staged files, the command returns nothing, causing a false sense of safety.
+The student will add an explicit multi-workflow compile rule and explicit `git add` instruction. Likely the student will add these as new bullets rather than integrating into existing bullets. Predicted outcome: 6-bullet file with all failure modes covered.
 
-Replace with:
-```
-git diff HEAD --name-only
-```
-Or use `git status --short` which always shows the full picture (staged + unstaged vs HEAD).
+## Requested Revision
 
-Brief rationale: "this shows both staged and unstaged changes relative to HEAD."
+**1. Multi-workflow rule (FM5 — highest priority)**
+Add guidance that when editing multiple workflow sources, each must be compiled separately. Frame as a standing rule, not a conditional exception.
 
-## Predicted Student Mistake
+**2. Explicit `git add` in verification step (FM3)**
+Make it clear the agent must explicitly stage the lockfile (`git add`) — "include in the change set" is too vague.
 
-Student will keep `git diff --name-only` unchanged because it appears in the training example and is syntactically plausible. Must be explicitly told to change it and why.
+## What NOT to Change
 
-## Stop/Continue Decision
-
-**Continue** — apply the one surgical fix, then this candidate is approvable. No structural changes needed.
+- Bullets covering hook backstop and compile-failure stop — correct, leave untouched
+- The "including minor formatting or comment changes" phrasing
+- The frontmatter (description and applyTo)
+- The explicit pre-PR compile mention
 
 ## Exit Criteria
 
-After fixing the verification command, no further revision needed. Candidate is ready for application to the target file.
+Approved when:
+- Multi-workflow compile stated as per-file rule
+- `git add <lockfile>` explicit in at least one bullet
+- Original hook-backstop and compile-failure bullets unchanged
+- File stays ≤ 6 bullets
