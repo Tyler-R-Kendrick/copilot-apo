@@ -4,7 +4,7 @@
   "workspace_parent": ".github/instructions",
   "prompt_name": "agentic-workflow-editing.instructions",
   "workflow_state": "complete",
-  "updated_at": "2026-04-04T02:23:58Z",
+  "updated_at": "2026-05-22T21:05:37Z",
   "required_artifacts": {
     "engineer_prompt_review": ".github/instructions/.trainer-workspace/agentic-workflow-editing.instructions/engineer-prompt/review.md",
     "source_snapshot": ".github/instructions/.trainer-workspace/agentic-workflow-editing.instructions/inputs/source/agentic-workflow-editing.instructions.md",
