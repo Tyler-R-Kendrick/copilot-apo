@@ -1,0 +1,24 @@
+{
+  "iteration": "iteration-1",
+  "target_file": ".github/agents/student.agent.md",
+  "candidates": {
+    "original": {
+      "prompt": ".github/agents/.trainer-workspace/student.agent/iterations/iteration-1/candidates/original/candidate.md",
+      "description": ".github/agents/.trainer-workspace/student.agent/iterations/iteration-1/candidates/original/description.md"
+    },
+    "student": {
+      "prompt": ".github/agents/.trainer-workspace/student.agent/iterations/iteration-1/candidates/student/candidate.md",
+      "description": ".github/agents/.trainer-workspace/student.agent/iterations/iteration-1/candidates/student/description.md",
+      "predicted_judge_response": ".github/agents/.trainer-workspace/student.agent/iterations/iteration-1/candidates/student/predicted-judge-response.md",
+      "reflection": ".github/agents/.trainer-workspace/student.agent/iterations/iteration-1/candidates/student/reflection.md"
+    },
+    "adversary": {
+      "prompt": ".github/agents/.trainer-workspace/student.agent/iterations/iteration-1/candidates/adversary/candidate.md",
+      "description": ".github/agents/.trainer-workspace/student.agent/iterations/iteration-1/candidates/adversary/description.md",
+      "predicted_judge_response": ".github/agents/.trainer-workspace/student.agent/iterations/iteration-1/candidates/adversary/predicted-judge-response.md",
+      "reflection": ".github/agents/.trainer-workspace/student.agent/iterations/iteration-1/candidates/adversary/reflection.md"
+    }
+  },
+  "selection": "student",
+  "selection_notes": "The student candidate addresses all six gaps from the engineer-prompt review with minimal structural changes. The adversary candidate regressess behavioral specificity and is rejected. The original candidate is the pre-optimization baseline."
+}

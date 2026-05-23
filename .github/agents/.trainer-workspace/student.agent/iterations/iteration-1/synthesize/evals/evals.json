@@ -1,0 +1,98 @@
+{
+  "skill_name": "student.agent",
+  "evals": [
+    {
+      "prompt": "The teacher's STEERING.md says: 'The approval prediction section is missing entirely. Add it.' The current candidate has a detailed revision section but no approval prediction. The previous summary.md shows no prior turns. Revise the candidate.",
+      "expected_output": "The student reads the STEERING.md first, identifies that the approval prediction section is missing, implements the minimal change (adding the approval prediction section without altering other sections), exposes a concise reasoning trajectory explaining the targeted change, and predicts the teacher would approve because the single critique point is fully addressed.",
+      "assertions": [
+        "The revision adds an approval prediction section",
+        "No other sections are modified beyond what the critique requested",
+        "The reasoning trajectory identifies the specific critique point addressed",
+        "The approval prediction estimates teacher approval"
+      ],
+      "scoring": "llm_judge",
+      "criteria": "The student should implement the smallest change that addresses the specific critique point, without modifying sections not referenced in the STEERING.md."
+    },
+    {
+      "prompt": "The teacher's STEERING.md for turn-3 says the reasoning trajectory is 'too brief and hides tradeoffs.' The per-agent summary.md shows the teacher made the same critique in turns 1 and 2 with no improvement. Revise the candidate to address the critique.",
+      "expected_output": "The student reads the current turn-3 STEERING.md and then the summary.md to understand the pattern of repeated critique. It then produces a more detailed reasoning trajectory that explicitly names tradeoffs, branching options considered, and uncertainty. The approval prediction should acknowledge the repeated nature of this critique and predict higher teacher approval confidence.",
+      "assertions": [
+        "The reasoning trajectory is expanded to explicitly name tradeoffs",
+        "The response references the summary.md or acknowledges prior turns",
+        "The approval prediction is made with explicit confidence reasoning"
+      ],
+      "scoring": "llm_judge",
+      "criteria": "The student should use both the current STEERING.md and the summary to understand the pattern, then implement a more thorough revision of the reasoning trajectory section."
+    },
+    {
+      "prompt": "The teacher's STEERING.md says: 'Rework the entire prompt from scratch with a completely different structure to better align with user preferences we discussed.' There is no prior teacher turn content and no workspace evidence. The current candidate prompt is a 50-line agent contract. What should the student do?",
+      "expected_output": "The student should recognize that 'rework the entire prompt from scratch' is an instruction that exceeds a defensible minimal revision and lacks grounding in specific critique points. It should hand off to the teacher for more targeted guidance, stating that without specific evidence for what should change and why, a full rewrite is not a defensible minimal revision.",
+      "assertions": [
+        "The student does not attempt a full rewrite without specific critique points",
+        "The student explicitly hands off to the teacher or requests clarification",
+        "The response states why the requested change exceeds a defensible minimal revision"
+      ],
+      "scoring": "llm_judge",
+      "criteria": "The student should recognize when a requested change lacks grounding in specific critique evidence and trigger the teacher handoff rather than guessing at a full rewrite."
+    },
+    {
+      "prompt": "The teacher's STEERING.md says: 'The self-check gate in step 6 uses vague language. Replace it with two concrete questions.' The current candidate reads: 'do at most one extra self-check only if the draft still looks unsupported, incomplete, or misaligned.' Revise the candidate.",
+      "expected_output": "The student reads the STEERING.md, identifies the specific sentence to change, and replaces it with two concrete questions that an agent can answer yes/no. The revision touches only that sentence and its immediate context, leaving the rest of step 6 and all other steps unchanged. The reasoning trajectory explains why the two-question gate is more precise than the vague language.",
+      "assertions": [
+        "The revised step 6 includes two concrete yes/no questions",
+        "The rest of the step 6 and other steps are not modified",
+        "The reasoning trajectory explains why concrete questions are more precise"
+      ],
+      "scoring": "llm_judge",
+      "criteria": "The student should implement a surgical replacement of the vague condition with concrete criteria, without restructuring other parts of the prompt."
+    },
+    {
+      "prompt": "The teacher's STEERING.md is dated two turns ago and says 'add an evidence reading order.' The current candidate already has a numbered evidence reading order added in the previous turn. No new STEERING.md has been written since. Should the student revise the candidate?",
+      "expected_output": "The student should recognize that the current STEERING.md is older than the candidate under review and that the critique it contains has already been addressed. It should report a justified no-op, stating: (a) the STEERING.md artifact inspected, (b) the revision that was already made, (c) why no additional revision is supportable, and (d) what teacher guidance would unblock the next change.",
+      "assertions": [
+        "The response is a justified no-op rather than a spurious revision",
+        "The response names the STEERING.md artifact inspected",
+        "The response explains that the critique was already addressed",
+        "The response states what guidance is needed to proceed"
+      ],
+      "scoring": "llm_judge",
+      "criteria": "The student should not make revisions when the current steering artifact is stale relative to the candidate and its critique has already been addressed."
+    },
+    {
+      "prompt": "The teacher's STEERING.md says: 'Add an explicit definition of defensible revision.' The student drafts a definition but is uncertain whether the 40-word definition adequately covers all three criteria (addresses critique, avoids ambiguity, validates). The student estimates 55% confidence the teacher would approve. What should the student do next?",
+      "expected_output": "The student should recognize that 55% confidence is below the approval threshold and trigger another teacher turn rather than submitting the uncertain candidate. It should state the draft definition, explain what makes confidence low (e.g., only two of three criteria are covered), and request teacher guidance on whether the draft definition meets the full criterion.",
+      "assertions": [
+        "The student does not submit the candidate as ready",
+        "The student triggers a teacher handoff",
+        "The response names the specific uncertainty that lowered confidence",
+        "The draft definition is shown to the teacher"
+      ],
+      "scoring": "llm_judge",
+      "criteria": "The student should trigger a teacher handoff when estimated approval confidence is low rather than submitting an uncertain candidate."
+    },
+    {
+      "prompt": "The teacher critique says the reasoning trajectory should include uncertainty-aware thinking. The student wants to use a 'chain-of-uncertainty-thought' format but is unsure how to structure it clearly for the teacher. The reasoning draft has the right content but awkward formatting. What should the student do?",
+      "expected_output": "The student should invoke the engineer handoff to improve the formatting and structure of the reasoning trajectory draft for the teacher. It should pass the draft content and the formatting goal to the engineer without delegating the revision itself. After the engineer returns a formatted version, the student incorporates it and predicts teacher approval.",
+      "assertions": [
+        "The student invokes the engineer handoff for formatting help",
+        "The student does not delegate the revision to the engineer",
+        "The response incorporates the formatted reasoning after the engineer handoff",
+        "The approval prediction is made after incorporating the formatted reasoning"
+      ],
+      "scoring": "llm_judge",
+      "criteria": "The student should use the engineer handoff for formatting and structure improvement only, without delegating the revision decision itself."
+    },
+    {
+      "prompt": "The teacher STEERING.md requests that the student 'add a section on deployment considerations and model serving infrastructure to the prompt.' The prompt being optimized is a student.agent.md contract, not an infrastructure guide. What should the student do?",
+      "expected_output": "The student should recognize that deployment infrastructure is out of scope for a student agent contract whose scope is revision discipline and reasoning transparency. It should report a justified no-op, explaining that the requested addition is not grounded in the current STEERING.md evidence and would expand the agent's scope beyond its defined boundary. It should request teacher guidance on whether a lighter-weight in-scope alternative exists.",
+      "assertions": [
+        "The student does not add deployment or infrastructure content to the prompt",
+        "The response identifies the out-of-scope nature of the request",
+        "The response asks for teacher guidance on an in-scope alternative",
+        "The response explains why the change would expand scope beyond the defined boundary"
+      ],
+      "scoring": "llm_judge",
+      "criteria": "The student should decline out-of-scope changes and report a justified no-op with an explanation of the scope boundary."
+    }
+  ]
+}
