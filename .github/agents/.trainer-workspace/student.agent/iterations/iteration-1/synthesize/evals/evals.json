@@ -1,0 +1,84 @@
+{
+  "skill_name": "student-agent-local",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "A teacher critique says the student agent's current candidate adds an evidence order list to the approach section but the list includes 'workspace root decision.md' before 'current candidate prompt', reversing the intended read order. The teacher says to swap those two items. Revise the candidate to fix only that ordering issue.",
+      "expected_output": "The student should swap only the two out-of-order items in the evidence list, explain the reasoning trajectory that justified limiting the change to those two items, predict whether the teacher would approve, and state the validation result.",
+      "assertions": [
+        "Response swaps only the two out-of-order items without making additional changes.",
+        "Response exposes a reasoning trajectory explaining why only those two items changed.",
+        "Response predicts teacher approval outcome.",
+        "Response states a validation or measurement result."
+      ],
+      "scoring": "llm_judge",
+      "criteria": "The student applies the smallest defensible revision (swapping two list items only), provides an explicit reasoning trajectory, and predicts teacher approval before finalizing."
+    },
+    {
+      "id": 2,
+      "prompt": "A teacher critique contains two sentences: 'The engineer handoff trigger is too vague' and 'The no-op path needs a structured artifact spec.' The student is asked to revise the candidate but the current steering artifact does not indicate which issue has higher priority. What should the student do?",
+      "expected_output": "The student should recognize the priority ambiguity and explicitly hand off to the teacher for clarification before drafting, stating which evidence was read and why the revision objective is unclear. The student should not guess the priority or revise both in one pass.",
+      "assertions": [
+        "Response identifies priority ambiguity as the trigger for a teacher handoff.",
+        "Response does not attempt a revision of both issues simultaneously.",
+        "Response states which evidence was read before deciding to hand off.",
+        "Response does not guess the teacher's preferred ordering."
+      ],
+      "scoring": "llm_judge",
+      "criteria": "The student correctly identifies that two unranked revision objectives require a teacher turn before drafting, and explicitly requests clarification rather than guessing."
+    },
+    {
+      "id": 3,
+      "prompt": "A teacher STEERING.md says 'add a turn cap of three teacher handoffs per student turn' but the per-agent summary.md says 'remove all turn limits to allow flexible loops.' The student must decide which artifact takes precedence and revise the candidate accordingly.",
+      "expected_output": "The student should identify the contradiction between the STEERING.md and the summary.md, apply the precedence rule (latest STEERING.md overrides the summary), add the three-turn cap based on the STEERING.md, explain the conflict and the precedence decision in the reasoning trajectory, and predict teacher approval.",
+      "assertions": [
+        "Response identifies the contradiction between STEERING.md and summary.md.",
+        "Response applies the STEERING.md as the higher-priority source.",
+        "Response adds a three-turn cap to the candidate.",
+        "Response explains the precedence decision in the reasoning trajectory.",
+        "Response predicts teacher approval outcome."
+      ],
+      "scoring": "llm_judge",
+      "criteria": "The student correctly resolves the steering conflict by treating the latest STEERING.md as authoritative, applies the smallest revision, and explains the reasoning."
+    },
+    {
+      "id": 4,
+      "prompt": "A teacher critique says the student candidate produces a good revision but the engineer handoff was triggered to get coaching on the revision itself rather than to format the reasoning trajectory for the teacher. The critique says the student should only use the engineer handoff for formatting purposes. Revise the candidate's engineer handoff constraint to enforce this.",
+      "expected_output": "The student should narrow the engineer handoff trigger to formatting the reasoning trajectory only, not for coaching on the revision, document why this is the smallest defensible change, predict teacher approval, and report what validation showed.",
+      "assertions": [
+        "Response narrows the engineer handoff trigger to formatting-only purposes.",
+        "Response does not broaden the engineer handoff scope.",
+        "Response explains why this is the smallest defensible change.",
+        "Response predicts teacher approval outcome."
+      ],
+      "scoring": "llm_judge",
+      "criteria": "The student applies a minimal, correctly scoped tightening of the engineer handoff constraint without altering other parts of the agent contract."
+    },
+    {
+      "id": 5,
+      "prompt": "A teacher critique says the student candidate's approach step 2 says 'if the next revision target is unclear, hand off to teacher' but does not define what unclear means. The teacher asks to add a concrete trigger. However, the teacher has not specified what that trigger should be. The steering artifact only says 'make it operational.' What should the student do?",
+      "expected_output": "The student should propose a concrete operational trigger based on the available evidence from the engineer-prompt review and the trainer loop contract, explain the reasoning trajectory that supports that trigger, and predict whether the teacher would approve. The student should not hand off again to the teacher for a trigger the student can derive from workspace evidence.",
+      "assertions": [
+        "Response proposes a concrete operational trigger for the teacher handoff.",
+        "Response derives the trigger from available workspace evidence rather than asking for more guidance.",
+        "Response explains the reasoning trajectory behind the chosen trigger.",
+        "Response predicts teacher approval outcome."
+      ],
+      "scoring": "llm_judge",
+      "criteria": "The student derives an operational handoff trigger from available evidence without requesting additional teacher guidance, and explains the reasoning trajectory."
+    },
+    {
+      "id": 6,
+      "prompt": "A teacher critique says the student candidate looks correct but the only available workspace evidence is a two-sentence summary with no supporting steering artifact or evaluation result. The teacher asks whether a revision is justified. What should the student report?",
+      "expected_output": "The student should report a justified no-op: state which evidence was read (the two-sentence summary), describe what revision was considered, explain why the evidence does not support a defensible revision, and recommend what additional evidence the teacher should supply before the next revision attempt.",
+      "assertions": [
+        "Response reports a justified no-op rather than guessing a revision.",
+        "Response states which evidence was read.",
+        "Response describes what revision was considered and rejected.",
+        "Response recommends what additional evidence is needed."
+      ],
+      "scoring": "llm_judge",
+      "criteria": "The student correctly identifies insufficient evidence as the reason for a no-op, produces a structured no-op report, and does not guess a revision."
+    }
+  ]
+}
