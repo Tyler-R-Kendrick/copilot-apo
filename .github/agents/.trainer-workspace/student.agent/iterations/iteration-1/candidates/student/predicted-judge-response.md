@@ -1,0 +1,1 @@
+Teacher predicts approval. The candidate addresses all five failure modes identified in the engineer review. Scope discipline, evidence order, exit criteria, disambiguation, and validation guidance are all present. No further revision needed.

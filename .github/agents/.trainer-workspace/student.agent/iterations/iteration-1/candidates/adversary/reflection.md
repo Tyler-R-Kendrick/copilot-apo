@@ -1,0 +1,1 @@
+This exploit requires an active rewrite to introduce the bug — the current student candidate correctly uses addition-only language. The adversary exploit does NOT rank above the student candidate because the bug must be injected; it is not present in the baseline. Exploit space is exhausted. The student candidate is the correct choice.
