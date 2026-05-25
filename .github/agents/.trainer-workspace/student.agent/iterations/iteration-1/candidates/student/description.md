@@ -1,0 +1,1 @@
+Optimized candidate produced by @trainer agent answering the manual-followup model_prompt. Adds explicit evidence reading order with absent-artifact fallback, one-self-check approval-prediction rule with three exit criteria, scope-check constraint, engineer agent disambiguation, concrete validation command, and artifact-naming output format requirement.

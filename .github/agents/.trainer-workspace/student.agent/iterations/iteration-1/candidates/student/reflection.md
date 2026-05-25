@@ -1,0 +1,1 @@
+The student candidate is stronger than the original on all five identified dimensions. The revision is minimal and well-scoped. Teacher approval is predicted. No adversarial exploit ranks above this candidate. This is the recommended candidate for write-back.

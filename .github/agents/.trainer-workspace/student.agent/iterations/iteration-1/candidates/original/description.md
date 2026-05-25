@@ -1,0 +1,1 @@
+The original student agent prompt as checked into the repository. Baseline for comparison. Missing explicit evidence reading order, approval-prediction exit criteria, scope-check constraint, engineer handoff disambiguation, validation command, and artifact-naming output requirement.

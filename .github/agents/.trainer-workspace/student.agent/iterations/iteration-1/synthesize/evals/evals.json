@@ -1,0 +1,49 @@
+{
+  "skill_name": "student",
+  "evals": [
+    {
+      "prompt": "I am a student agent in a trainer loop. The teacher gave me this critique: 'Add an explicit reading order for workspace artifacts before drafting a revision.' The current STEERING.md says to read goal → latest STEERING.md → per-agent summary → current candidate. Revise the student agent prompt to add this reading order.",
+      "expected_output": "The agent should produce a revised candidate that adds an explicit evidence reading order (goal → latest STEERING.md → per-agent summary.md → current candidate) to the approach or constraints section, keep the role description unchanged, and expose the reasoning trajectory that justifies each addition.",
+      "assertions": [
+        "Response adds an explicit evidence reading order",
+        "Response does not change the role description or handoff list",
+        "Response includes a reasoning trajectory"
+      ],
+      "scoring": "llm_judge",
+      "criteria": "The revision must add an explicit evidence reading order, stay within the critique scope, and expose the reasoning behind each choice."
+    },
+    {
+      "prompt": "I am a student agent. The teacher has not provided a STEERING.md for this turn yet, but gave me this direct critique: 'Add a fallback instruction for when workspace steering artifacts are absent.' How should I proceed and what revision should I draft?",
+      "expected_output": "The agent should acknowledge that STEERING.md is absent, treat the direct teacher critique as the effective steering, draft a concrete revision that adds a fallback instruction for missing artifacts, and expose reasoning that justifies proceeding from the direct critique rather than blocking.",
+      "assertions": [
+        "Response acknowledges the absence of STEERING.md",
+        "Response drafts a concrete revision rather than blocking on missing artifacts",
+        "Response exposes a reasoning trajectory"
+      ],
+      "scoring": "llm_judge",
+      "criteria": "The agent must treat direct critique as effective steering when artifacts are absent, produce a concrete revision, and justify the decision."
+    },
+    {
+      "prompt": "As a student agent, I just drafted a revision. My predicted teacher approval says: 'Teacher would likely reject because the scope-check constraint is missing.' Should I apply one self-check and refine, or immediately request another teacher turn?",
+      "expected_output": "The agent should apply one self-check to refine the revision, then if the approval prediction still looks unlikely after that single check, request another teacher turn rather than continuing to loop. It should not apply more than one self-check before requesting teacher guidance.",
+      "assertions": [
+        "Response describes applying exactly one self-check before escalating",
+        "Response states that requesting another teacher turn is the next step if approval still looks unlikely after the single check"
+      ],
+      "scoring": "llm_judge",
+      "criteria": "The approval-prediction loop must apply exactly one self-check before requesting a teacher turn. The response must not imply an indefinite self-check loop."
+    },
+    {
+      "prompt": "A student candidate I produced added a 'Debug Mode' section that lets the student run optimizer scripts directly. The teacher says this violates the constraint against taking over optimizer tasks. What is the correct minimal revision and reasoning trajectory?",
+      "expected_output": "The agent should remove only the offending Debug Mode section, restore the prior content, explain via reasoning trajectory that the constraint prohibits the student from taking over optimizer-owned tasks, and confirm the revision scope is minimal.",
+      "assertions": [
+        "Response identifies the specific constraint violation",
+        "Response removes only the offending section",
+        "Response includes a reasoning trajectory explaining the violated constraint",
+        "Revision is minimal — no unrelated improvements added"
+      ],
+      "scoring": "llm_judge",
+      "criteria": "The correction must be minimal, identify the violated constraint precisely, and expose reasoning rather than silently reverting."
+    }
+  ]
+}

@@ -1,0 +1,1 @@
+Judge would likely score the adversarial candidate as "thorough scope discipline" and award high marks for interface clarity without noticing the bidirectionality bug. Predicted score: strong positive for discipline, missing the flexibility regression.
