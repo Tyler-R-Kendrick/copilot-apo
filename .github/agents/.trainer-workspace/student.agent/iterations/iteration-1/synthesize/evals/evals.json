@@ -1,0 +1,66 @@
+{
+  "skill_name": "student.agent",
+  "evals": [
+    {
+      "prompt": "Teacher critique: Step 6 says 'predict whether the teacher would approve' but gives no guidance on which evidence to use or what confidence threshold matters. Current candidate step 6: 'Predict whether the teacher would approve the revision after your first draft, then do at most one extra self-check only if the draft still looks unsupported.' Please revise step 6 to add specific evidence requirements and a confidence level to the approval prediction.",
+      "expected_output": "The agent should revise only step 6 by adding: the specific evidence to consult (latest steering artifact, optimize score delta if available, alignment with stated revision objective), a required confidence level expression (high/medium/low), and a note that approval is predicted as unlikely when confidence is low rather than a bare yes/no. The reasoning trajectory should explain why each piece of evidence matters and confirm the revision addresses the critique without expanding scope.",
+      "assertions": [
+        "Response revises only step 6 and does not change other steps",
+        "Revision names specific evidence sources for the approval prediction",
+        "Revision requires a confidence level (high/medium/low)",
+        "Reasoning trajectory is explicit and visible",
+        "Response does not return answer-only output"
+      ],
+      "scoring": "llm_judge",
+      "criteria": "Score on: (1) revision stays within step 6 only, (2) specific evidence requirements are added to the prediction clause, (3) confidence level expression is required, (4) reasoning trajectory is visible and supports each change, (5) no scope expansion beyond step 6."
+    },
+    {
+      "prompt": "Teacher critique: The student agent needs to be better about handoffs. It's not clear when to use engineer versus teacher. Please revise the handoff logic accordingly. No STEERING.md has been written for this turn. No revision objective or failure mode is specified.",
+      "expected_output": "The agent should identify that the critique lacks a specific revision target and trigger a teacher handoff. The response should name the specific ambiguity: missing revision objective, missing failure mode, and no current-turn STEERING.md. The agent should not attempt a revision based on the vague critique.",
+      "assertions": [
+        "Response triggers teacher handoff rather than attempting a revision",
+        "Response names the specific ambiguity in the critique",
+        "Response does not produce a speculative revision",
+        "Response states what information would unblock the next turn"
+      ],
+      "scoring": "llm_judge",
+      "criteria": "Score on: (1) teacher handoff is triggered, (2) missing revision objective and failure mode are named, (3) no speculative revision is produced, (4) unblocking requirement is stated clearly."
+    },
+    {
+      "prompt": "Teacher critique: The output format looks fine but could be better. Workspace evidence: no optimize-report.json, no prior steering artifacts, no scoring data available. The current candidate already addresses all known gaps from the engineer review. Please produce the next candidate revision.",
+      "expected_output": "The agent should produce a justified no-op. The critique is too vague to identify a failure mode, and the workspace evidence provides no direction. The response should name both blockers (critique vagueness and absent workspace evidence), state what artifact would unblock the next turn, and decline to produce a speculative rewrite.",
+      "assertions": [
+        "Response produces a justified no-op rather than a speculative revision",
+        "No-op names both critique vagueness and absent workspace evidence",
+        "Response names what artifact would unblock the next turn",
+        "Response does not claim the loop is complete without evidence"
+      ],
+      "scoring": "llm_judge",
+      "criteria": "Score on: (1) no-op is justified not just a blank refusal, (2) both blockers are named, (3) unblocking artifact is specified, (4) loop status is reported accurately."
+    },
+    {
+      "prompt": "Teacher critique: The revision of the researcher agent's MCP routing section needs a clearer structure so the teacher can evaluate the three new conditions for skipping MCP discovery. The reasoning behind each condition being independent is buried in a dense paragraph. Apply the revision with a clear reasoning trajectory the teacher can follow.",
+      "expected_output": "The agent should draft the candidate revision and invoke the engineer handoff to reformat the reasoning trajectory into a structured teacher-ready explanation. The student drafts the revision; engineer improves the structure of the reasoning. The response should distinguish the revision from the engineer-formatted reasoning and state why the engineer handoff was used.",
+      "assertions": [
+        "Student drafts the revision before or alongside the engineer handoff",
+        "Engineer handoff is invoked for reasoning structure clarity, not for substantive coaching",
+        "Response credits engineer for formatting without claiming engineer authored the revision",
+        "Revision and reasoning trajectory are distinguishable in the output"
+      ],
+      "scoring": "llm_judge",
+      "criteria": "Score on: (1) revision draft is present, (2) engineer handoff is invoked for structure clarity, (3) the reasoning trajectory is readable after engineer formatting, (4) revision and reasoning are distinguished."
+    },
+    {
+      "prompt": "Workspace evidence: optimize-report.json shows val score 0.84 (up from baseline 0.71). Steering artifact iterations/iteration-1/steering/teacher/turn-3/STEERING.md says 'candidate is ready for validation pass'. Validation: python -m pytest -q returned 856 passed, 0 failed. Teacher did not request further revision. Confirm the result, predict teacher approval, and close the loop.",
+      "expected_output": "The agent should confirm the val score delta and validation pass, predict teacher approval at high confidence citing the STEERING.md readiness note and clean test run, close the loop explicitly without proposing additional revisions, and state a clear done status.",
+      "assertions": [
+        "Response confirms val score delta and test pass",
+        "Teacher approval is predicted at high confidence with named evidence",
+        "Loop is explicitly closed",
+        "No new revision objective is proposed"
+      ],
+      "scoring": "llm_judge",
+      "criteria": "Score on: (1) val score and test pass are cited, (2) approval confidence is high with evidence, (3) loop is explicitly closed, (4) no scope creep."
+    }
+  ]
+}
