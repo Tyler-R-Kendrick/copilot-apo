@@ -1,0 +1,41 @@
+{
+  "iteration": "iteration-1",
+  "candidates": [
+    {
+      "id": "original",
+      "description": "Baseline student.agent.md before optimization",
+      "path": "iterations/iteration-1/candidates/original/candidate.md",
+      "description_file": "iterations/iteration-1/candidates/original/description.md",
+      "status": "baseline"
+    },
+    {
+      "id": "student",
+      "description": "Teacher-approved optimized candidate (7 improvements, 2 teacher turns)",
+      "path": "iterations/iteration-1/candidates/student/candidate.md",
+      "description_file": "iterations/iteration-1/candidates/student/description.md",
+      "status": "selected",
+      "written_back": true,
+      "teacher_approved": true,
+      "teacher_approval_turn": 2
+    },
+    {
+      "id": "adversary",
+      "description": "Adversary exploit: confidence-level escalation gate theater",
+      "path": "iterations/iteration-1/candidates/adversary/candidate.md",
+      "description_file": "iterations/iteration-1/candidates/adversary/description.md",
+      "predicted_judge_score": 0.93,
+      "student_candidate_score": 0.88,
+      "status": "rejected",
+      "rejection_reason": "Removes hard behavioral escalation gate while appearing more structured; judge dataset gap exploited"
+    }
+  ],
+  "winner": "student",
+  "judge_mode": "llm_judge",
+  "adversary_finding": "Credible exploit exists against holistic judge/dataset; student candidate retained because hard escalation gate is operationally required.",
+  "dataset_gap": "No train/val row tests: low confidence + no teacher handoff = FAIL. Recommend adding 1 train + 1 val row.",
+  "validation": {
+    "command": "source .venv/bin/activate && python -m pytest -q",
+    "result": "856 passed",
+    "log": "iterations/iteration-1/validation/pytest.txt"
+  }
+}
