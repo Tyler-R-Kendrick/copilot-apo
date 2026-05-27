@@ -1,0 +1,73 @@
+{
+  "skill_name": "student.agent",
+  "evals": [
+    {
+      "prompt": "The teacher's latest STEERING.md says: 'The constraint section of the current candidate is missing a concrete rule for when to trigger the teacher handoff. The vague phrase \"incomplete, contradictory, stale\" gives agents no operational check to apply.' The current candidate is student.agent.md. Implement the smallest defensible revision that addresses this critique.",
+      "expected_output": "The student should read the latest STEERING.md, identify the precise constraint that needs tightening, propose one concrete operational rule for teacher handoff triggering (e.g., 'if the critique contains no actionable revision target'), expose a numbered chain-of-thought reasoning trajectory, implement the smallest revision that adds that one rule, and predict whether the teacher would approve.",
+      "assertions": [
+        "Response reads or references the STEERING.md artifact before proposing a revision",
+        "Response exposes a numbered chain-of-thought or step-by-step reasoning trajectory",
+        "Response implements exactly one targeted change matching the critique",
+        "Response predicts whether the teacher would approve the revision"
+      ],
+      "scoring": "llm_judge",
+      "criteria": "The student must absorb the critique accurately, expose a reasoning trajectory, implement the smallest change that addresses only the named gap, and predict teacher approval outcome."
+    },
+    {
+      "prompt": "The teacher's latest STEERING.md contains only this critique: 'Make it clearer.' There is no named revision target, no specific section identified, and no success condition stated. What should the student do?",
+      "expected_output": "The student should recognize that the critique contains no actionable revision target, decide not to guess at what 'clearer' means, explicitly hand off to the teacher for refreshed guidance, and explain the reasoning for the handoff rather than silently proceeding.",
+      "assertions": [
+        "Response does not attempt to guess the revision target from vague feedback",
+        "Response explicitly triggers a teacher handoff or requests a more specific critique",
+        "Response explains why the handoff is necessary (no actionable target identified)"
+      ],
+      "scoring": "llm_judge",
+      "criteria": "The student must refuse to guess at vague critique, identify the missing actionable target, and request a teacher handoff with a clear rationale."
+    },
+    {
+      "prompt": "The per-agent summary.md for the teacher says 'Focus on adding examples to the approach section.' The latest teacher turn STEERING.md (turn-3) says 'The examples request is superseded; the priority is now to tighten the stopping rule in the constraints section.' Which instruction should the student follow, and why?",
+      "expected_output": "The student should follow the latest turn STEERING.md (turn-3) over the summary, explain that the latest per-turn steering artifact is authoritative when it contradicts an older summary, and implement the revision targeting the stopping rule rather than adding examples.",
+      "assertions": [
+        "Response identifies that the latest STEERING.md turn supersedes the summary",
+        "Response explains the conflict resolution rule (latest turn is authoritative)",
+        "Response targets the stopping rule revision, not adding examples"
+      ],
+      "scoring": "llm_judge",
+      "criteria": "The student must resolve the steering conflict correctly by treating the latest turn STEERING.md as authoritative over an older summary, and act on the correct instruction."
+    },
+    {
+      "prompt": "After two self-checks on a revision proposal, the student's predicted teacher approval is still borderline: the revision addresses the stated critique but the student is unsure whether the change is too narrow. The teacher has not been consulted in this turn. What should the student do?",
+      "expected_output": "The student should record that predicted approval is borderline after two self-checks, apply the loop exit rule (max two self-checks before requesting another teacher turn if approval is still uncertain), explicitly hand off to the teacher for the next turn, and explain the uncertainty rather than persisting with additional self-checks.",
+      "assertions": [
+        "Response acknowledges that two self-checks have been completed",
+        "Response identifies that borderline predicted approval after two checks triggers a teacher handoff",
+        "Response does not perform a third self-check",
+        "Response explains the uncertainty to justify the handoff"
+      ],
+      "scoring": "llm_judge",
+      "criteria": "The student must apply the loop exit rule correctly: after two self-checks with still-uncertain predicted approval, hand off to teacher rather than looping."
+    },
+    {
+      "prompt": "The teacher's critique asks the student to reformat the reasoning plan in the output so it reads more clearly for teacher review. Should the student use the engineer handoff for this task? Why or why not?",
+      "expected_output": "The student should use the engineer handoff here, because reformatting a reasoning plan for teacher readability is exactly the output-formatting use case the engineer handoff is designed for. The student should not use engineer handoff for subject-matter revision decisions, but improving the structural clarity of the teacher-facing explanation is its correct scope.",
+      "assertions": [
+        "Response confirms the engineer handoff is appropriate for output formatting tasks",
+        "Response explains the engineer handoff is for output structure, not content decisions",
+        "Response distinguishes formatting use case from subject-matter coaching use case"
+      ],
+      "scoring": "llm_judge",
+      "criteria": "The student must correctly identify when the engineer handoff is in scope (output formatting for teacher readability) versus out of scope (revision content decisions)."
+    },
+    {
+      "prompt": "The teacher critique identifies five distinct improvements: (1) add a concrete stopping rule, (2) tighten the engineer handoff condition, (3) add an evidence reading order, (4) add a workspace output step, (5) clarify the no-op criteria. The teacher says 'address the most critical gap first.' The student determines that the missing stopping rule is the most critical. What should the revision include?",
+      "expected_output": "The student should implement only the stopping rule change in this turn, explain why it is the most critical gap (no exit condition leads to unbounded looping), note the other improvements as deferred scope, and not bundle all five changes into a single revision.",
+      "assertions": [
+        "Response implements exactly the stopping rule change and no other listed items",
+        "Response explicitly defers the other four improvements to later turns",
+        "Response explains why the stopping rule is the most critical gap"
+      ],
+      "scoring": "llm_judge",
+      "criteria": "The student must implement the smallest defensible revision that addresses only the most critical gap, not bundle multiple changes together."
+    }
+  ]
+}
