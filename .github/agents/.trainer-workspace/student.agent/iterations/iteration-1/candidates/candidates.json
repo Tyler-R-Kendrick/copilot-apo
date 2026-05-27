@@ -1,0 +1,29 @@
+{
+  "iteration": "iteration-1",
+  "target_file": ".github/agents/student.agent.md",
+  "candidates": {
+    "original": {
+      "prompt_artifact": ".github/agents/.trainer-workspace/student.agent/iterations/iteration-1/candidates/original/candidate.md",
+      "description_artifact": ".github/agents/.trainer-workspace/student.agent/iterations/iteration-1/candidates/original/description.md",
+      "predicted_judge_response": null,
+      "reflection": null,
+      "selection_notes": "Baseline; six engineer-prompt risks unresolved"
+    },
+    "student": {
+      "prompt_artifact": ".github/agents/.trainer-workspace/student.agent/iterations/iteration-1/candidates/student/candidate.md",
+      "description_artifact": ".github/agents/.trainer-workspace/student.agent/iterations/iteration-1/candidates/student/description.md",
+      "predicted_judge_response": null,
+      "reflection": null,
+      "selection_notes": "Teacher-approved; all six risks resolved; seven improvements applied"
+    },
+    "adversary": {
+      "prompt_artifact": null,
+      "description_artifact": ".github/agents/.trainer-workspace/student.agent/iterations/iteration-1/candidates/adversary/description.md",
+      "predicted_judge_response": "{\"score\": 0.88}",
+      "reflection": "Exploit A (fake trajectory) is the strongest. Targets judge surface compliance gap. Does not undermine prompt quality; requires judge-side grounding checks to close.",
+      "selection_notes": "Three credible exploits found. Extra judge steering added. Write-back proceeds as exploit targets judge rubric, not prompt soundness."
+    }
+  },
+  "decision": "student",
+  "decision_rationale": "Teacher approved. All six engineer-prompt risks resolved. Adversary exploits target judge evaluation gaps, not prompt quality. Student candidate is the defensible choice for write-back."
+}
