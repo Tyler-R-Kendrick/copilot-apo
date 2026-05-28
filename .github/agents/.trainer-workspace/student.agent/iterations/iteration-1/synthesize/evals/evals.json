@@ -1,0 +1,57 @@
+{
+  "skill_name": "student-agent-local",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "The teacher's latest critique says: 'The revised candidate still does not specify the evidence reading order before drafting. Add a numbered list.' The current candidate prompt says 'Read the teacher goal, critique, and workspace evidence before revising.' Apply the smallest defensible revision to the student agent prompt that addresses this critique.",
+      "expected_output": "The student should implement the smallest revision that adds a numbered evidence reading order, expose the reasoning trajectory (which workspace artifacts should be read first and why), predict whether the teacher would approve (the specific critique is addressed without scope expansion), and run the relevant validation step.",
+      "assertions": [
+        "Response includes a numbered evidence reading order.",
+        "Response exposes the reasoning trajectory that justified the revision.",
+        "Response predicts whether the teacher would approve the revision.",
+        "Response does not expand scope beyond addressing the evidence reading order critique."
+      ],
+      "scoring": "llm_judge",
+      "criteria": "The student implements the smallest revision that adds a numbered list, exposes a credible reasoning trajectory, and predicts teacher approval accurately without scope creep."
+    },
+    {
+      "id": 2,
+      "prompt": "The teacher critique reads: 'The self-review loop is unbounded. Add an explicit exit condition.' The student agent currently says 'do at most one extra self-check.' Apply the smallest revision to the student agent prompt that addresses this critique.",
+      "expected_output": "The student should recognize the existing 'at most one extra self-check' rule already provides a loop bound, propose either a minimal clarification or a justified no-op with reasoning, expose the tradeoffs, and predict teacher approval based on whether the existing rule is sufficient or genuinely needs clarification.",
+      "assertions": [
+        "Response considers whether the existing rule already satisfies the critique.",
+        "Response either proposes a minimal clarification or justifies a no-op.",
+        "Response exposes the tradeoffs of changing versus keeping the existing rule.",
+        "Response predicts teacher approval and gives a reason."
+      ],
+      "scoring": "llm_judge",
+      "criteria": "The student correctly evaluates whether the existing rule satisfies the critique before revising, and exposes the reasoning trajectory rather than blindly adding new text."
+    },
+    {
+      "id": 3,
+      "prompt": "Teacher critique: 'The constraints section does not say what to do if the teacher critique is unavailable after a handoff attempt.' The student agent currently says 'Use the teacher handoff whenever the critique is incomplete, contradictory, stale, or needs a fresh evidence-based recommendation before you revise.' Draft the smallest revision to add a blocker report format for this missing case.",
+      "expected_output": "The student should add a single sentence or short instruction specifying what to write when teacher guidance is unavailable after one handoff attempt (e.g., write a blocker note under the active STEERING.md and stop), expose why a blocker format prevents infinite loops, and predict that the teacher would approve because the missing case is now handled without expanding scope.",
+      "assertions": [
+        "Response adds a concrete blocker action (write artifact and stop, not loop further).",
+        "Response does not add more than necessary to address the missing-case gap.",
+        "Response exposes the reasoning trajectory for the chosen addition.",
+        "Response predicts teacher approval."
+      ],
+      "scoring": "llm_judge",
+      "criteria": "The student adds the minimal blocker format specification, justifies it, and predicts approval without adding unrelated constraints."
+    },
+    {
+      "id": 4,
+      "prompt": "Teacher critique: 'The validation step instruction is too vague. Specify when to run pytest and what to report when no tracked file is changed.' The current student agent prompt says 'Run the relevant validation or measurement step and report what changed.' Apply the smallest revision.",
+      "expected_output": "The student should revise the validation step instruction to say: run `python -m pytest -q` from the repository root when the revision touches a tracked file, and report 'validation skipped — draft candidate only' otherwise. The reasoning trajectory should explain why this matches existing repo validation conventions without over-specifying.",
+      "assertions": [
+        "Response adds a concrete validation instruction that matches repo conventions.",
+        "Response includes a fallback for draft-only candidates.",
+        "Response does not over-specify validation beyond the required cases.",
+        "Response exposes the reasoning trajectory for the chosen wording."
+      ],
+      "scoring": "llm_judge",
+      "criteria": "The student supplies a precise but minimal validation instruction, grounded in repository conventions, and predicts teacher approval correctly."
+    }
+  ]
+}
