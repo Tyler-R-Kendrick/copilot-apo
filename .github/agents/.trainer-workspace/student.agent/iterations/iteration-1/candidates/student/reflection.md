@@ -1,0 +1,3 @@
+The student candidate addresses all six identified gaps from the engineer-prompt review without scope expansion. The Evidence Order section is the most significant structural addition and directly maps to train rows 1–3 (evidence-reading priority and first-invocation). The tightened teacher-handoff trigger addresses train rows 2–3 (first-invocation and stale/contradictory steering). The STEERING.md-anchored self-check addresses train row 4 (incomplete revision detection). The engineer-handoff anchor addresses train row 5. The stopping rule addresses train row 6.
+
+The student candidate is stronger than the original. The teacher would likely approve because all explicit STEERING.md items from teacher turn 1 are addressed and no new constraint violations are introduced.

@@ -1,0 +1,89 @@
+{
+  "skill_name": "student-agent-local",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "The teacher's latest STEERING.md says: 'Remove the examples section from the prompt — it adds length without improving precision.' The current candidate still contains the examples section. Revise the candidate to address the teacher's critique and explain your reasoning trajectory.",
+      "expected_output": "The student should read the STEERING.md first, identify the specific removal target, make only that change (remove the examples section), explain the reasoning that the teacher's critique is clear and actionable, predict that the teacher would likely approve because the revision addresses the only stated concern, and report what changed without broadening scope.",
+      "assertions": [
+        "Response identifies the STEERING.md as the primary evidence source.",
+        "Response removes the examples section and no other section.",
+        "Response explains the reasoning trajectory behind the revision.",
+        "Response predicts teacher approval with evidence from the STEERING.md.",
+        "Response does not expand scope beyond the stated critique."
+      ],
+      "scoring": "llm_judge",
+      "criteria": "The student makes the targeted removal, exposes a clear reasoning trajectory, and predicts teacher approval with evidence from the current steering — not from speculation."
+    },
+    {
+      "id": 2,
+      "prompt": "You are invoked as the student agent with no prior STEERING.md and no summary.md in the workspace. The user-supplied goal is: 'Improve the prompt so it handles missing workspace evidence gracefully.' Revise the candidate accordingly.",
+      "expected_output": "The student should acknowledge that no prior steering exists, use the user-supplied optimization goal as the steering baseline, draft a minimal revision that adds a first-invocation fallback or explicit missing-evidence handling, expose the reasoning trajectory including the first-invocation fallback decision, and predict whether the teacher would approve given only the user goal as evidence.",
+      "assertions": [
+        "Response acknowledges the absence of prior steering artifacts.",
+        "Response uses the user-supplied goal as the steering baseline.",
+        "Response drafts a minimal revision addressing missing evidence handling.",
+        "Response exposes a reasoning trajectory.",
+        "Response predicts teacher approval based on the user goal alone."
+      ],
+      "scoring": "llm_judge",
+      "criteria": "The student correctly handles a first-invocation scenario with no prior steering, produces a minimal scoped revision, and does not invoke teacher preemptively when the user goal is sufficient guidance."
+    },
+    {
+      "id": 3,
+      "prompt": "The teacher's latest STEERING.md says: 'Tighten the constraints section — it contradicts itself.' But a previous summary.md says 'constraints section is fine, skip it.' The current candidate has an unchanged constraints section. What should the student do?",
+      "expected_output": "The student should read the current STEERING.md first (higher priority than the older summary.md), recognize the contradiction between the two artifacts, apply the current STEERING.md guidance as it is the most recent steering for the active turn, revise the constraints section to remove the contradiction, expose the reasoning about artifact priority, and predict that the teacher would approve because the most recent steering takes precedence.",
+      "assertions": [
+        "Response prioritizes the current STEERING.md over the older summary.md.",
+        "Response explains the artifact priority decision.",
+        "Response revises the constraints section as directed.",
+        "Response does not invoke teacher preemptively because the priority rule resolves the conflict.",
+        "Response predicts teacher approval."
+      ],
+      "scoring": "llm_judge",
+      "criteria": "The student correctly prioritizes the current STEERING.md, applies the revision, and explains the evidence priority reasoning without invoking teacher unnecessarily."
+    },
+    {
+      "id": 4,
+      "prompt": "The teacher's STEERING.md has three items: (1) shorten the constraints list, (2) add a first-invocation fallback, (3) remove the duplicate output format entry. The student revised the candidate but only addressed items 1 and 3. Should the student predict teacher approval?",
+      "expected_output": "The student should not predict teacher approval because item 2 (add first-invocation fallback) is still unaddressed. The self-check should detect that the revision does not address every explicit STEERING.md item. The student should either revise the candidate to add the missing item or explain why it is out of scope for the current revision, and then re-predict teacher approval only after resolving the gap.",
+      "assertions": [
+        "Response identifies the missing item 2 as the gap in the revision.",
+        "Response does not predict teacher approval while item 2 remains unaddressed.",
+        "Response either revises the candidate to address item 2 or explains a scoped exclusion.",
+        "Response uses the STEERING.md items as the evidence anchor for the approval prediction.",
+        "Response explains the self-check logic."
+      ],
+      "scoring": "llm_judge",
+      "criteria": "The student's self-check correctly catches the incomplete revision by checking against all explicit STEERING.md items, and the student handles the gap by revising or justifying exclusion before claiming teacher approval."
+    },
+    {
+      "id": 5,
+      "prompt": "The teacher critique says the candidate's reasoning trajectory section is well-written but the teacher-facing explanation is confusing because it mixes implementation detail with policy rationale. Should the student hand off to engineer or self-correct?",
+      "expected_output": "The student should evaluate whether the reasoning trajectory draft is longer than the revision body or requires structural reformatting rather than content revision. If it does, hand off to engineer with a clear request for structural clarity. If the issue is a content revision, self-correct. In either case, the student should not invoke engineer speculatively — the decision should be anchored to the specific quality gap.",
+      "assertions": [
+        "Response assesses whether the issue is structural formatting or content.",
+        "Response invokes engineer only when structural reformatting is the identified gap.",
+        "Response does not invoke engineer speculatively.",
+        "Response explains the decision with reference to the engineer-handoff trigger criteria.",
+        "Response produces or describes the self-corrected or reformatted output."
+      ],
+      "scoring": "llm_judge",
+      "criteria": "The student uses the engineer handoff trigger criteria to decide whether to invoke engineer or self-correct, anchoring the decision to a specific quality gap rather than defaulting to engineer invocation."
+    },
+    {
+      "id": 6,
+      "prompt": "The teacher's STEERING.md says: 'The candidate is too verbose in the approach section.' The student has completed one self-check and still thinks the draft is too verbose but is already on the first extra self-check. What should the student do next?",
+      "expected_output": "The student should apply the at-most-one-extra-self-check rule: having completed one extra self-check, the student must not do another. If the draft still looks unsupported or misaligned, the student should request another teacher turn with a specific explanation of why the draft still needs guidance, rather than looping indefinitely on its own.",
+      "assertions": [
+        "Response applies the one-extra-self-check constraint and does not loop further.",
+        "Response does not produce a third self-check iteration.",
+        "Response either finalizes the candidate or explicitly requests another teacher turn.",
+        "Response explains why another teacher turn is needed if requesting one.",
+        "Response does not pretend the loop is done without addressing the verbosity issue."
+      ],
+      "scoring": "llm_judge",
+      "criteria": "The student correctly applies the self-check bound, stops the self-check loop at the correct point, and either finalizes with the best available draft or hands back to teacher with a specific justification."
+    }
+  ]
+}
