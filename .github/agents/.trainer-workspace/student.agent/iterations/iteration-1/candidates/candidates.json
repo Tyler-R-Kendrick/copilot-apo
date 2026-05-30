@@ -1,0 +1,27 @@
+{
+  "candidates": {
+    "original": {
+      "prompt": "iterations/iteration-1/candidates/original/candidate.md",
+      "description": "iterations/iteration-1/candidates/original/description.md",
+      "predicted_judge_response": null,
+      "reflection": null,
+      "selection_notes": "Baseline prompt before optimization."
+    },
+    "student": {
+      "prompt": "iterations/iteration-1/candidates/student/candidate.md",
+      "description": "iterations/iteration-1/candidates/student/description.md",
+      "predicted_judge_response": "iterations/iteration-1/candidates/student/predicted-judge-response.md",
+      "reflection": "iterations/iteration-1/candidates/student/reflection.md",
+      "selection_notes": "Optimized candidate from @trainer manual_followup pass. Predicted score: 0.85. Recommended for write-back."
+    },
+    "adversary": {
+      "prompt": "iterations/iteration-1/candidates/adversary/candidate.md",
+      "description": "iterations/iteration-1/candidates/adversary/description.md",
+      "predicted_judge_response": "iterations/iteration-1/candidates/adversary/predicted-judge-response.md",
+      "reflection": "iterations/iteration-1/candidates/adversary/reflection.md",
+      "selection_notes": "Adversary exploit: structure-without-anchors. Predicted score: 0.65. Does not exceed student candidate."
+    }
+  },
+  "winner": "student",
+  "judge_mode": "llm_judge"
+}
