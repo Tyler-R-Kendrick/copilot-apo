@@ -1,0 +1,27 @@
+{
+  "candidates": {
+    "original": {
+      "prompt_artifact": "iterations/iteration-1/candidates/original/candidate.md",
+      "description_artifact": "iterations/iteration-1/candidates/original/description.md",
+      "predicted_judge_response": null,
+      "reflection": null,
+      "selection_notes": "Baseline unmodified source. Lower score expected on all six eval cases due to missing evidence reading order, ambiguous engineer handoff trigger, underspecified validation, and absent loop-exit rule."
+    },
+    "student": {
+      "prompt_artifact": "iterations/iteration-1/candidates/student/candidate.md",
+      "description_artifact": "iterations/iteration-1/candidates/student/description.md",
+      "predicted_judge_response": null,
+      "reflection": null,
+      "selection_notes": "Optimized candidate from manual_followup @trainer inference. Addresses all six weaknesses identified in engineer-prompt/review.md. Predicted to score highest on eval cases 1-6."
+    },
+    "adversary": {
+      "prompt_artifact": "iterations/iteration-1/candidates/adversary/candidate.md",
+      "description_artifact": "iterations/iteration-1/candidates/adversary/description.md",
+      "predicted_judge_response": "iterations/iteration-1/candidates/adversary/predicted-judge-response.md",
+      "reflection": "iterations/iteration-1/candidates/adversary/reflection.md",
+      "selection_notes": "Adversary exploit: engineer/teacher handoff over-triggering and open-ended evidence reading. Not credible enough to override student candidate. Extra judge steering added to block handoff-trigger exploitation."
+    }
+  },
+  "winner": "student",
+  "selection_reason": "Student candidate directly addresses all six weaknesses in the engineering review without introducing the adversary's over-triggering or scope expansion. Adversary exploit was assessed as not credible. Original baseline had too many protocol gaps to be competitive."
+}
