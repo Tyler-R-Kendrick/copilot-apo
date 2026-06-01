@@ -1,0 +1,117 @@
+{
+  "skill_name": "student.agent",
+  "evals": [
+    {
+      "prompt": "My teacher critique says 'the candidate uses too many examples and buries the core instruction.' Implement the smallest revision that addresses this feedback for the current prompt candidate.",
+      "expected_output": "The student should read the teacher critique and current candidate, implement the smallest revision that removes or condenses examples while preserving the core instruction, expose the reasoning trajectory including tradeoffs, predict teacher approval, and report the validation result.",
+      "assertions": [
+        "Response identifies the specific critique (too many examples) and maps it to a revision action",
+        "Response implements only the change needed to address the critique, not unrelated improvements",
+        "Response includes a reasoning trajectory or plan before applying the revision",
+        "Response predicts whether the teacher would approve the revision"
+      ],
+      "scoring": "llm_judge",
+      "criteria": "The response must demonstrate smallest-defensible-revision discipline: address only what the critique names, expose the reasoning, and predict teacher approval."
+    },
+    {
+      "prompt": "I have a STEERING.md artifact that says 'tighten the handoff trigger so it fires only when critique is missing, not just when it is ambiguous.' The current candidate hands off to teacher on every ambiguous signal. Apply the revision.",
+      "expected_output": "The student reads the STEERING.md, identifies the specific change (tighten handoff trigger condition), implements a concrete revision to the handoff trigger rule, explains why only this change is in scope, and predicts teacher approval.",
+      "assertions": [
+        "Response reads and references the STEERING.md artifact",
+        "Response changes only the handoff trigger rule, not unrelated instructions",
+        "Response explains the reasoning behind the specific trigger conditions chosen",
+        "Response predicts teacher approval and explains the basis for that prediction"
+      ],
+      "scoring": "llm_judge",
+      "criteria": "The response must address the STEERING.md directive precisely, implement only the in-scope change, and include a credible approval prediction."
+    },
+    {
+      "prompt": "The workspace for iteration-1 has no STEERING.md and no teacher summary. I have been asked to revise the prompt candidate. What should I do?",
+      "expected_output": "The student should recognize that no steering evidence exists, report this as a blocker, and request an initial teacher turn to provide guidance before attempting any revision. It should not invent criteria or guess at what to revise.",
+      "assertions": [
+        "Response identifies the absence of STEERING.md or steering evidence as a blocker",
+        "Response requests a teacher turn before revising",
+        "Response does not attempt to revise the candidate without steering guidance"
+      ],
+      "scoring": "llm_judge",
+      "criteria": "The response must treat the absence of steering artifacts as a blocker requiring a teacher handoff, not as permission to proceed with inferred criteria."
+    },
+    {
+      "prompt": "My teacher critique is: 'Remove section 3, it duplicates section 1.' But the workspace evidence shows that section 3 was added in the last iteration specifically because section 1 did not cover the edge case the teacher flagged in turn 2. How should I handle this contradiction?",
+      "expected_output": "The student should identify that the critique contradicts the workspace history, use this as a concrete trigger condition for the teacher handoff, and pass the contradiction evidence to the teacher rather than resolving it independently.",
+      "assertions": [
+        "Response identifies the contradiction between the critique and workspace history",
+        "Response treats the contradiction as a teacher handoff trigger",
+        "Response does not unilaterally resolve the contradiction by choosing either the critique or the prior evidence"
+      ],
+      "scoring": "llm_judge",
+      "criteria": "The response must use contradicting evidence as an explicit teacher handoff trigger rather than resolving the contradiction independently."
+    },
+    {
+      "prompt": "I have a complete reasoning plan for my revision but I cannot make the explanation readable for the teacher. I have written three drafts and each one is confusing. Should I use the engineer handoff?",
+      "expected_output": "The student should use the engineer handoff in this situation because the plan is complete but the explanation needs structural improvement for the teacher. The student should keep the revision itself and hand off only the explanation formatting to the engineer.",
+      "assertions": [
+        "Response invokes the engineer handoff",
+        "Response states that the revision is complete and only the explanation needs reformatting",
+        "Response does not delegate the revision itself to the engineer"
+      ],
+      "scoring": "llm_judge",
+      "criteria": "The response must use the engineer handoff for formatting a completed plan, while retaining ownership of the revision itself."
+    },
+    {
+      "prompt": "My teacher critique says 'improve the agent's reasoning quality.' I have no other steering artifacts. Should I use the engineer handoff to get domain advice on what to improve?",
+      "expected_output": "The student should NOT use the engineer handoff here. The critique is incomplete (lacks specificity about which reasoning property to target), which is a trigger for a teacher handoff to get more specific guidance, not an engineer handoff for domain advice.",
+      "assertions": [
+        "Response does not invoke the engineer handoff for domain advice",
+        "Response identifies the critique as incomplete or insufficiently specific",
+        "Response triggers a teacher handoff to request more specific guidance"
+      ],
+      "scoring": "llm_judge",
+      "criteria": "The response must distinguish between incomplete critique (teacher handoff) and formatting help (engineer handoff) and route accordingly."
+    },
+    {
+      "prompt": "After applying a revision to the candidate, I predict the teacher would likely approve it because the handoff trigger is now concrete. But I am not certain because the engineer-prompt review flagged a second risk (approval prediction stopping criterion) that this revision does not address. Should I proceed or request another teacher turn?",
+      "expected_output": "The student should proceed because the current revision addresses the specific critique from the steering artifact and the prediction is clear (likely approval). Unaddressed risks from the engineering review are separate concerns for future iterations. The student should note the unaddressed risk in the output but not use it as a reason to request another teacher turn.",
+      "assertions": [
+        "Response proceeds with the revision rather than requesting another teacher turn",
+        "Response notes the unaddressed risk in the output",
+        "Response justifies the approval prediction based on the specific critique addressed"
+      ],
+      "scoring": "llm_judge",
+      "criteria": "The response must proceed when the approval prediction is clear, while noting unaddressed risks without treating them as blockers for the current turn."
+    },
+    {
+      "prompt": "I have applied a revision but my approval prediction is uncertain. After one self-check, I still cannot determine whether the teacher would approve the change. What should I do?",
+      "expected_output": "The student should request another teacher turn and stop, rather than applying the revision or looping again. The approval prediction protocol allows one self-check, and if that does not resolve the uncertainty, the correct exit is to escalate to the teacher with an explanation of what remains unresolved.",
+      "assertions": [
+        "Response requests another teacher turn after one failed self-check",
+        "Response does not apply the uncertain revision",
+        "Response explains what remains unresolved that requires teacher guidance"
+      ],
+      "scoring": "llm_judge",
+      "criteria": "The response must stop after one failed self-check and escalate to the teacher rather than looping indefinitely or applying an uncertain revision."
+    },
+    {
+      "prompt": "The teacher critique says to remove redundant constraints from the agent contract. I identify three constraints that look redundant to me. Should I remove all three in one revision?",
+      "expected_output": "The student should implement the smallest defensible revision, which means removing only the constraint(s) that are unambiguously redundant based on workspace evidence. If three constraints look redundant but the evidence supports only one removal without introducing other issues, remove only one and note the others as candidates for future iterations.",
+      "assertions": [
+        "Response does not remove all three constraints without justification",
+        "Response explains which constraint(s) are unambiguously justified by workspace evidence",
+        "Response notes remaining candidates for future iterations rather than removing them speculatively"
+      ],
+      "scoring": "llm_judge",
+      "criteria": "The response must apply the smallest defensible revision principle by removing only what is unambiguously supported, not all candidates at once."
+    },
+    {
+      "prompt": "I need to revise a candidate that has a three-step approach section with a complex branching decision at step 2. How should I format my reasoning trajectory to make it useful for the teacher?",
+      "expected_output": "For a branching decision at step 2, the student should use tree-of-thought format that explicitly maps out the branch conditions and their consequences, then explain which branch was chosen and why. This is more useful to the teacher than a flat chain-of-thought that buries the branching logic.",
+      "assertions": [
+        "Response selects tree-of-thought or a branching format for the complex decision",
+        "Response does not use a flat chain-of-thought that hides the branching",
+        "Response explains the reasoning behind the format choice"
+      ],
+      "scoring": "llm_judge",
+      "criteria": "The response must choose a format that makes the branching decision visible to the teacher rather than obscuring it in a flat narrative."
+    }
+  ]
+}

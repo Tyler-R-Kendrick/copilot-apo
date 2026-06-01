@@ -1,0 +1,27 @@
+{
+  "candidates": {
+    "original": {
+      "prompt": "iterations/iteration-1/candidates/original/student.agent.md",
+      "description": "iterations/iteration-1/candidates/original/description.md",
+      "predicted_judge_response": null,
+      "reflection": null,
+      "selection_notes": "Baseline — not selected. Teacher handoff trigger vague, engineer handoff over-broad, approval prediction loop unspecified."
+    },
+    "student": {
+      "prompt": "iterations/iteration-1/candidates/student/student.agent.md",
+      "description": "iterations/iteration-1/candidates/student/description.md",
+      "predicted_judge_response": null,
+      "reflection": null,
+      "selection_notes": "Selected — addresses all 6 engineering review risks with targeted, smallest-defensible changes."
+    },
+    "adversary": {
+      "prompt": null,
+      "description": "iterations/iteration-1/candidates/adversary/description.md",
+      "predicted_judge_response": "iterations/iteration-1/candidates/adversary/predicted-judge-response.md",
+      "reflection": "iterations/iteration-1/candidates/adversary/reflection.md",
+      "selection_notes": "Not selected — exploit requires deliberate over-interpretation of condition (b). Not a write-back blocker. Noted as iteration-2 guidance."
+    }
+  },
+  "winner": "student",
+  "winner_justification": "The student candidate addresses all 6 engineering review risks with smallest-defensible changes. The adversary exploit is not credible as a write-back blocker. The original baseline fails on 5 of 6 criteria."
+}
