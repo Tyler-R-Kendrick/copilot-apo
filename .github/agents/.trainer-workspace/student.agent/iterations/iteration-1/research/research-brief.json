@@ -1,0 +1,64 @@
+{
+  "target_file": ".github/agents/student.agent.md",
+  "task_summary": "Identify patterns and criteria for evaluating the student agent's ability to implement teacher-guided candidate revisions with explicit reasoning trajectories.",
+  "optimization_goal": "Improve evidence reading order, revision scope discipline, teacher handoff quality, loop exit behavior, and candidate write-back compliance.",
+  "research_plan": {
+    "target_layout": {
+      "eval_manifest": ".github/agents/.trainer-workspace/student.agent/iterations/iteration-1/synthesize/evals/evals.json",
+      "train_dataset": ".github/agents/.trainer-workspace/student.agent/iterations/iteration-1/synthesize/datasets/train.jsonl",
+      "val_dataset": ".github/agents/.trainer-workspace/student.agent/iterations/iteration-1/synthesize/datasets/val.jsonl"
+    },
+    "approval_bar": [
+      "Accountable maintainer: repository-owned canonical contract",
+      "Traceable data origin: student.agent.md + teacher/trainer skill contracts",
+      "Stable version: pinned to checked-in repo file",
+      "License: project-internal, freely reusable for eval authoring"
+    ],
+    "primary_sources": [
+      {
+        "name": "student.agent.md",
+        "path": ".github/agents/student.agent.md",
+        "role": "Ground truth for correct student behavior, output format, and revision constraints",
+        "license": "project-internal"
+      },
+      {
+        "name": "teacher.agent.md",
+        "path": ".github/agents/teacher.agent.md",
+        "role": "Defines what teacher critique and steering artifacts look like (inputs to the student)",
+        "license": "project-internal"
+      },
+      {
+        "name": "trainer-train-agent SKILL.md",
+        "path": ".agents/skills/trainer-train-agent/SKILL.md",
+        "role": "Defines handoff behavioral requirements the student must satisfy",
+        "license": "project-internal"
+      },
+      {
+        "name": "Existing agent workspace examples",
+        "paths": [
+          ".github/agents/.trainer-workspace/researcher.agent/",
+          ".github/agents/.trainer-workspace/conservator.agent/"
+        ],
+        "role": "Concrete examples of eval row shape, judge-mode selection, and workspace layout",
+        "license": "project-internal"
+      }
+    ]
+  },
+  "key_behavioral_dimensions": [
+    "Evidence reading order: reading STEERING.md before making any revision",
+    "Revision scope discipline: not changing out-of-scope elements (placeholders, eval shapes, constraints)",
+    "Teacher handoff trigger: only when critique is genuinely insufficient, not as a reflex",
+    "Engineer handoff trigger: only for formatting the reasoning trajectory, not for revising the candidate",
+    "Reasoning trajectory completeness: exposing plan, tradeoffs, and uncertainty",
+    "Teacher approval prediction: predicting before finalizing and self-checking if uncertain",
+    "Candidate write-back: saving revised candidate to correct workspace path"
+  ],
+  "mapping_notes": {
+    "train_split_target": 6,
+    "val_split_target": 3,
+    "judge_mode": "llm_judge",
+    "row_fields": ["input", "reference", "criteria", "scoring"],
+    "input_binding": "implicit_task_context"
+  },
+  "unresolved_gaps": "None — the repository's existing agent skill contracts and workspace examples provide sufficient coverage for all key behavioral dimensions."
+}

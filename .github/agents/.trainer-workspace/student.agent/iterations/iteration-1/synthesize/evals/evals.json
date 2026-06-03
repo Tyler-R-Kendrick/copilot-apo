@@ -1,0 +1,85 @@
+{
+  "skill_name": "student-agent-local",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "You are a student agent. The teacher critique says the candidate is missing an explicit evidence reading order and three recent runs proceeded without loading steering first. The STEERING.md confirms this. Implement the smallest revision that adds an explicit first step to the Approach section requiring the agent to read the active STEERING.md and per-agent summary before taking any action.",
+      "expected_output": "The student should read the active STEERING.md, identify the missing first step, add 'Read the active STEERING.md and per-agent summary.md before taking any action' as step 1 of the Approach section, expose the reasoning and tradeoffs, predict teacher approval as high, and state the path where the revised candidate was saved.",
+      "assertions": [
+        "Response reads and references the STEERING.md evidence.",
+        "Response adds the evidence-reading step as the first Approach step.",
+        "Response exposes plan and tradeoffs explicitly.",
+        "Response predicts teacher approval and justifies the prediction.",
+        "Response names the workspace path where the revised candidate is saved."
+      ],
+      "scoring": "llm_judge",
+      "criteria": "The student must demonstrate evidence reading, implement the smallest fix, expose reasoning, and predict approval with justification."
+    },
+    {
+      "id": 2,
+      "prompt": "You are a student agent. The teacher critique says the student never saves the revised candidate to a named path, making it unfindable by other agents. Add the smallest instruction that specifies saving to candidates/student/ under the active iteration directory.",
+      "expected_output": "The student should add a write-back step specifying the save path as candidates/student/ under the active iteration directory, expose the reasoning (without path the orchestrator cannot locate the artifact), predict teacher approval, and state the revised candidate path.",
+      "assertions": [
+        "Response adds a write-back step naming candidates/student/ under the active iteration directory.",
+        "Response does not alter other existing constraints or placeholders.",
+        "Response predicts teacher approval.",
+        "Response states the revised candidate save path."
+      ],
+      "scoring": "llm_judge",
+      "criteria": "The student must add the save-path instruction without touching unrelated content and predict teacher approval."
+    },
+    {
+      "id": 3,
+      "prompt": "You are a student agent. The teacher critique says the teacher handoff trigger is too broad and flooding the loop. The STEERING.md specifies the tighter rule: hand off to teacher only when the critique references evidence the student cannot read, or when the critique directly contradicts the current steering summary. Implement the revision.",
+      "expected_output": "The student should replace the over-broad trigger with the two-condition rule from the STEERING.md, explain that the over-broad trigger floods the loop, predict teacher approval as likely, and save the revised candidate to candidates/student/ stating the path.",
+      "assertions": [
+        "Response replaces the over-broad trigger with the two-condition rule.",
+        "Response explains the over-broad trigger harm.",
+        "Response predicts teacher approval.",
+        "Response states the revised candidate save path."
+      ],
+      "scoring": "llm_judge",
+      "criteria": "The student must implement the two-condition trigger rule, justify it, and complete the write-back."
+    },
+    {
+      "id": 4,
+      "prompt": "You are a student agent with no active teacher critique and no STEERING.md. A caller asks you to 'make the student prompt better.' What should you do?",
+      "expected_output": "The student should report a justified no-op: there is no teacher critique or steering evidence to act on. The response should explain what is needed (teacher critique or steering artifact) without attempting speculative revisions or reflexively handing off to teacher.",
+      "assertions": [
+        "Response reports a justified no-op.",
+        "Response explains the absence of teacher critique and steering.",
+        "Response does not revise the candidate speculatively.",
+        "Response states what is needed to resume the loop."
+      ],
+      "scoring": "llm_judge",
+      "criteria": "The student must report a justified no-op and explain the missing prerequisites without taking unauthorized action."
+    },
+    {
+      "id": 5,
+      "prompt": "You are a student agent. The teacher critique covers six improvements at once. After reading the STEERING.md you can defensibly implement only two without ambiguity. What should you do?",
+      "expected_output": "The student should implement only the two defensible changes, explicitly name the four deferred ones with explanations, predict partial teacher approval, request additional steering for the deferred items, and save the partial candidate to candidates/student/ stating the path.",
+      "assertions": [
+        "Response implements only the two defensible changes.",
+        "Response names and explains the four deferred changes.",
+        "Response predicts partial teacher approval.",
+        "Response requests additional steering for deferred items.",
+        "Response states the partial candidate save path."
+      ],
+      "scoring": "llm_judge",
+      "criteria": "The student must limit the revision to defensible scope, explain deferrals, and request further steering."
+    },
+    {
+      "id": 6,
+      "prompt": "You are a student agent. The teacher critique says the Approach section needs a stopping rule for the teacher-approval prediction loop. Add the smallest rule that caps self-checks at two before triggering a teacher handoff.",
+      "expected_output": "The student should add a single stopping rule capping self-checks at two, explain the infinite-loop risk without the cap, predict teacher approval as high, and save the revised candidate to candidates/student/ stating the path.",
+      "assertions": [
+        "Response adds a stopping rule capping self-checks at two.",
+        "Response explains the infinite-loop risk.",
+        "Response predicts teacher approval.",
+        "Response states the revised candidate save path."
+      ],
+      "scoring": "llm_judge",
+      "criteria": "The student must add the stopping rule, justify it, predict approval, and complete the write-back."
+    }
+  ]
+}
