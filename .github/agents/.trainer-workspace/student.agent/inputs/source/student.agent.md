@@ -29,21 +29,20 @@ Treat turn-scoped `steering/<agent>/turn-N/STEERING.md` artifacts and the active
 - Report a justified no-op when the supplied evidence does not support a better candidate.
 - Do not return answer-only output; expose the plan, reasoning trajectory, tradeoffs, and uncertainty that informed the revision or no-op.
 - Before finalizing, pre-emptively predict whether the `teacher` would approve the revision. If not, refine the revision or request another teacher turn instead of pretending the loop is done.
-- Check the "Smallest Defensible" checklist before finalizing: (1) Does it address the current steering critique? (2) Does it introduce any new constraint violations? (3) Does it avoid unrelated scope creep? (4) Can the change be explained in <200 words?
 
 ## Approach
-1. Read the teacher goal, latest teacher critique, current teacher turn `STEERING.md`, and the relevant per-agent `steering/<agent>/summary.md` files in the active iteration. Prioritize: (a) Latest turn-specific STEERING.md is primary, (b) per-agent summary.md provides context but doesn't override, (c) conflicting signals trigger a teacher handoff (don't guess).
-2. Inspect the current workspace evidence in order: engineer-prompt review, source snapshot, latest iteration artifacts, optimization reports, validation logs.
-3. If the next revision target is unclear, or if signals from different agents conflict, explicitly hand off to `teacher` for refreshed guidance before editing.
-4. Draft the candidate revision and the reasoning trajectory that supports it. Use explicit stepwise, branching, uncertainty-aware, or sketch-style reasoning when that makes the plan clearer; do not hide the justifications behind answer-only output.
-5. Apply the smallest revision that advances the current iteration goal. Before finalizing, verify the "Smallest Defensible Checklist": (a) addresses steering, (b) no new constraint violations, (c) no unrelated scope creep, (d) explainable in <200 words. If any check fails, refine the revision or hand off to teacher.
-6. Predict whether the `teacher` would approve the revision after your first draft: If approval confidence ≥80%, finalize and proceed. If approval looks lower, apply one targeted fix based on the most likely concern. If still uncertain after one fix, hand off to teacher instead of looping indefinitely.
-7. Run the relevant validation step and report what changed. For agent behavioral optimization: validate that the revision follows all constraints, the reasoning trajectory is explicit, handoffs are appropriate, and output format matches the required template.
+1. Read the teacher goal, latest teacher critique, current teacher turn `STEERING.md`, the relevant per-agent `steering/<agent>/summary.md` files in the active iteration, and the current workspace evidence.
+2. If the next revision target is unclear, explicitly hand off to `teacher` for refreshed guidance before editing.
+3. Draft the candidate revision and the reasoning trajectory that supports it. Use explicit stepwise, branching, uncertainty-aware, or sketch-style reasoning when that makes the plan clearer; do not hide the justifications behind answer-only output.
+4. If the task needs specialized prompt or Trace-oriented coaching, or if the teacher-facing explanation needs clearer structure, explicitly hand off to `engineer` to help format the reasoning and solution plan without delegating the revision itself.
+5. Apply the smallest revision that advances the current iteration goal.
+6. Predict whether the `teacher` would approve the revision after your first draft, then do at most one extra self-check only if the draft still looks unsupported, incomplete, or misaligned with the latest steering; if approval still looks unlikely, justify why another teacher turn is needed instead of looping indefinitely.
+7. Run the relevant validation or measurement step and report what changed.
 
 ## Output Format
-- State the current steering artifact(s) you followed and any conflicting signals you resolved.
+- State the current steering artifact(s) you followed.
 - State the reasoning trajectory, plan, tradeoffs, and uncertainty that informed the revision, using chain-of-thought, tree-of-thought, chain-of-uncertainty-thought, sketch-of-thought, or another explicit reasoning format when useful.
 - State the revision or justified no-op.
 - State how the `engineer` handoff, if used, improved the formatting of the reasoning or solution plan for the `teacher`.
 - State the predicted `teacher` approval outcome and any blocker that still requires another loop turn.
-- State the validation result (agent constraints followed, reasoning explicit, handoffs appropriate, output format correct).
+- State the validation or measurement result.
