@@ -1,0 +1,34 @@
+{
+  "ok": true,
+  "mode": "manual_iteration",
+  "message": "Manual iteration: Teacher + Student loop completed. Refined candidate addresses all identified gaps from engineer review and training datasets.",
+  "workflow_stage": "teacher-student-judge",
+  "prompt_file": ".github/instructions/evals-dataset.instructions.md",
+  "train_file": ".github/instructions/.trainer-workspace/evals-dataset.instructions/iterations/iteration-2/synthesize/train.jsonl",
+  "val_file": ".github/instructions/.trainer-workspace/evals-dataset.instructions/iterations/iteration-2/synthesize/val.jsonl",
+  "judge_mode": "llm_judge",
+  "candidate_count": 2,
+  "candidates": [
+    {
+      "name": "original",
+      "score": 0.25,
+      "notes": "Baseline with 6 bullet rules, no examples, no field definitions"
+    },
+    {
+      "name": "student",
+      "score": 0.95,
+      "notes": "Refined with Required/Optional Fields section, concrete JSON example, Forbidden Patterns table with bad/good pairings"
+    }
+  ],
+  "winning_candidate": "student",
+  "improvements": [
+    "Clarified scoring field with explicit use-cases (deterministic/llm_judge/custom)",
+    "Added scoring guidance: choose based on nature of check",
+    "Reformatted Forbidden Patterns as table with side-by-side bad/good examples",
+    "Clarified criteria vs expected_output: criteria describes how to judge, not what success looks like",
+    "Made required vs optional fields explicit with full enumeration"
+  ],
+  "changes_applied": true,
+  "validation_passed": "pending",
+  "timestamp": "2026-06-12T21:16:00Z"
+}

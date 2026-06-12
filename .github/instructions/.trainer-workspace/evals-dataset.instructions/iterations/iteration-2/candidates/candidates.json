@@ -1,0 +1,18 @@
+{
+  "candidates": [
+    {
+      "name": "original",
+      "source": "Baseline from inputs/source",
+      "path": "candidates/original/prompt.md",
+      "description": "Original 6-bullet guidance without examples or field definitions"
+    },
+    {
+      "name": "student",
+      "source": "Refined from teacher feedback",
+      "path": "candidates/student/prompt.md",
+      "description": "Enhanced with 'Required and Optional Fields' section, concrete JSON example, and 'Forbidden Patterns' table with bad/good pairings. Includes clarified scoring use-cases and criteria vs. expected_output distinction."
+    }
+  ],
+  "preferred": "student",
+  "notes": "Student candidate incorporates all three teacher refinements: scoring field guidance, forbidden patterns pairings, and criteria clarification."
+}

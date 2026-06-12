@@ -20,8 +20,11 @@ Every eval row must include:
 Optional fields follow these rules when present:
 - `assertions` — a list of string predicates that are objectively checkable (e.g., "Response contains a category label", "Response is valid JSON"); do not add subjective assertions
 - `files` — a list of paths relative to the eval manifest directory; always store supporting assets under `evals/files/`
-- `scoring` — one of `deterministic`, `custom`, or `llm_judge`; use `deterministic` when the check is rule-based, `llm_judge` for open-ended quality, and `custom` for schema or normalization checks
-- `criteria` — a string describing the evaluation criteria when `scoring` is `llm_judge`
+- `scoring` — one of `deterministic`, `custom`, or `llm_judge`:
+  - `deterministic` — for objective, rule-based checks (valid syntax, field presence, exact matches)
+  - `llm_judge` — for semantic or quality judgment (user intent, tone, accuracy)
+  - `custom` — for domain-specific or schema-based normalization
+- `criteria` — (Optional, for `llm_judge` only) A rubric that guides the judge's evaluation. Differs from `expected_output` in that it describes *how* to evaluate, not *what* success looks like.
 
 ## Example: Correct Eval Row
 
@@ -37,7 +40,9 @@ Optional fields follow these rules when present:
 
 ## Forbidden Patterns
 
-- Do not write label-style prompts: `"Test case 3: billing classification"` is wrong; write a real user request instead.
-- Do not use absolute file paths in `files`; paths must be relative to the manifest directory.
-- Do not write brittle exact-match `expected_output` strings for open-ended tasks; describe the quality characteristics instead.
-- Do not add assertions that require subjective judgment; keep assertions to objectively verifiable predicates.
+| ❌ Bad Form | ✅ Good Form |
+|---|---|
+| `"prompt": "Test case 3: billing classification"` | `"prompt": "My credit card was charged twice for the same order. Which category does this fall under?"` |
+| `"files": ["/absolute/path/to/file"]` | `"files": ["evals/files/data.json"]` |
+| `"expected_output": "billing"` (exact match for open task) | `"expected_output": "The response should identify the ticket category with a clear label (e.g., 'billing', 'technical', 'general')"` |
+| `"assertions": ["User seems satisfied"]` | `"assertions": ["Response contains a category label", "Category is one of: billing, technical, general"]` |
