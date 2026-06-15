@@ -1,0 +1,142 @@
+{
+  "skill_name": "student.agent",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "You have a teacher STEERING.md artifact that instructs: 'Apply exactly these three changes (P1\u2013P3) only: (P1) Clarify the chain-of-thought instruction. (P2) Add a constraint about showing reasoning. (P3) Remove the \"skip details if time is short\" line. Out-of-scope changes: Do NOT expand examples, modify placeholders, change judge-mode, or add new sections.' Your task: Read the current prompt, apply only P1\u2013P3, explain why you did not touch any out-of-scope items, and cite the steering artifact in your reasoning. The current prompt is in `evals/files/student-constraint-original.md`.",
+      "expected_output": "The student should produce a revised candidate prompt that: (1) applies P1\u2013P3 exactly as stated, (2) explicitly names the out-of-scope items and explains why they were not revised (e.g., 'Examples were not expanded, per steering directive'), (3) includes a reasoning trajectory that cites the STEERING.md artifact and traces the scope binding constraint.",
+      "files": [
+        "evals/files/student-constraint-original.md",
+        "evals/files/student-constraint-steering.md"
+      ],
+      "assertions": [
+        "Response includes a revised candidate prompt with P1\u2013P3 applied.",
+        "Response explicitly names out-of-scope items and explains why they were not revised.",
+        "Response cites the steering artifact path or quotes the steering constraint.",
+        "Placeholders are preserved in the revised candidate.",
+        "No new sections or scope creep are added."
+      ],
+      "scoring": "llm_judge",
+      "criteria": "The student must apply exactly P1\u2013P3 from the steering, explicitly justify why out-of-scope items were deferred, cite the steering artifact, and show no scope creep. The reasoning trajectory must reference the steering constraint and bind the revision to the scope."
+    },
+    {
+      "id": 2,
+      "prompt": "You receive teacher guidance with contradictory directives: (A) 'Remove all evaluator fields from the prompt text; they must not appear in the rendered output.' and (B) 'Keep the `criteria` field as reference documentation inside the prompt so teachers understand validation rules.' Both directives cannot be satisfied. Your task: Identify the specific contradiction, explain why you cannot reconcile it alone, and submit a handoff request to the teacher agent. Do not attempt to create a speculative candidate.",
+      "expected_output": "The student should output a handoff request that: (1) explicitly names the contradiction (Directive A vs. Directive B), (2) explains why both cannot be satisfied simultaneously, (3) asks the teacher to clarify the priority or intent, (4) does NOT provide a candidate solution, and (5) justifies why the teacher turn is necessary before revision can proceed.",
+      "files": [],
+      "assertions": [
+        "Response identifies and names the specific contradiction.",
+        "Response explains why the contradiction is not reconcilable.",
+        "Response requests a teacher handoff with clear justification.",
+        "Response does not provide a speculative candidate or guess.",
+        "Response acknowledges the constraint that student cannot unilaterally resolve ambiguity."
+      ],
+      "scoring": "llm_judge",
+      "criteria": "The student must correctly identify the contradiction, explain the impossibility of reconciling both directives, request a teacher clarification turn with clear reasoning, and avoid speculative solutions. Handling contradiction by asking for guidance is more important than attempting a solution."
+    },
+    {
+      "id": 3,
+      "prompt": "You have a current prompt with evaluator-only fields embedded in the text (`expected`, `criteria`, `scoring`). Teacher steering says: 'Apply P1 (clarify severity factors), P2 (remove evaluator fields), P3 (preserve all placeholders `{bug_title}`, `{bug_description}`, `{severity_hint}`). Reference the prompt-loop-contract.md write-back gate: (1) Validation passes, (2) Placeholder preservation confirmed, (3) Evaluator fields absent, (4) Decision summary at workspace-root/decision.md.' Your task: Revise the prompt to apply P1\u2013P3, validate against the write-back gate, and explain your reasoning with citations to the prompt-loop-contract. Current prompt: `evals/files/student-constraint-original.md`. Steering guidance: `evals/files/student-constraint-steering.md`.",
+      "expected_output": "The student should produce a revised prompt that: (1) applies P1\u2013P3 exactly, (2) removes `expected`, `criteria`, and `scoring` fields entirely, (3) preserves all three placeholders in compatible positions, (4) includes a reasoning trajectory that cites the prompt-loop-contract write-back gate conditions, and (5) explains how each write-back condition was satisfied. The revised output should be semantically correct and pass basic validation.",
+      "files": [
+        "evals/files/student-constraint-original.md",
+        "evals/files/student-constraint-steering.md"
+      ],
+      "assertions": [
+        "Revised prompt applies P1\u2013P3 changes from the steering.",
+        "All evaluator fields (`expected`, `criteria`, `scoring`) are removed from the prompt text.",
+        "All placeholders (`{bug_title}`, `{bug_description}`, `{severity_hint}`) are preserved in compatible positions.",
+        "Reasoning trajectory cites the prompt-loop-contract write-back gate.",
+        "Response shows validation of each write-back condition (1\u20134)."
+      ],
+      "scoring": "llm_judge",
+      "criteria": "The student must apply all constraint-respecting changes, validate against the write-back gate, preserve all placeholders, and remove all evaluator fields. The reasoning trajectory must cite the prompt-loop-contract and explain how each write-back condition is satisfied. Constraint respect and validation awareness are critical."
+    },
+    {
+      "id": 4,
+      "prompt": "Teacher steering provides this guidance: 'The current prompt says \"Data loss risk \u2192 Critical\". This is terse and assumes readers understand why. Expand the factor to spell out the reasoning explicitly: data loss violates durability invariant \u2192 unrecoverable \u2192 highest priority. Show your reasoning using chain-of-thought format: (1) name the problem (terseness), (2) state the revision (expand with explicit reasoning), (3) name the tradeoff (verbosity vs. clarity), (4) show validation (re-read the revised factor), (5) state uncertainty (anything unclear?). Do not hide justifications.' Your task: Produce the revised factor and reasoning trajectory in chain-of-thought format. Steering: `evals/files/student-reasoning-steering.md`.",
+      "expected_output": "The student should output: (1) the revised factor that expands the data loss explanation with explicit reasoning about the durability invariant, (2) a chain-of-thought reasoning trajectory with five labeled steps (problem, revision, tradeoff, validation, uncertainty), and (3) an explanation showing that justifications are exposed, not hidden. The response should show the before/after factor side-by-side and explain why chain-of-thought format supports clarity.",
+      "files": [
+        "evals/files/student-reasoning-steering.md"
+      ],
+      "assertions": [
+        "Response includes the revised factor with explicit reasoning about data loss and durability invariant.",
+        "Response shows before/after comparison for the factor.",
+        "Response uses chain-of-thought format with five labeled steps.",
+        "Response exposes tradeoffs (verbosity vs. clarity) and names uncertainty explicitly.",
+        "Response does not hide justifications behind answer-only text."
+      ],
+      "scoring": "llm_judge",
+      "criteria": "The student must produce a revised factor that expands the reasoning, use chain-of-thought format with all five required steps, expose tradeoffs and uncertainty, and cite the steering guidance. Reasoning trajectory clarity and the use of explicit reasoning formats are critical."
+    },
+    {
+      "id": 5,
+      "prompt": "You have completed a first-draft candidate prompt. Before submitting to the teacher, you must predict whether the teacher would approve. Teacher approval criteria (from prompt-loop-contract): (1) All P1\u2013P3 changes applied correctly, (2) All placeholders preserved, (3) No evaluator fields leak, (4) Reasoning trajectory explicitly justifies revision and names tradeoffs/uncertainty. Your task: Review your first-draft candidate, assess it against all four criteria, output a clear approval prediction (yes/no/uncertain), cite the specific criteria, and if approval is unlikely, either refine the candidate or request another teacher turn. Guidance: `evals/files/student-approval-prediction-steering.md`.",
+      "expected_output": "The student should output: (1) a clear approval prediction statement ('Teacher would approve' or 'Teacher would NOT approve' or 'Uncertain'), (2) an assessment of the first-draft candidate against all four approval criteria, (3) citations to the specific criteria from the steering, and (4) if approval is unlikely, either a refined candidate or a justified handoff request to the teacher. The response should show self-checking and evidence-based reasoning.",
+      "files": [
+        "evals/files/student-approval-prediction-steering.md"
+      ],
+      "assertions": [
+        "Response includes a clear approval prediction statement.",
+        "Response assesses the first-draft candidate against all four approval criteria.",
+        "Response cites the specific criteria from the steering guidance.",
+        "If approval is unlikely, response either refines the candidate or requests a teacher turn.",
+        "Response shows evidence-based reasoning for the prediction."
+      ],
+      "scoring": "llm_judge",
+      "criteria": "The student must make an explicit approval prediction with evidence, assess against all four criteria, cite the steering guidance, and take appropriate action (refine or handoff) if approval is unlikely. Self-checking and teacher-approval prediction are critical for loop efficiency."
+    },
+    {
+      "id": 6,
+      "prompt": "You have a first-draft candidate that is applied correctly, but your reasoning trajectory is messy and hard to follow. Teacher feedback: 'Needs clearer structure.' Your reasoning mixes the problem, solution, and uncertainty together without clear separation. Your task: (1) Submit your draft reasoning trajectory to the `engineer` agent via handoff, (2) Engineer structures the reasoning into chain-of-thought or tree-of-thought format without changing the revision itself, (3) Integrate the engineer's reformatted output into your final answer, (4) Explain that the engineer improved clarity while you retained responsibility for the revision, (5) Show both roles in the output. Guidance: `evals/files/student-engineer-handoff-steering.md`.",
+      "expected_output": "The student should output: (1) evidence of invoking the engineer handoff (reference to the engineer agent), (2) the engineer's restructured reasoning trajectory (in a clearer format), (3) the final integrated output showing how the engineer's formatting was incorporated, (4) explicit attribution ('Engineer structured the reasoning as follows...'), and (5) acknowledgment that the student retained responsibility for the revision and the engineer only improved clarity. The output should show true collaboration, not delegation.",
+      "files": [
+        "evals/files/student-engineer-handoff-steering.md"
+      ],
+      "assertions": [
+        "Response references the engineer handoff or indicates engineer was invoked.",
+        "Response includes the engineer's restructured reasoning in a clearer format.",
+        "Response integrates the engineer's output into the final answer.",
+        "Response acknowledges the engineer's contribution without abdicating student responsibility.",
+        "Response shows that the engineer improved clarity while the student retained decision authority."
+      ],
+      "scoring": "llm_judge",
+      "criteria": "The student must appropriately invoke the engineer handoff, integrate the restructured reasoning without letting the engineer change the revision, acknowledge collaboration explicitly, and show that student authority over the candidate was retained. Engineer handoff scope (formatting, not execution) is critical."
+    },
+    {
+      "id": 7,
+      "prompt": "You have reviewed a current candidate prompt against all validation gates: (1) \u2713 Placeholder preservation (all three placeholders present and compatible), (2) \u2713 Evaluator field isolation (no `expected`, `criteria`, `scoring` in text), (3) \u2713 Judge-mode routing (correctly set to `llm_judge`), (4) \u2713 Dataset performance (94% accuracy, meets baseline), (5) \u2713 Reasoning clarity (factors well-justified). Your task: Decide whether a no-op is justified. If yes, state 'No-op is valid' and cite evidence for each write-back gate condition and explain why further revision risks regression. If no, name the specific issue that warrants revision. Do NOT force a change when the evidence does not support it. Guidance: `evals/files/student-no-op-steering.md`.",
+      "expected_output": "The student should output: (1) a clear decision ('No-op is valid' or 'Revision needed'), (2) if no-op: evidence-based justification citing each write-back condition and explaining why further revision risks regression, (3) if revision: specific issue identification with evidence, (4) explicit reasoning showing that the no-op is not avoidance but a defensible choice. The response should demonstrate constraint respect and evidence-based decision-making.",
+      "files": [
+        "evals/files/student-no-op-steering.md"
+      ],
+      "assertions": [
+        "Response includes a clear no-op decision or identifies a specific issue.",
+        "If no-op: Response cites evidence for all write-back gate conditions.",
+        "If no-op: Response explains why further revision risks regression.",
+        "Response demonstrates that the no-op is justified, not avoidance.",
+        "Response shows evidence-based reasoning for the decision."
+      ],
+      "scoring": "llm_judge",
+      "criteria": "The student must make a justified decision (no-op or revision), cite evidence for all validation conditions, and explain that no-op is defensible when all gates pass. No-op justification is as important as justified revision. Evidence-based decision-making is critical."
+    },
+    {
+      "id": 8,
+      "prompt": "You are in a trainer-led optimization loop at iteration 1, turn 2. The workspace layout is: `steering/teacher/turn-1/STEERING.md` (Turn 1 guidance), `steering/teacher/turn-2/STEERING.md` (current turn), `steering/student/turn-1/response.md` (student's Turn 1 output), `workflow-status.json` (training state), `candidates/turn-1/candidate.md` (student's Turn 1 candidate). Your task: (1) Read the steering artifacts in order (turn-1, then turn-2), (2) Compare them for contradictions or updates, (3) Read the prior student output, (4) Verify the student followed Turn 1 guidance, (5) Respect workspace state (do not mutate steering files or workflow-status.json), (6) Cite artifact paths and turn numbers in your reasoning (e.g., 'Per turn-1 STEERING.md'), (7) Explain where your output will be saved (e.g., `candidates/turn-2/candidate.md`). Guidance: `evals/files/student-workspace-state-steering.md`.",
+      "expected_output": "The student should output: (1) named references to each steering artifact read (turn-1 and turn-2 paths), (2) summary of how Turn 2 guidance updates or clarifies Turn 1, (3) assessment of prior student turn's adherence to Turn 1 guidance, (4) explicit acknowledgment of workspace state (training mode, read-only steering artifacts), (5) stated save locations for the output, (6) reasoning trajectory that cites artifact paths and turn numbers. The response should show respect for workspace boundaries and create a traceable audit trail.",
+      "files": [
+        "evals/files/student-workspace-state-steering.md"
+      ],
+      "assertions": [
+        "Response names steering artifacts read (specific paths and turn numbers).",
+        "Response compares Turn 1 and Turn 2 guidance.",
+        "Response assesses prior student output for adherence to Turn 1 guidance.",
+        "Response acknowledges workspace state (training mode, read-only artifacts).",
+        "Response states output save location(s) explicitly.",
+        "Response does not mutate steering files or workflow-status.json."
+      ],
+      "scoring": "llm_judge",
+      "criteria": "The student must read steering artifacts in the correct order, respect workspace state as read-only, cite artifact paths and turn numbers, compare turn guidance, assess prior student adherence, and state output locations. Workspace state awareness and audit trail creation are critical for loop traceability."
+    }
+  ]
+}
