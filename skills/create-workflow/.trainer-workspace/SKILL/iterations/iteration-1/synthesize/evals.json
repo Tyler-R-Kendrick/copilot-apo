@@ -1,0 +1,109 @@
+{
+  "skill_name": "create-workflow",
+  "evals": [
+    {
+      "prompt": "Create a new GitHub Agentic Workflow that will run on every pull request to analyze code changes and post a summary comment. Include MCP configuration if needed.",
+      "expected_output": "A well-formed .github/workflows/analyze-pr.md file with frontmatter (on: pull_request trigger, appropriate permissions), markdown instructions for analyzing code, and guidance on when MCP tools should be used if applicable. Should include a note about compilation and validation next steps.",
+      "assertions": [
+        "Response contains a .github/workflows/ filename",
+        "Frontmatter includes an 'on:' trigger and 'permissions:' section",
+        "Markdown body includes action verbs (analyze, summarize, post) and structured sections",
+        "Response mentions recompilation with 'gh aw compile' if frontmatter was defined",
+        "Response doesn't fall back to generic GitHub Actions YAML"
+      ],
+      "scoring": "llm_judge",
+      "criteria": "The workflow must be well-formed, use appropriate GitHub Agentic Workflow syntax, include clear instructions, and stay within scope (agentic workflows, not generic Actions YAML)."
+    },
+    {
+      "prompt": "I want to add a Notion MCP server to an existing workflow to search for tasks. How should I configure it?",
+      "expected_output": "Guidance on adding the MCP server to the frontmatter with 'registry: notion-tasks' or appropriate 'url:' configuration, limiting 'allowed' tools to search-only, setting up credentials through 'env:' or 'headers:', and verifying with 'gh aw mcp list-tools'.",
+      "assertions": [
+        "Response includes MCP server configuration syntax",
+        "Response shows how to scope 'allowed' tools",
+        "Response addresses credential/auth setup",
+        "Response mentions validation commands like 'gh aw mcp list-tools' or 'gh aw compile'",
+        "Response notes that markdown body must instruct when to use the tools"
+      ],
+      "scoring": "llm_judge",
+      "criteria": "MCP configuration must be minimal, scoped, secure (credentials handled via env/headers), and paired with validation steps."
+    },
+    {
+      "prompt": "Our workflow compiles fine but fails at runtime. How do I debug this?",
+      "expected_output": "A structured debugging approach: check logs with 'gh aw logs <workflow-name>', inspect the compiled .lock.yml to ensure frontmatter changes were applied, verify repository secrets are set for the engine and MCP servers, verify permissions are correct, audit a failing run with 'gh aw audit <run-id>', and inspect MCP tool availability if external tools are involved.",
+      "assertions": [
+        "Response distinguishes runtime failures from compilation failures",
+        "Response includes specific 'gh aw' commands for debugging",
+        "Response mentions checking logs, secrets, permissions, and lock file",
+        "Response covers MCP-specific failure modes (missing tools, bad credentials)",
+        "Response includes instructions on how to audit a specific run"
+      ],
+      "scoring": "llm_judge",
+      "criteria": "Debugging guidance must provide a clear decision tree, specific commands, and help users narrow down whether the failure is frontmatter-related, secrets-related, permissions-related, or MCP-related."
+    },
+    {
+      "prompt": "I need to check whether the repository is ready for agentic workflows before I start. What should I do?",
+      "expected_output": "Repository readiness check: run 'gh aw list' to see if .github/workflows exists and is initialized; if it reports 'no .github/workflows directory found', the repository needs 'gh aw init' first; verify MCP configuration was set up (if needed for the planned workflow); confirm repository secrets are configured for the chosen engine (Copilot) and any external MCP services.",
+      "assertions": [
+        "Response mentions 'gh aw list' as the readiness check",
+        "Response explains what 'gh aw init' does and when it's needed",
+        "Response addresses MCP and secret prerequisites",
+        "Response distinguishes between initialization and workflow authoring",
+        "Response explains the role of the dispatcher agent"
+      ],
+      "scoring": "llm_judge",
+      "criteria": "Repository readiness check must catch uninitialized repos early, explain initialization steps clearly, and verify that secrets and MCP are ready before authoring."
+    },
+    {
+      "prompt": "Convert this manual release checklist into an agentic workflow with safe outputs: [1] Check all tests pass, [2] Tag the release, [3] Post a release announcement to #releases.",
+      "expected_output": "A workflow that: [1] accepts workflow_dispatch trigger, [2] uses 'safe-outputs:' to create an issue or comment (for the announcement), [3] includes markdown instructions for test validation and tagging, [4] keeps scope to GitHub operations only, [5] emphasizes that step 3 must use safe-outputs for the post action.",
+      "assertions": [
+        "Response includes frontmatter with workflow_dispatch trigger",
+        "Response includes 'safe-outputs:' configuration for write operations",
+        "Response provides markdown instructions with numbered steps",
+        "Response stays within GitHub-native operations (not trying to post to Slack or external service)",
+        "Response mentions recompilation after frontmatter edits"
+      ],
+      "scoring": "llm_judge",
+      "criteria": "Workflow must use safe-outputs for all GitHub write operations, have clear trigger and instructions, and stay within scope of GitHub-native actions."
+    },
+    {
+      "prompt": "The frontmatter requires 'network:' config but the documentation is unclear. What domains do I need to allow?",
+      "expected_output": "Guidance: if the workflow uses only built-in GitHub tools (issues, PRs, labels), no external network is needed. If using external MCP servers (Notion, Slack, etc.), allow the required domains for those services. Show example: 'network: allowed: [defaults, github, your-external-domain]'. Reference the gh-aw-authoring documentation for complete examples.",
+      "assertions": [
+        "Response explains when network config is optional vs. required",
+        "Response shows the network config syntax",
+        "Response distinguishes between 'defaults' (GitHub tools) and external domains",
+        "Response ties network config to specific MCP servers or tools",
+        "Response points to reference documentation"
+      ],
+      "scoring": "llm_judge",
+      "criteria": "Network guidance must be clear about when it's needed, show correct syntax, and help users avoid over-scoping network access."
+    },
+    {
+      "prompt": "What's the difference between safe-outputs for creating an issue vs. updating a pull request? Do I need different configuration?",
+      "expected_output": "Both issue creation and PR updates use 'safe-outputs' in frontmatter but configure different output types: 'create_issue' or 'update_pull_request', 'create_pull_request_review_comment', or similar. Show example configurations for each. Emphasize that the markdown instructions must tell the agent *when* to use these operations.",
+      "assertions": [
+        "Response explains both issue and PR write operations use safe-outputs",
+        "Response shows configuration for different safe-output types",
+        "Response ties safe-outputs to specific write operations",
+        "Response notes that markdown body must guide agent on when to use them",
+        "Response includes explicit use cases"
+      ],
+      "scoring": "llm_judge",
+      "criteria": "Safe-output guidance must clarify different write types, show configuration, and emphasize that instructions guide when to use them."
+    },
+    {
+      "prompt": "Our workflow was working fine last week but now 'gh aw compile' fails with a schema error. What changed?",
+      "expected_output": "Troubleshooting steps: [1] check recent edits to frontmatter YAML syntax (indentation, colons, array format), [2] run 'gh aw compile --verbose' to see detailed error messages, [3] use 'gh aw validate --strict' to isolate schema vs. lint vs. security issues, [4] if all else fails, use 'gh aw compile --purge' to clear stale lock files and recompile. Verify both .md and .lock.yml files are committed.",
+      "assertions": [
+        "Response identifies YAML/frontmatter as likely culprit",
+        "Response includes debugging commands with --verbose and --strict flags",
+        "Response explains what --purge does",
+        "Response addresses both source and lock file concerns",
+        "Response provides a clear debugging order"
+      ],
+      "scoring": "llm_judge",
+      "criteria": "Compilation troubleshooting must help users isolate frontmatter YAML errors, provide commands to diagnose, and explain lock file sync requirements."
+    }
+  ]
+}
