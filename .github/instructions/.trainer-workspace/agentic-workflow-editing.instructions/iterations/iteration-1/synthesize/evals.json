@@ -1,0 +1,60 @@
+{
+  "skill_name": "agentic-workflow-editing",
+  "evals": [
+    {
+      "prompt": "I need to add a new step to the train-prompt.md workflow file. What steps should I take to ensure the .lock.yml stays in sync?",
+      "expected_output": "The instructions should clearly state: (1) edit the .md file, (2) run `gh aw compile train-prompt` to regenerate the lockfile, (3) verify the lockfile changed by checking git status, (4) include both files in the commit.",
+      "assertions": [
+        "Instructions mention running `gh aw compile` after editing",
+        "Instructions specify the workflow name placeholder (e.g., train-prompt)",
+        "Instructions mention verifying lockfile sync before committing",
+        "Instructions emphasize that BOTH source and lockfile must be committed together"
+      ],
+      "scoring": "llm_judge",
+      "criteria": "The response must provide a complete, ordered sequence that an agent could mechanically follow. It should eliminate ambiguity about when to compile and how to verify sync."
+    },
+    {
+      "prompt": "I made a small change to the frontmatter of my agentic workflow file. Do I need to recompile?",
+      "expected_output": "The instructions should state that ANY change to the workflow source — including frontmatter — requires recompilation before committing.",
+      "assertions": [
+        "Instructions clarify that frontmatter changes trigger recompilation requirement",
+        "Instructions use clear language (e.g., 'always recompile', 'any change')",
+        "Instructions do not use vague terms like 'meaningful' without definition"
+      ],
+      "scoring": "llm_judge",
+      "criteria": "The response must eliminate the ambiguity of what counts as a 'meaningful' change. Frontmatter changes should be explicitly called out."
+    },
+    {
+      "prompt": "The agentic-workflow-validation hook rejected my pull request. What does that hook check?",
+      "expected_output": "The instructions should explain that the agentic-workflow-validation hook ensures the .lock.yml file is present and matches the compiled output of the source .md file.",
+      "assertions": [
+        "Instructions define what agentic-workflow-validation checks",
+        "Instructions explain the relationship between the hook and the compile step",
+        "Instructions recommend running compile locally before pushing to avoid hook failures"
+      ],
+      "scoring": "llm_judge",
+      "criteria": "An agent should understand what the hook enforces and how to prevent failures proactively by recompiling before push."
+    },
+    {
+      "prompt": "I edited my workflow file multiple times. How do I ensure the lockfile is current before opening a pull request?",
+      "expected_output": "The instructions should provide a clear final validation step: run `gh aw compile <workflow-name>` one last time and verify no git diff remains before committing.",
+      "assertions": [
+        "Instructions mention running compile as a final validation step",
+        "Instructions suggest checking git diff to confirm no outstanding changes",
+        "Instructions call out this final step as mandatory, not optional"
+      ],
+      "scoring": "llm_judge",
+      "criteria": "The instructions must include a discrete, final verification step that prevents agents from forgetting to recompile after the last edit."
+    },
+    {
+      "prompt": "If `gh aw compile` fails, what should I do?",
+      "expected_output": "The instructions should state: fix the workflow source file first, do not leave .md and .lock.yml out of sync, and recompile until it succeeds.",
+      "assertions": [
+        "Instructions clearly state to fix the source, not to force-commit a stale lockfile",
+        "Instructions emphasize never leaving source and lockfile in a divergent state"
+      ],
+      "scoring": "llm_judge",
+      "criteria": "The response must be unambiguous about the priority: source correctness first, then lockfile sync, never divergence."
+    }
+  ]
+}

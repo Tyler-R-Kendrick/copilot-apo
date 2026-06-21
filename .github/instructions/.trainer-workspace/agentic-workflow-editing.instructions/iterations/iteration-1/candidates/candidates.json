@@ -1,27 +1,48 @@
-{
-  "candidates": {
-    "original": {
-      "prompt": "iterations/iteration-1/candidates/original/prompt.md",
-      "description": "iterations/iteration-1/candidates/original/description.md",
-      "predicted_judge_response": null,
-      "reflection": null,
-      "selection_notes": "Baseline — 4 bullets, ambiguous 'stop hook' naming, 'meaningful changes' language, no concrete example, no verify step"
-    },
-    "student": {
-      "prompt": "iterations/iteration-1/candidates/student/prompt.md",
-      "description": "iterations/iteration-1/candidates/student/description.md",
-      "predicted_judge_response": null,
-      "reflection": null,
-      "selection_notes": "Optimized candidate: adds concrete compile example, unconditional recompile rule, git diff HEAD verify step, named hook, explicit pre-PR checkpoint, 5 bullets total"
-    },
-    "adversary": {
-      "prompt": "iterations/iteration-1/candidates/adversary/prompt.md",
-      "description": "iterations/iteration-1/candidates/adversary/description.md",
-      "predicted_judge_response": "iterations/iteration-1/candidates/adversary/predicted-judge-response.md",
-      "reflection": "iterations/iteration-1/candidates/adversary/reflection.md",
-      "selection_notes": "Overrating attack (~0.70 mean vs student ~0.97). Student candidate defenses block both exploits."
+[
+  {
+    "candidate_source": "original",
+    "candidate_path": "./original/prompt.md",
+    "description_path": "./original/description.md",
+    "predicted_judge_response": {
+      "score": 0.35,
+      "rationale": "The original candidate addresses the core requirements (compile, sync, hook) but lacks clarity and structure. The phrase 'meaningful changes' is ambiguous, creating risk that agents will skip compilation for trivial edits. The final pre-PR verification step is not explicitly stated as mandatory. No concrete examples or worked scenarios. Missing validation checkpoints.",
+      "strengths": [
+        "Concise and easy to scan",
+        "Covers all 4 core rules",
+        "Frontmatter preservation required"
+      ],
+      "weaknesses": [
+        "Ambiguous 'meaningful changes' trigger condition",
+        "No step-by-step sequence",
+        "No concrete compile command examples",
+        "Missing final verification checkpoint",
+        "Hook explanation inadequate",
+        "No recovery procedures for common failures"
+      ]
     }
   },
-  "winner": "student",
-  "winner_rationale": "Student candidate addresses all 5 engineer-prompt gaps. Adversary exploits were blocked by the teacher-directed git diff HEAD fix and the unconditional 'every edit' recompile language. No additional teacher/student iteration needed."
-}
+  {
+    "candidate_source": "student",
+    "candidate_path": "./student/prompt.md",
+    "description_path": "./student/description.md",
+    "predicted_judge_response": {
+      "score": 0.85,
+      "rationale": "The student candidate substantially improves clarity and structure. It provides an explicit 5-step sequence, eliminates the 'meaningful' ambiguity by requiring compilation for ALL edits, provides concrete examples (train-prompt, sync-skills), clearly defines the hook's role, and adds a mandatory Step 5 final verification. The 4 worked scenarios address common confusion points. Preserves all original placeholders and required phrases. Verbosity is a potential trade-off, but clarity improvement justifies it.",
+      "strengths": [
+        "Clear 5-step mechanical sequence",
+        "Eliminates ambiguity (ALL edits require compilation)",
+        "Concrete command examples with workflow names",
+        "Mandatory Step 5 final verification before PR",
+        "Clear hook definition (checks presence + freshness)",
+        "4 worked scenarios for common mistakes",
+        "Summary table for quick reference",
+        "Recovery procedures for each failure mode",
+        "Preserves all placeholders and original phrases"
+      ],
+      "weaknesses": [
+        "Increased length (verbosity vs. conciseness trade-off)",
+        "May be perceived as over-explaining for experienced users"
+      ]
+    }
+  }
+]
