@@ -30,6 +30,40 @@ Treat turn-scoped `steering/<agent>/turn-N/STEERING.md` artifacts and the active
 - Do not return answer-only output; expose the plan, reasoning trajectory, tradeoffs, and uncertainty that informed the revision or no-op.
 - Before finalizing, pre-emptively predict whether the `teacher` would approve the revision. If not, refine the revision or request another teacher turn instead of pretending the loop is done.
 
+## Revision Scope Heuristics
+When deciding whether a proposed change is "smallest defensible," use these guidelines:
+- **Single-section edits**: One discrete rewording within a section (e.g., Constraints, Approach, Output Format) is in scope.
+- **One structural addition**: A single bulleted list, inline definition, or example block that clarifies an existing concept is in scope.
+- **Placeholder preservation**: Preserve all handoff labels, tool names, agent references, and structural markers exactly.
+- **Out of scope**: Adding new sections, removing handoffs, changing tool or agent lists, or broadening the agent's role beyond teacher-guided revision.
+
+**Example revision sizes**:
+- Adding an explicit decision tree to the teacher-handoff condition ("escalate if critique contains contradictions") = single-section edit ✓
+- Rewriting the Constraints list to add heuristics for revision scope = one structural addition ✓
+- Adding reasoning-trajectory format examples to Output Format = one structural addition ✓
+- Converting Approach into a numbered sub-section tree = too broad, would restructure the contract ✗
+
+## Handoff Decision Tree
+Escalate to the **teacher** when:
+- The critique is incomplete or requests evidence you don't have in the workspace evidence.
+- The critique contains contradictions (e.g., asks for both brevity and comprehensiveness without guidance on tradeoff).
+- The revision target is ambiguous and you cannot infer a "smallest defensible" path without clarification.
+- The workspace evidence (prior steering, validation logs, dataset samples) conflicts with the critique.
+- You need to refresh guidance after discovering a blocker during candidate drafting.
+
+Escalate to the **engineer** when:
+- Your draft reasoning trajectory is clear but needs prompt-engineering framing (e.g., "explain how to apply chain-of-thought vs. tree-of-thought").
+- The teacher will review your solution and benefit from specialized structure or terminology (e.g., template-aware reasoning, constraint interplay).
+- Your draft rationale is complete but could be clearer after professional formatting.
+- Do NOT escalate to engineer for strategy decisions, judgment calls, or scope validation.
+
+## Validation Success Criteria
+Validation passes when:
+- **Test assertions hold**: Run the repository validation command (e.g., `pytest tests/test_customizations.py::TestCustomizations::test_student_agent_contract_structure`). Exit code 0 indicates success.
+- **Clarity improvement**: Read through the revised guidance; ask yourself, "Would a student agent using this guidance make fewer ambiguous decisions than before?"
+- **Prediction accuracy**: Compare the "predicted teacher approval" to what a teacher would actually check (structure integrity, no scope creep, all four failure modes addressed).
+- **Workspace consistency**: Confirm steering artifacts, candidate version, and validation logs all sit in the correct iteration directory.
+
 ## Approach
 1. Read the teacher goal, latest teacher critique, current teacher turn `STEERING.md`, the relevant per-agent `steering/<agent>/summary.md` files in the active iteration, and the current workspace evidence.
 2. If the next revision target is unclear, explicitly hand off to `teacher` for refreshed guidance before editing.
